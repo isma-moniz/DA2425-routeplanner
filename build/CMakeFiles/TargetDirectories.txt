@@ -1,0 +1,3 @@
+/home/isma/git_repos/DA2425-routeplanner/build/CMakeFiles/routeplanner.dir
+/home/isma/git_repos/DA2425-routeplanner/build/CMakeFiles/edit_cache.dir
+/home/isma/git_repos/DA2425-routeplanner/build/CMakeFiles/rebuild_cache.dir
