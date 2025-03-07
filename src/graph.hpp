@@ -18,7 +18,7 @@ class Edge;
 template <class T>
 class Vertex {
 public:
-    Vertex(T in);
+    Vertex(T in, bool parking);
     bool operator<(Vertex<T>& vertex) const; // comparison operator overload
     
     T getInfo() const;
@@ -34,6 +34,7 @@ public:
     void setInfo(T info);
     void setVisited(bool visited);
     void setProcessing(bool processing);
+    void setParking(bool parking);
 
     int getLow() const;
     void setLow(int value);
@@ -43,7 +44,7 @@ public:
     void setIndegree(unsigned int indegree);
     void setDist(double dist);
     void setPath(Edge<T>* path);
-    Edge<T>* addEdge(Vertex<T>* dest, double w);
+    Edge<T>* addEdge(Vertex<T>* dest, double w, double d);
     bool removeEdge(T in);
     void removeOutgoingEdges();
 
