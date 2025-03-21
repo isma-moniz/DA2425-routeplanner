@@ -6,7 +6,7 @@
  * Basic constructor
  */
 template <class T>
-Vertex<T>::Vertex(T in, bool parking): info(in), parkingSpace(parking) {}
+Vertex<T>::Vertex(T in, const std::string& code, bool parking): info(in), code(code), parkingSpace(parking) {}
 
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),
@@ -65,6 +65,16 @@ bool Vertex<T>::operator<(Vertex<T>& vertex) const {
 template <class T>
 T Vertex<T>::getInfo() const {
     return this->info;
+}
+
+template <class T>
+const std::string& Vertex<T>::getCode() const {
+    return this->code;
+}
+
+template <class T>
+void Vertex<T>::setCode(const std::string& code) {
+    this->code = code;
 }
 
 template <class T>
@@ -237,30 +247,28 @@ void Edge<T>::setFlow(double flow) {
 
 template <class T>
 int Graph<T>::getNumVertex() const {
-    return vertexSet.size();
+    return idToVertexMap.size(); 
 }
 
 template <class T>
 std::vector<Vertex<T> *> Graph<T>::getVertexSet() const {
-    return vertexSet;
-}
-// TODO: both this and the function below are stupidly inneficient
-// We should leverage the use of id based constant lookup with an unordered map or a map
-template <class T>
-Vertex<T>* Graph<T>::findVertex(const T &in) const {
-    for (auto v: vertexSet)
-        if (v->getInfo() == in)
-            return v;
-    return nullptr;
+    std::vector<Vertex<T>*> vertices;
+    for (const auto& pair : idToVertexMap) {
+        vertices.push_back(pair.second);
+    }
+    return vertices;
 }
 
 template <class T>
-int Graph<T>::findVertexIdx(const T &in) const {
-    for (unsigned i = 0; i < vertexSet.size(); i++) {
-        if (vertexSet[i]->getInfo() == in)
-            return i;
-    return -1;
-    }
+Vertex<T>* Graph<T>::findVertex(const T &in) const {
+    auto it = idToVertexMap.find(in);
+    return (it != idToVertexMap.end()) ? it->second : nullptr;
+}
+
+template <class T>
+Vertex<T>* Graph<T>::findVertex(const std::string& code) const {
+    auto it = codeToVertexMap.find(code);
+    return (it != codeToVertexMap.end()) ? it->second : nullptr;
 }
 
 /*
@@ -268,10 +276,12 @@ int Graph<T>::findVertexIdx(const T &in) const {
  *  Returns true if successful, and false if a vertex with that content already exists.
  */
 template <class T>
-bool Graph<T>::addVertex(const T &in) {
-    if (findVertex(in) != nullptr)
-        return false;
-    vertexSet.push_back(new Vertex<T>(in));
+bool Graph<T>::addVertex(const T &in, const std::string& code, bool parking) {
+    if (idToVertexMap.find(in) != idToVertexMap.end()) return false;
+
+    Vertex<T>* v = new Vertex<T>(in, code, parking);
+    idToVertexMap[in] = v;
+    codeToVertexMap[code] = v;
     return true;
 }
 
@@ -282,20 +292,19 @@ bool Graph<T>::addVertex(const T &in) {
  */
 template <class T>
 bool Graph<T>::removeVertex(const T &in) {
-    for (auto it = vertexSet.begin(); it != vertexSet.end(); it++) {
-        if ((*it)->getInfo() == in) {
-            auto v = *it;
-            v->removeOutgoingEdges();
-            for (auto u : vertexSet) {
-                u->removeEdge(v->getInfo());
-            }
-            vertexSet.erase(it);
-            delete v;
-            return true;
-        }
+    auto it = idToVertexMap.find(in);
+    if (it == idToVertexMap.end()) return false; // vertex does not exist
+
+    Vertex<T>* v = it->second;
+    v->removeOutGoingEdges();
+    for (Edge<T>* e : v->getIncoming()) {
+        e->getOrigin()->removeEdge(in); // this is better than iterating through the whole vertex set, but still O(e)
     }
-    return false;
-}
+    idToVertexMap.erase(it);
+    codeToVertexMap.erase(v->getCode());
+    delete v; // free memory
+    return true;
+} 
 
 /*
  * Adds an edge to a graph (this), given the contents of the source and
@@ -359,7 +368,7 @@ inline void deleteMatrix(double **m, int n) {
 
 template <class T>
 Graph<T>::~Graph() {
-    deleteMatrix(distMatrix, vertexSet.size());
-    deleteMatrix(pathMatrix, vertexSet.size());
+    deleteMatrix(distMatrix, idToVertexMap.size());
+    deleteMatrix(pathMatrix, idToVertexMap.size());
 }
 
