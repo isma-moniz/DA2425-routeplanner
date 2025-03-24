@@ -1,0 +1,3 @@
+/Users/franciscobettencourt/Desktop/FEUP/2 ANO/DA/DA2425-routeplanner/cmake-build-debug/CMakeFiles/routeplanner.dir
+/Users/franciscobettencourt/Desktop/FEUP/2 ANO/DA/DA2425-routeplanner/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/franciscobettencourt/Desktop/FEUP/2 ANO/DA/DA2425-routeplanner/cmake-build-debug/CMakeFiles/rebuild_cache.dir

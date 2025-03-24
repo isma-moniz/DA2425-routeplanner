@@ -7,6 +7,7 @@
 #include <limits>
 #include <algorithm>
 #include <unordered_map>
+#include "graph.cpp"
 
 template <class T>
 class Edge;
