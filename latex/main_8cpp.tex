@@ -1,0 +1,161 @@
+\hypertarget{main_8cpp}{}\doxysection{src/main.cpp File Reference}
+\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
+
+
+Main driver file for the Route Planning Tool.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include \char`\"{}graph.\+hpp\char`\"{}}\newline
+Include dependency graph for main.\+cpp\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8cpp_ade1b5fdb474dcc7448aa2ea164fedb44}{load\+Locations}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Loads location data from a CSV file and adds them as vertices in the graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a4389118f74916dcc9d8cacb7748e0dff}{load\+Distances}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Loads distance data between locations from a CSV file and adds bidirectional edges to the graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_aba5bd9067aa6f261123165a337c7957d}{show\+Menu}} ()
+\begin{DoxyCompactList}\small\item\em Displays the main menu to the user. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_af4dc81db40ac770eed209c7d4f347fa0}{calculate\+Best\+Route}} ()
+\begin{DoxyCompactList}\small\item\em Calculates the best driving route between two locations using Dijkstra\textquotesingle{}s algorithm. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_ae6be0c694b613b2cb385070fc7395024}{placeholder\+Function}} (const std\+::string \&feature\+Name)
+\begin{DoxyCompactList}\small\item\em Placeholder function for unimplemented features. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\begin{DoxyCompactList}\small\item\em Main entry point for the program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGraph}{Graph}}$<$ std\+::string $>$ \mbox{\hyperlink{main_8cpp_ad17eac1590628771ec15fd7722433ee0}{city\+Graph}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main driver file for the Route Planning Tool. 
+
+This file contains the main program that interacts with the user, loads location and distance data from CSV files, and calculates the best route based on different criteria like driving or walking times.
+
+The program uses the \mbox{\hyperlink{classGraph}{Graph}} class to represent the city and calculates optimal routes based on the user\textquotesingle{}s input. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_af4dc81db40ac770eed209c7d4f347fa0}\label{main_8cpp_af4dc81db40ac770eed209c7d4f347fa0}} 
+\index{main.cpp@{main.cpp}!calculateBestRoute@{calculateBestRoute}}
+\index{calculateBestRoute@{calculateBestRoute}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{calculateBestRoute()}{calculateBestRoute()}}
+{\footnotesize\ttfamily void calculate\+Best\+Route (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Calculates the best driving route between two locations using Dijkstra\textquotesingle{}s algorithm. 
+
+This function prompts the user for an origin and destination, performs a Dijkstra search on the city graph to find the best driving route, and displays the resulting path and total driving time.
+
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+complexity O(V + E log V) where V is the number of vertices and E is the number of edges in the graph. \mbox{\Hypertarget{main_8cpp_a4389118f74916dcc9d8cacb7748e0dff}\label{main_8cpp_a4389118f74916dcc9d8cacb7748e0dff}} 
+\index{main.cpp@{main.cpp}!loadDistances@{loadDistances}}
+\index{loadDistances@{loadDistances}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loadDistances()}{loadDistances()}}
+{\footnotesize\ttfamily void load\+Distances (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+
+
+Loads distance data between locations from a CSV file and adds bidirectional edges to the graph. 
+
+This function reads a CSV file containing distance data (driving and walking times) between locations and adds bidirectional edges to the graph, with the corresponding travel times.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The path to the CSV file containing distance data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+complexity O(\+M) where M is the number of distance entries in the CSV file. \mbox{\Hypertarget{main_8cpp_ade1b5fdb474dcc7448aa2ea164fedb44}\label{main_8cpp_ade1b5fdb474dcc7448aa2ea164fedb44}} 
+\index{main.cpp@{main.cpp}!loadLocations@{loadLocations}}
+\index{loadLocations@{loadLocations}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loadLocations()}{loadLocations()}}
+{\footnotesize\ttfamily void load\+Locations (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+
+
+Loads location data from a CSV file and adds them as vertices in the graph. 
+
+This function reads a CSV file containing location information and creates corresponding vertices in the graph. Each location\textquotesingle{}s parking information is stored as part of the vertex data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The path to the CSV file containing location data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+complexity O(\+N) where N is the number of locations in the CSV file. \mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main entry point for the program. 
+
+This is the main driver function that presents the user with a menu, allows them to load data, calculate routes, and choose from various options until they choose to exit the program.
+
+\begin{DoxyReturn}{Returns}
+int Exit status of the program (0 for success).
+\end{DoxyReturn}
+complexity O(\+N) where N is the number of menu choices, executed until the user exits. \mbox{\Hypertarget{main_8cpp_ae6be0c694b613b2cb385070fc7395024}\label{main_8cpp_ae6be0c694b613b2cb385070fc7395024}} 
+\index{main.cpp@{main.cpp}!placeholderFunction@{placeholderFunction}}
+\index{placeholderFunction@{placeholderFunction}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{placeholderFunction()}{placeholderFunction()}}
+{\footnotesize\ttfamily void placeholder\+Function (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{feature\+Name }\end{DoxyParamCaption})}
+
+
+
+Placeholder function for unimplemented features. 
+
+This function is a placeholder for future features that have not yet been implemented.
+
+
+\begin{DoxyParams}{Parameters}
+{\em feature\+Name} & The name of the feature being called. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8cpp_aba5bd9067aa6f261123165a337c7957d}\label{main_8cpp_aba5bd9067aa6f261123165a337c7957d}} 
+\index{main.cpp@{main.cpp}!showMenu@{showMenu}}
+\index{showMenu@{showMenu}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{showMenu()}{showMenu()}}
+{\footnotesize\ttfamily void show\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Displays the main menu to the user. 
+
+This function presents a menu with options for loading data, calculating routes, or exiting the program.
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8cpp_ad17eac1590628771ec15fd7722433ee0}\label{main_8cpp_ad17eac1590628771ec15fd7722433ee0}} 
+\index{main.cpp@{main.cpp}!cityGraph@{cityGraph}}
+\index{cityGraph@{cityGraph}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{cityGraph}{cityGraph}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classGraph}{Graph}}$<$std\+::string$>$ city\+Graph}
+

@@ -1,0 +1,78 @@
+\hypertarget{graph_8hpp}{}\doxysection{src/graph.hpp File Reference}
+\label{graph_8hpp}\index{src/graph.hpp@{src/graph.hpp}}
+
+
+\mbox{\hyperlink{classGraph}{Graph}} data structure implementation.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+Include dependency graph for graph.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classVertex}{Vertex$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Represents a vertex in a graph. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classEdge}{Edge$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Represents an edge between two vertices in a graph. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classGraph}{Graph$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Represents a graph with vertices and edges. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{graph_8hpp_ad56527992afe31a371065e795da57d25}{delete\+Matrix}} (int $\ast$$\ast$m, int n)
+\begin{DoxyCompactList}\small\item\em Deletes a dynamically allocated matrix of integers. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{graph_8hpp_af077bc8682a1a1d97e30b08eb1131b19}{delete\+Matrix}} (double $\ast$$\ast$m, int n)
+\begin{DoxyCompactList}\small\item\em Deletes a dynamically allocated matrix of doubles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classGraph}{Graph}} data structure implementation. 
+
+This file contains the implementation of a graph using vertices and edges. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{graph_8hpp_af077bc8682a1a1d97e30b08eb1131b19}\label{graph_8hpp_af077bc8682a1a1d97e30b08eb1131b19}} 
+\index{graph.hpp@{graph.hpp}!deleteMatrix@{deleteMatrix}}
+\index{deleteMatrix@{deleteMatrix}!graph.hpp@{graph.hpp}}
+\doxysubsubsection{\texorpdfstring{deleteMatrix()}{deleteMatrix()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void delete\+Matrix (\begin{DoxyParamCaption}\item[{double $\ast$$\ast$}]{m,  }\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deletes a dynamically allocated matrix of doubles. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Pointer to the matrix. \\
+\hline
+{\em n} & Number of rows in the matrix.\\
+\hline
+\end{DoxyParams}
+This function will delete each row of the matrix and then delete the matrix itself. \mbox{\Hypertarget{graph_8hpp_ad56527992afe31a371065e795da57d25}\label{graph_8hpp_ad56527992afe31a371065e795da57d25}} 
+\index{graph.hpp@{graph.hpp}!deleteMatrix@{deleteMatrix}}
+\index{deleteMatrix@{deleteMatrix}!graph.hpp@{graph.hpp}}
+\doxysubsubsection{\texorpdfstring{deleteMatrix()}{deleteMatrix()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void delete\+Matrix (\begin{DoxyParamCaption}\item[{int $\ast$$\ast$}]{m,  }\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deletes a dynamically allocated matrix of integers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Pointer to the matrix. \\
+\hline
+{\em n} & Number of rows in the matrix.\\
+\hline
+\end{DoxyParams}
+This function will delete each row of the matrix and then delete the matrix itself. 

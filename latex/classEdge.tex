@@ -1,0 +1,149 @@
+\hypertarget{classEdge}{}\doxysection{Edge$<$ T $>$ Class Template Reference}
+\label{classEdge}\index{Edge$<$ T $>$@{Edge$<$ T $>$}}
+
+
+Represents an edge between two vertices in a graph.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classEdge_a793e7c2a7df3bc3c1bc775419c5d24c7}{Edge}} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$orig, \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$dest, double w, double d)
+\begin{DoxyCompactList}\small\item\em Constructor to create an edge between two vertices. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_a9a2de066dff8513dd788d553fc1d0c81}{get\+Dest}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the destination vertex of the edge. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classEdge_a780d03056ff7b2c51812516bde26de0d}{get\+Drive\+Time}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the driving time associated with the edge. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classEdge_adc142591dc775f4aff00a2f951a97232}{get\+Walk\+Time}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the walking time associated with the edge. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_a996949346c7c76c358cabee5453cc665}{get\+Origin}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the origin vertex of the edge. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Edge$<$ T $>$}
+
+Represents an edge between two vertices in a graph. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of data stored in the vertex. \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classEdge_a793e7c2a7df3bc3c1bc775419c5d24c7}\label{classEdge_a793e7c2a7df3bc3c1bc775419c5d24c7}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!Edge@{Edge}}
+\index{Edge@{Edge}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::\mbox{\hyperlink{classEdge}{Edge}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$}]{orig,  }\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor to create an edge between two vertices. 
+
+Constructs an edge.
+
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & The origin vertex. \\
+\hline
+{\em dest} & The destination vertex. \\
+\hline
+{\em w} & The walking time. \\
+\hline
+{\em d} & The driving time.\\
+\hline
+{\em orig} & The origin vertex. \\
+\hline
+{\em dest} & The destination vertex. \\
+\hline
+{\em w} & The walking time weight. \\
+\hline
+{\em d} & The driving time weight. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classEdge_a9a2de066dff8513dd788d553fc1d0c81}\label{classEdge_a9a2de066dff8513dd788d553fc1d0c81}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getDest@{getDest}}
+\index{getDest@{getDest}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getDest()}{getDest()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Dest\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the destination vertex of the edge. 
+
+\begin{DoxyReturn}{Returns}
+The destination vertex.
+
+The destination vertex.
+\end{DoxyReturn}
+complexity O(1) \mbox{\Hypertarget{classEdge_a780d03056ff7b2c51812516bde26de0d}\label{classEdge_a780d03056ff7b2c51812516bde26de0d}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getDriveTime@{getDriveTime}}
+\index{getDriveTime@{getDriveTime}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getDriveTime()}{getDriveTime()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Drive\+Time\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the driving time associated with the edge. 
+
+Retrieves the driving time weight of the edge.
+
+\begin{DoxyReturn}{Returns}
+The driving time.
+
+The driving time weight.
+\end{DoxyReturn}
+complexity O(1) \mbox{\Hypertarget{classEdge_a996949346c7c76c358cabee5453cc665}\label{classEdge_a996949346c7c76c358cabee5453cc665}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getOrigin@{getOrigin}}
+\index{getOrigin@{getOrigin}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getOrigin()}{getOrigin()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Origin\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the origin vertex of the edge. 
+
+\begin{DoxyReturn}{Returns}
+The origin vertex.
+
+The origin vertex.
+\end{DoxyReturn}
+complexity O(1) \mbox{\Hypertarget{classEdge_adc142591dc775f4aff00a2f951a97232}\label{classEdge_adc142591dc775f4aff00a2f951a97232}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getWalkTime@{getWalkTime}}
+\index{getWalkTime@{getWalkTime}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getWalkTime()}{getWalkTime()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Walk\+Time\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the walking time associated with the edge. 
+
+Retrieves the walking time weight of the edge.
+
+\begin{DoxyReturn}{Returns}
+The walking time.
+
+The walking time weight.
+\end{DoxyReturn}
+complexity O(1) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{graph_8hpp}{graph.\+hpp}}\item 
+src/\mbox{\hyperlink{graph_8cpp}{graph.\+cpp}}\end{DoxyCompactItemize}

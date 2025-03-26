@@ -1,0 +1,183 @@
+\hypertarget{classGraph}{}\doxysection{Graph$<$ T $>$ Class Template Reference}
+\label{classGraph}\index{Graph$<$ T $>$@{Graph$<$ T $>$}}
+
+
+Represents a graph with vertices and edges.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classGraph_a0853eac15cdf0f06d63f4b8a7820ec71}{get\+Num\+Vertex}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the number of vertices in the graph. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_a41624b03fcb6bd29e4df574a1ec58541}{get\+Vertex\+Set}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves all the vertices in the graph. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classGraph_a8b7b7465fbfd562e2a469f90a437ab75}{find\+Vertex}} (const T \&in) const
+\begin{DoxyCompactList}\small\item\em Finds a vertex by its information. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_abe264454d14b6117e851c106051323a4}{add\+Vertex}} (const T \&in, bool parking)
+\begin{DoxyCompactList}\small\item\em Adds a vertex to the graph. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a2d8b10468eda8bfeef212cc47edb5f32}{add\+Bidirectional\+Edge}} (const T \&sourc, const T \&dest, double w, double d)
+\begin{DoxyCompactList}\small\item\em Adds a bidirectional edge between two vertices. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGraph_a8a117ad41983b6a6c6d777631da6f277}{dijkstra\+Driving}} (const T \&origin)
+\begin{DoxyCompactList}\small\item\em Performs Dijkstra\textquotesingle{}s algorithm to find the shortest driving times from the origin vertex. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Graph$<$ T $>$}
+
+Represents a graph with vertices and edges. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of data stored in the vertices. \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classGraph_a2d8b10468eda8bfeef212cc47edb5f32}\label{classGraph_a2d8b10468eda8bfeef212cc47edb5f32}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addBidirectionalEdge@{addBidirectionalEdge}}
+\index{addBidirectionalEdge@{addBidirectionalEdge}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addBidirectionalEdge()}{addBidirectionalEdge()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Bidirectional\+Edge (\begin{DoxyParamCaption}\item[{const T \&}]{sourc,  }\item[{const T \&}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a bidirectional edge between two vertices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The source vertex information. \\
+\hline
+{\em dest} & The destination vertex information. \\
+\hline
+{\em w} & The walking time of the edge. \\
+\hline
+{\em d} & The driving time of the edge. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the edge was added successfully, false if either vertex is not found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_abe264454d14b6117e851c106051323a4}\label{classGraph_abe264454d14b6117e851c106051323a4}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addVertex@{addVertex}}
+\index{addVertex@{addVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addVertex()}{addVertex()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Vertex (\begin{DoxyParamCaption}\item[{const T \&}]{in,  }\item[{bool}]{parking }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a vertex to the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The information to store in the vertex. \\
+\hline
+{\em parking} & Boolean indicating if the vertex has a parking space. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the vertex was added successfully, false if it already exists.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The vertex information. \\
+\hline
+{\em code} & The unique identifier code for the vertex. \\
+\hline
+{\em parking} & Indicates whether the vertex has a parking space. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if added successfully, false if vertex already exists.
+\end{DoxyReturn}
+complexity O(1) \mbox{\Hypertarget{classGraph_a8a117ad41983b6a6c6d777631da6f277}\label{classGraph_a8a117ad41983b6a6c6d777631da6f277}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!dijkstraDriving@{dijkstraDriving}}
+\index{dijkstraDriving@{dijkstraDriving}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{dijkstraDriving()}{dijkstraDriving()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::dijkstra\+Driving (\begin{DoxyParamCaption}\item[{const T \&}]{origin }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Performs Dijkstra\textquotesingle{}s algorithm to find the shortest driving times from the origin vertex. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The information of the origin vertex. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classGraph_a8b7b7465fbfd562e2a469f90a437ab75}\label{classGraph_a8b7b7465fbfd562e2a469f90a437ab75}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!findVertex@{findVertex}}
+\index{findVertex@{findVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{findVertex()}{findVertex()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::find\+Vertex (\begin{DoxyParamCaption}\item[{const T \&}]{in }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Finds a vertex by its information. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The information of the vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the vertex if found, nullptr otherwise.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The information of the vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the vertex if found, nullptr otherwise.
+\end{DoxyReturn}
+complexity O(1) \mbox{\Hypertarget{classGraph_a0853eac15cdf0f06d63f4b8a7820ec71}\label{classGraph_a0853eac15cdf0f06d63f4b8a7820ec71}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!getNumVertex@{getNumVertex}}
+\index{getNumVertex@{getNumVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getNumVertex()}{getNumVertex()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+int \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::get\+Num\+Vertex\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves the number of vertices in the graph. 
+
+\begin{DoxyReturn}{Returns}
+The number of vertices.
+
+The number of vertices.
+\end{DoxyReturn}
+complexity O(1) \mbox{\Hypertarget{classGraph_a41624b03fcb6bd29e4df574a1ec58541}\label{classGraph_a41624b03fcb6bd29e4df574a1ec58541}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!getVertexSet@{getVertexSet}}
+\index{getVertexSet@{getVertexSet}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getVertexSet()}{getVertexSet()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::get\+Vertex\+Set\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieves all the vertices in the graph. 
+
+Retrieves the set of vertices in the graph.
+
+\begin{DoxyReturn}{Returns}
+A vector containing all the vertices.
+
+A vector of vertices.
+\end{DoxyReturn}
+complexity O(\+V) where V is the number of vertices. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{graph_8hpp}{graph.\+hpp}}\item 
+src/\mbox{\hyperlink{graph_8cpp}{graph.\+cpp}}\end{DoxyCompactItemize}
