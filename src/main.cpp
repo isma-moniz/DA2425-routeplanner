@@ -1,117 +1,108 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
-#include <vector>
-#include "graph.hpp" // Usa a tua estrutura de grafo
+#include <sstream>
+#include "graph.hpp"
 
-Graph<int> cityGraph;
+Graph<int> graph;
 
-void loadLocations(const std::string &filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Erro ao abrir ficheiro: " << filename << std::endl;
-        return;
-    }
+void showMenu() {
+    std::cout << "\n=== Route Planning Tool ===" << std::endl;
+    std::cout << "1. Carregar ficheiro Locations (data/Locations.csv)" << std::endl;
+    std::cout << "2. Carregar ficheiro Distances (data/Distances.csv)" << std::endl;
+    std::cout << "3. Calcular melhor rota (driving)" << std::endl;
+    std::cout << "4. Calcular rota alternativa (driving)" << std::endl;
+    std::cout << "5. Calcular rota com restrições (driving)" << std::endl;
+    std::cout << "6. Calcular rota ambiental (driving + walking)" << std::endl;
+    std::cout << "0. Sair" << std::endl;
+    std::cout << "Escolha uma opção: ";
+}
 
+void loadLocations() {
+    std::ifstream file("data/Locations.csv");
     std::string line;
-    getline(file, line); // Ignorar header
+    getline(file, line); // skip header
+
     while (getline(file, line)) {
         std::stringstream ss(line);
-        std::string locationName, idStr, code, parkingStr;
-        getline(ss, locationName, ',');
+        std::string name, idStr, code, parkingStr;
+        getline(ss, name, ',');
         getline(ss, idStr, ',');
         getline(ss, code, ',');
         getline(ss, parkingStr, ',');
 
-        int id = stoi(idStr);
+        int id = std::stoi(idStr);
         bool parking = (parkingStr == "1");
+        graph.addVertex(id, code, parking);
 
-        cityGraph.addVertex(id, code, parking);
+        std::cout << "Location: " << name << " (ID: " << id << ", Code: " << code << ", Parking: " << parkingStr << ")" << std::endl;
     }
-    file.close();
-    std::cout << "Locais carregados com sucesso!\n";
+
+    std::cout << "Locations carregados com sucesso." << std::endl;
 }
 
-void loadDistances(const std::string &filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Erro ao abrir ficheiro: " << filename << std::endl;
-        return;
-    }
-
+void loadDistances() {
+    std::ifstream file("data/Distances.csv");
     std::string line;
-    getline(file, line); // Ignorar header
+    getline(file, line); // skip header
+
     while (getline(file, line)) {
         std::stringstream ss(line);
-        std::string loc1, loc2, drivingStr, walkingStr;
+        std::string loc1, loc2, drive, walk;
+
         getline(ss, loc1, ',');
         getline(ss, loc2, ',');
-        getline(ss, drivingStr, ',');
-        getline(ss, walkingStr, ',');
+        getline(ss, drive, ',');
+        getline(ss, walk, ',');
 
-        int source = stoi(loc1);
-        int destination = stoi(loc2);
+        int id1 = std::stoi(loc1);
+        int id2 = std::stoi(loc2);
 
-        double driveTime = (drivingStr == "X") ? -1 : stod(drivingStr);
-        double walkTime = (walkingStr == "X") ? -1 : stod(walkingStr);
+        double driveTime = (drive == "X") ? -1 : std::stod(drive);
+        double walkTime = std::stod(walk);
 
-        cityGraph.addBidirectionalEdge(source, destination, walkTime, driveTime);
+        if (driveTime != -1) {
+            graph.addBidirectionalEdge(id1, id2, walkTime, driveTime);
+            std::cout << "Segmento: " << id1 << " <-> " << id2 << " | Driving: " << driveTime << " | Walking: " << walkTime << std::endl;
+        } else {
+            graph.addBidirectionalEdge(id1, id2, walkTime, -1);
+            std::cout << "Segmento pedonal: " << id1 << " <-> " << id2 << " | Walking: " << walkTime << std::endl;
+        }
     }
-    file.close();
-    std::cout << "Distâncias carregadas com sucesso!\n";
-}
 
-void showMenu() {
-    std::cout << "\n=== Route Planning Tool ===\n";
-    std::cout << "1. Carregar Locations.csv\n";
-    std::cout << "2. Carregar Distances.csv\n";
-    std::cout << "3. Calcular melhor rota (driving)\n";
-    std::cout << "4. Calcular rota alternativa (driving)\n";
-    std::cout << "5. Calcular rota com restrições (driving)\n";
-    std::cout << "6. Calcular rota ambiental (driving + walking)\n";
-    std::cout << "0. Sair\n";
-    std::cout << "Escolha uma opção: ";
+    std::cout << "Distances carregados com sucesso." << std::endl;
 }
 
 void calculateBestRoute() {
-    std::cout << "[PLACEHOLDER] Função para calcular a melhor rota.\n";
-    // Aqui depois implementas Dijkstra ou o algoritmo escolhido.
+    std::cout << "[PLACEHOLDER] Função para calcular a melhor rota (driving)." << std::endl;
 }
 
 void calculateAlternativeRoute() {
-    std::cout << "[PLACEHOLDER] Função para calcular rota alternativa.\n";
+    std::cout << "[PLACEHOLDER] Função para calcular a rota alternativa (driving)." << std::endl;
 }
 
 void calculateRestrictedRoute() {
-    std::cout << "[PLACEHOLDER] Função para rota com restrições.\n";
+    std::cout << "[PLACEHOLDER] Função para calcular rota com restrições (driving)." << std::endl;
 }
 
-void calculateEcoRoute() {
-    std::cout << "[PLACEHOLDER] Função para rota ambiental (driving + walking).\n";
+void calculateEnvironmentalRoute() {
+    std::cout << "[PLACEHOLDER] Função para calcular rota ambiental (driving + walking)." << std::endl;
 }
 
 int main() {
     int opcao;
+
     do {
         showMenu();
         std::cin >> opcao;
 
         switch (opcao) {
-            case 1: {
-                std::string file;
-                std::cout << "Nome do ficheiro Locations.csv: ";
-                std::cin >> file;
-                loadLocations(file);
+            case 1:
+                loadLocations();
                 break;
-            }
-            case 2: {
-                std::string file;
-                std::cout << "Nome do ficheiro Distances.csv: ";
-                std::cin >> file;
-                loadDistances(file);
+            case 2:
+                loadDistances();
                 break;
-            }
             case 3:
                 calculateBestRoute();
                 break;
@@ -122,14 +113,15 @@ int main() {
                 calculateRestrictedRoute();
                 break;
             case 6:
-                calculateEcoRoute();
+                calculateEnvironmentalRoute();
                 break;
             case 0:
-                std::cout << "A sair...\n";
+                std::cout << "A sair..." << std::endl;
                 break;
             default:
-                std::cout << "Opção inválida.\n";
+                std::cout << "Opção inválida." << std::endl;
         }
+
     } while (opcao != 0);
 
     return 0;
