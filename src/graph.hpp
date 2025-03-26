@@ -5,6 +5,10 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include <queue>
+#include <limits>
+#include <functional>
+#include <utility>
 
 using namespace std;
 
@@ -32,9 +36,8 @@ template <class T> class Graph;
 template <class T>
 class Vertex {
     T info;
-    string code;
-    vector<Edge<T>*> adj;
-    vector<Edge<T>*> incoming;
+    std::vector<Edge<T>*> adj;
+    std::vector<Edge<T>*> incoming;
     bool visited = false;
     bool processing = false;
     bool parkingSpace = false;
@@ -44,22 +47,16 @@ class Vertex {
     int low = 0;
     int num = 0;
 public:
-    Vertex(T in, const string& code, bool parking) : info(in), code(code), parkingSpace(parking) {}
+    Vertex(T in, bool parking) : info(in), parkingSpace(parking) {}
     T getInfo() const { return info; }
-    const string& getCode() const { return code; }
-    void setCode(const string& c) { code = c; }
-    vector<Edge<T>*> getAdj() const { return adj; }
+    std::vector<Edge<T>*> getAdj() const { return adj; }
     bool isVisited() const { return visited; }
     bool isProcessing() const { return processing; }
     bool hasParking() const { return parkingSpace; }
     unsigned int getIndegree() const { return indegree; }
     double getDist() const { return dist; }
     Edge<T>* getPath() const { return path; }
-    vector<Edge<T>*> getIncoming() const { return incoming; }
-    int getLow() const { return low; }
-    int getNum() const { return num; }
-    void setLow(int value) { low = value; }
-    void setNum(int value) { num = value; }
+    std::vector<Edge<T>*> getIncoming() const { return incoming; }
     void setInfo(T in) { info = in; }
     void setVisited(bool v) { visited = v; }
     void setProcessing(bool p) { processing = p; }
@@ -73,43 +70,14 @@ public:
         dest->incoming.push_back(newEdge);
         return newEdge;
     }
-    bool removeEdge(T in) {
-        bool removedEdge = false;
-        auto it = adj.begin();
-        while (it != adj.end()) {
-            Edge<T> *edge = *it;
-            Vertex<T> *dest = edge->getDest();
-            if (dest->getInfo() == in) {
-                it = adj.erase(it);
-                deleteEdge(edge);
-                removedEdge = true;
-            } else {
-                it++;
-            }
-        }
-        return removedEdge;
-    }
     void removeOutgoingEdges() {
         auto it = adj.begin();
         while (it != adj.end()) {
             Edge<T> *edge = *it;
             it = adj.erase(it);
-            deleteEdge(edge);
+            delete edge;
         }
     }
-    void deleteEdge(Edge<T> *edge) {
-        Vertex<T> *dest = edge->getDest();
-        auto it = dest->incoming.begin();
-        while (it != dest->incoming.end()) {
-            if ((*it)->getOrigin()->getInfo() == info) {
-                it = dest->incoming.erase(it);
-            } else {
-                it++;
-            }
-        }
-        delete edge;
-    }
-    bool operator<(Vertex<T>& vertex) const { return dist < vertex.dist; }
 };
 
 template <class T>
@@ -118,91 +86,82 @@ class Edge {
     Vertex<T> *dest;
     double walkTime;
     double driveTime;
-    Edge<T> *reverse = nullptr;
-    bool selected = false;
-    double flow = 0;
 public:
     Edge(Vertex<T> *orig, Vertex<T> *dest, double w, double d) : origin(orig), dest(dest), walkTime(w), driveTime(d) {}
     Vertex<T>* getDest() const { return dest; }
     double getDriveTime() const { return driveTime; }
     double getWalkTime() const { return walkTime; }
     Vertex<T>* getOrigin() const { return origin; }
-    Edge<T>* getReverse() const { return reverse; }
-    bool isSelected() const { return selected; }
-    double getFlow() const { return flow; }
-    void setSelected(bool s) { selected = s; }
-    void setReverse(Edge<T> *r) { reverse = r; }
-    void setFlow(double f) { flow = f; }
 };
 
 template <class T>
 class Graph {
-    unordered_map<T, Vertex<T>*> idToVertexMap;
-    unordered_map<string, Vertex<T>*> codeToVertexMap;
-    double **distMatrix = nullptr;
-    int **pathMatrix = nullptr;
+    std::unordered_map<T, Vertex<T>*> vertexMap;
 public:
-    ~Graph() {
-        deleteMatrix(distMatrix, idToVertexMap.size());
-        deleteMatrix(pathMatrix, idToVertexMap.size());
-    }
-    int getNumVertex() const { return idToVertexMap.size(); }
-    vector<Vertex<T>*> getVertexSet() const {
-        vector<Vertex<T>*> vertices;
-        for (const auto& pair : idToVertexMap) {
+
+    int getNumVertex() const { return vertexMap.size(); }
+    std::vector<Vertex<T>*> getVertexSet() const {
+        std::vector<Vertex<T>*> vertices;
+        for (const auto& pair : vertexMap) {
             vertices.push_back(pair.second);
         }
         return vertices;
     }
     Vertex<T>* findVertex(const T &in) const {
-        auto it = idToVertexMap.find(in);
-        return (it != idToVertexMap.end()) ? it->second : nullptr;
+        auto it = vertexMap.find(in);
+        return (it != vertexMap.end()) ? it->second : nullptr;
     }
-    Vertex<T>* findVertex(const string& code) const {
-        auto it = codeToVertexMap.find(code);
-        return (it != codeToVertexMap.end()) ? it->second : nullptr;
-    }
-    bool addVertex(const T &in, const string& code, bool parking) {
-        if (idToVertexMap.find(in) != idToVertexMap.end()) return false;
-        Vertex<T>* v = new Vertex<T>(in, code, parking);
-        idToVertexMap[in] = v;
-        codeToVertexMap[code] = v;
+    bool addVertex(const T &in, bool parking) {
+        if (vertexMap.find(in) != vertexMap.end()) return false;
+        Vertex<T>* v = new Vertex<T>(in, parking);
+        vertexMap[in] = v;
         return true;
-    }
-    bool removeVertex(const T &in) {
-        auto it = idToVertexMap.find(in);
-        if (it == idToVertexMap.end()) return false;
-        Vertex<T>* v = it->second;
-        v->removeOutgoingEdges();
-        for (Edge<T>* e : v->getIncoming()) {
-            e->getOrigin()->removeEdge(in);
-        }
-        idToVertexMap.erase(it);
-        codeToVertexMap.erase(v->getCode());
-        delete v;
-        return true;
-    }
-    bool addEdge(const T &sourc, const T &dest, double w, double d) {
-        auto v1 = findVertex(sourc);
-        auto v2 = findVertex(dest);
-        if (v1 == nullptr || v2 == nullptr) return false;
-        v1->addEdge(v2, w, d);
-        return true;
-    }
-    bool removeEdge(const T &sourc, const T &dest) {
-        Vertex<T> * srcVertex = findVertex(sourc);
-        if (srcVertex == nullptr) return false;
-        return srcVertex->removeEdge(dest);
     }
     bool addBidirectionalEdge(const T &sourc, const T &dest, double w, double d) {
         auto v1 = findVertex(sourc);
         auto v2 = findVertex(dest);
         if (v1 == nullptr || v2 == nullptr) return false;
-        auto e1 = v1->addEdge(v2, w, d);
-        auto e2 = v2->addEdge(v1, w, d);
-        e1->setReverse(e2);
-        e2->setReverse(e1);
+        v1->addEdge(v2, w, d);
+        v2->addEdge(v1, w, d);
         return true;
+    }
+    void dijkstraDriving(const T &origin) {
+        for (auto &pair : vertexMap) {
+            pair.second->setDist(std::numeric_limits<double>::max());
+            pair.second->setPath(nullptr);
+            pair.second->setVisited(false);
+        }
+
+        auto start = findVertex(origin);
+        if (!start) return;
+
+        start->setDist(0);
+        std::priority_queue<std::pair<double, Vertex<T>*>, std::vector<std::pair<double, Vertex<T>*>>, std::greater<std::pair<double, Vertex<T>*>>> pq;
+        pq.push(std::make_pair(0, start));
+
+        while (!pq.empty()) {
+            auto topElement = pq.top();
+            pq.pop();
+
+            double currDist = topElement.first;
+            Vertex<T>* currVertex = topElement.second;
+
+            if (currVertex->isVisited()) continue;
+            currVertex->setVisited(true);
+
+            for (auto edge : currVertex->getAdj()) {
+                if (edge->getDriveTime() < 0) continue;
+
+                auto dest = edge->getDest();
+                double newDist = currVertex->getDist() + edge->getDriveTime();
+
+                if (newDist < dest->getDist()) {
+                    dest->setDist(newDist);
+                    dest->setPath(edge);
+                    pq.push(std::make_pair(newDist, dest));
+                }
+            }
+        }
     }
 };
 
