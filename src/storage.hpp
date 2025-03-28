@@ -3,13 +3,9 @@
 
 #include <string>
 #include "graph.hpp"
-#include <iostream>
-#include <sstream>
-#include <fstream>
 
 class StorageHandler {
 public:
-    StorageHandler();
     void loadLocations(const std::string& locationsFile);
     void loadRoads(const std::string& roadFile);
 private:

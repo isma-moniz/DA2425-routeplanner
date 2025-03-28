@@ -13,14 +13,15 @@ void showMenu() {
     std::cout << "\n=== Route Planning Tool ===\n";
     std::cout << "1. Load Locations.csv\n";
     std::cout << "2. Load Distances.csv\n";
-    std::cout << "3. Calcular melhor rota (driving)\n";
-    std::cout << "4. Calcular rota alternativa (driving)\n";
-    std::cout << "5. Calcular rota com restrições (driving)\n";
-    std::cout << "6. Calcular rota ambiental (driving + walking)\n";
-    std::cout << "0. Sair\n";
-    std::cout << "Escolha uma opção: ";
+    std::cout << "3. Calculate best route (driving)\n";
+    std::cout << "4. Calculate alternative route (driving)\n";
+    std::cout << "5. Calculate route with restrictions (driving)\n";
+    std::cout << "6. Calculate environmentally friendly route (driving + walking)\n";
+    std::cout << "0. Exit\n";
+    std::cout << "Choose an option: ";
 }
 
+/* TODO
 void calculateBestRoute() {
     std::string origem, destino;
     std::cout << "Código de origem: ";
@@ -55,26 +56,26 @@ void calculateBestRoute() {
     std::cout << "Melhor rota (driving): ";
     for (const auto &code : path) std::cout << code << " ";
     std::cout << "| Tempo total: " << destinationVertex->getDist() << " minutos." << std::endl;
-}
+} TODO */
 
 void placeholderFunction(const std::string &featureName) {
-    std::cout << "Função '" << featureName << "' ainda não implementada." << std::endl;
+    std::cout << "Function '" << featureName << "' not implemented yet." << std::endl;
 }
 
 int main() {
-    int opcao;
+    int op;
     do {
         showMenu();
-        std::cin >> opcao;
-        switch (opcao) {
+        std::cin >> op;
+        switch (op) {
             case 1:
-                loadLocations("../data/Locations.csv");
+                storageHandler.loadLocations("../data/Locations.csv");
                 break;
             case 2:
-                loadDistances("../data/Distances.csv");
+                storageHandler.loadRoads("../data/Distances.csv");
                 break;
             case 3:
-                calculateBestRoute();
+                //calculateBestRoute();
                 break;
             case 4:
                 placeholderFunction("Calcular rota alternativa");
@@ -86,12 +87,12 @@ int main() {
                 placeholderFunction("Calcular rota ambiental");
                 break;
             case 0:
-                std::cout << "A sair..." << std::endl;
+                std::cout << "Thank you for using route planner." << std::endl;
                 break;
             default:
                 std::cout << "Opção inválida." << std::endl;
         }
-    } while (opcao != 0);
+    } while (op != 0);
 
     return 0;
 }

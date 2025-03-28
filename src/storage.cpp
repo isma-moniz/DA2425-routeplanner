@@ -1,4 +1,9 @@
 #include "storage.hpp"
+#include <limits>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
 
 void StorageHandler::loadLocations(const std::string& locationsFile) {
     std::ifstream file(locationsFile);
