@@ -1,141 +1,168 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
 
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <iostream>
 #include <queue>
 #include <limits>
-#include <algorithm>
-#include <unordered_map>
-#include "graph.cpp"
+#include <functional>
+#include <utility>
 
-template <class T>
-class Edge;
+using namespace std;
 
-#define INF std::numeric_limits<double>::max()
+inline void deleteMatrix(int **m, int n) {
+    if (m != nullptr) {
+        for (int i = 0; i < n; i++)
+            if (m[i] != nullptr)
+                delete [] m[i];
+        delete [] m;
+    }
+}
 
-/******************** Vertex ********************/
+inline void deleteMatrix(double **m, int n) {
+    if (m != nullptr) {
+        for (int i = 0; i < n; i++)
+            if (m[i] != nullptr)
+                delete [] m[i];
+        delete [] m;
+    }
+}
+
+template <class T> class Edge;
+template <class T> class Graph;
 
 template <class T>
 class Vertex {
-public:
-    Vertex(T in, const std::string& code, bool parking);
-    bool operator<(Vertex<T>& vertex) const; // comparison operator overload
-    
-    T getInfo() const;
-    const std::string& getCode() const;
-    std::vector<Edge<T> *> getAdj() const;
-    bool isVisited() const;
-    bool isProcessing() const;
-    bool hasParking() const;
-    unsigned int getIndegree() const;
-    double getDist() const;
-    Edge<T>* getPath() const;
-    std::vector<Edge<T>*> getIncoming() const;
-
-    void setInfo(T info);
-    void setCode(const std::string& code);
-    void setVisited(bool visited);
-    void setProcessing(bool processing);
-    void setParking(bool parking);
-
-    int getLow() const;
-    void setLow(int value);
-    int getNum() const;
-    void setNum(int value);
-
-    void setIndegree(unsigned int indegree);
-    void setDist(double dist);
-    void setPath(Edge<T>* path);
-    Edge<T>* addEdge(Vertex<T>* dest, double w, double d);
-    bool removeEdge(T in);
-    void removeOutgoingEdges();
-
-    // friend class MutablePriorityQueue<Vertex>; -- probably not necessary yet
-protected:
-    T info; // we will store the id
-    std::string code;
-    std::vector<Edge<T> *> adj; // if we don't ever need to have the edges ordered, we will change this to unordered_set for constant time lookup, add and remove
-
-    bool visited = false; // used by DFS, BFS, Primm
-    bool processing = false; // used to detect cycles
+    T info;
+    std::vector<Edge<T>*> adj;
+    std::vector<Edge<T>*> incoming;
+    bool visited = false;
+    bool processing = false;
     bool parkingSpace = false;
-    
-    int low = -1, num = -1; // used by SCC Tarjan
-    unsigned int indegree; // used by topsort
+    unsigned int indegree = 0;
     double dist = 0;
     Edge<T>* path = nullptr;
-
-    std::vector<Edge<T>*> incoming;
-    int queueIndex = 0; // for MutablePriorityQueue and UFDS
-    
-    void deleteEdge(Edge<T>* edge);
+    int low = 0;
+    int num = 0;
+public:
+    Vertex(T in, bool parking) : info(in), parkingSpace(parking) {}
+    T getInfo() const { return info; }
+    std::vector<Edge<T>*> getAdj() const { return adj; }
+    bool isVisited() const { return visited; }
+    bool isProcessing() const { return processing; }
+    bool hasParking() const { return parkingSpace; }
+    unsigned int getIndegree() const { return indegree; }
+    double getDist() const { return dist; }
+    Edge<T>* getPath() const { return path; }
+    std::vector<Edge<T>*> getIncoming() const { return incoming; }
+    void setInfo(T in) { info = in; }
+    void setVisited(bool v) { visited = v; }
+    void setProcessing(bool p) { processing = p; }
+    void setParking(bool p) { parkingSpace = p; }
+    void setIndegree(unsigned int i) { indegree = i; }
+    void setDist(double d) { dist = d; }
+    void setPath(Edge<T> *p) { path = p; }
+    Edge<T>* addEdge(Vertex<T> *dest, double w, double d) {
+        auto newEdge = new Edge<T>(this, dest, w, d);
+        adj.push_back(newEdge);
+        dest->incoming.push_back(newEdge);
+        return newEdge;
+    }
+    void removeOutgoingEdges() {
+        auto it = adj.begin();
+        while (it != adj.end()) {
+            Edge<T> *edge = *it;
+            it = adj.erase(it);
+            delete edge;
+        }
+    }
 };
-
-/******************** Edge ********************/
 
 template <class T>
 class Edge {
-public:
-    Edge(Vertex<T>* orig, Vertex<T> *dest, double w, double d);
-
-    Vertex<T>* getDest() const;
-    double getDriveTime() const;
-    double getWalkTime() const;
-    bool isSelected() const;
-    Vertex<T>* getOrigin() const;
-    Edge<T>* getReverse() const;
-    double getFlow() const;
-
-    void setSelected(bool selected);
-    void setReverse(Edge<T>* reverse);
-    void setFlow(double flow);
-protected:
-    Vertex<T>* dest;
+    Vertex<T> *origin;
+    Vertex<T> *dest;
     double walkTime;
     double driveTime;
-
-    bool selected = false;
-
-    Vertex<T>* origin;
-    Edge<T>* reverse = nullptr;
-
-    double flow; // for flow related problems
+public:
+    Edge(Vertex<T> *orig, Vertex<T> *dest, double w, double d) : origin(orig), dest(dest), walkTime(w), driveTime(d) {}
+    Vertex<T>* getDest() const { return dest; }
+    double getDriveTime() const { return driveTime; }
+    double getWalkTime() const { return walkTime; }
+    Vertex<T>* getOrigin() const { return origin; }
 };
-
-/******************** Graph ********************/
 
 template <class T>
 class Graph {
+    std::unordered_map<T, Vertex<T>*> vertexMap;
 public:
-    ~Graph();
-    // Aux function to find a vertex with a given content.
-    Vertex<T>* findVertex(const T& in) const;
-    // Aux function to find a vertex with a given code.
-    Vertex<T>* findVertex(const std::string& code) const;
-    // Add vertex with a given info to graph.
-    bool addVertex(const T& in, const std::string& code, bool parking);
-    bool removeVertex(const T& in);
-    // add edge to the graph given contents of source and dest as well as weights
-    bool addEdge(const T& source, const T& dest, double w, double d);
-    bool removeEdge(const T& source, const T& dest);
-    bool addBidirectionalEdge(const T &source, const T& dest, double w, double d);
 
-    int getNumVertex() const;
-    std::vector<Vertex<T>*> getVertexSet() const;
+    int getNumVertex() const { return vertexMap.size(); }
+    std::vector<Vertex<T>*> getVertexSet() const {
+        std::vector<Vertex<T>*> vertices;
+        for (const auto& pair : vertexMap) {
+            vertices.push_back(pair.second);
+        }
+        return vertices;
+    }
+    Vertex<T>* findVertex(const T &in) const {
+        auto it = vertexMap.find(in);
+        return (it != vertexMap.end()) ? it->second : nullptr;
+    }
+    bool addVertex(const T &in, bool parking) {
+        if (vertexMap.find(in) != vertexMap.end()) return false;
+        Vertex<T>* v = new Vertex<T>(in, parking);
+        vertexMap[in] = v;
+        return true;
+    }
+    bool addBidirectionalEdge(const T &sourc, const T &dest, double w, double d) {
+        auto v1 = findVertex(sourc);
+        auto v2 = findVertex(dest);
+        if (v1 == nullptr || v2 == nullptr) return false;
+        v1->addEdge(v2, w, d);
+        v2->addEdge(v1, w, d);
+        return true;
+    }
+    void dijkstraDriving(const T &origin) {
+        for (auto &pair : vertexMap) {
+            pair.second->setDist(std::numeric_limits<double>::max());
+            pair.second->setPath(nullptr);
+            pair.second->setVisited(false);
+        }
 
-protected:
-    std::unordered_map<int, Vertex<T>*> idToVertexMap; // replaced vertexSet with this to provide constant time lookup by id for internal graph operations 
-    std::unordered_map<std::string, Vertex<T>*> codeToVertexMap; // provides constant time lookup by vertex code
-    
-    // matrixes for Floyd-Warshall
-    double** distMatrix = nullptr;
-    int** pathMatrix = nullptr;
+        auto start = findVertex(origin);
+        if (!start) return;
 
-    // int findVertexIdx(const T& in) const; no longer needed
+        start->setDist(0);
+        std::priority_queue<std::pair<double, Vertex<T>*>, std::vector<std::pair<double, Vertex<T>*>>, std::greater<std::pair<double, Vertex<T>*>>> pq;
+        pq.push(std::make_pair(0, start));
+
+        while (!pq.empty()) {
+            auto topElement = pq.top();
+            pq.pop();
+
+            double currDist = topElement.first;
+            Vertex<T>* currVertex = topElement.second;
+
+            if (currVertex->isVisited()) continue;
+            currVertex->setVisited(true);
+
+            for (auto edge : currVertex->getAdj()) {
+                if (edge->getDriveTime() < 0) continue;
+
+                auto dest = edge->getDest();
+                double newDist = currVertex->getDist() + edge->getDriveTime();
+
+                if (newDist < dest->getDist()) {
+                    dest->setDist(newDist);
+                    dest->setPath(edge);
+                    pq.push(std::make_pair(newDist, dest));
+                }
+            }
+        }
+    }
 };
-
-void deleteMatrix(int** m, int n);
-void deleteMatrix(double** m, int n);
 
 #endif
