@@ -372,3 +372,8 @@ Graph<T>::~Graph() {
     deleteMatrix(pathMatrix, idToVertexMap.size());
 }
 
+
+template <class T>
+void Graph<T>::dijkstraDriving(const T& origin) {
+    return; //TODO
+}

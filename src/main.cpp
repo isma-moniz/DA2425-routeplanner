@@ -5,68 +5,14 @@
 #include <vector>
 #include <limits>
 #include <queue>
-#include "graph.hpp"
+#include "storage.hpp"
 
-Graph<std::string> cityGraph;
-
-void loadLocations(const std::string &filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Erro ao abrir ficheiro: " << filename << std::endl;
-        return;
-    }
-
-    std::string line;
-    getline(file, line); // Ignorar header
-    while (getline(file, line)) {
-        std::stringstream ss(line);
-        std::string locationName, idStr, code, parkingStr;
-        getline(ss, locationName, ',');
-        getline(ss, idStr, ',');
-        getline(ss, code, ',');
-        getline(ss, parkingStr, ',');
-
-        if (code.empty()) continue;
-
-        bool parking = (parkingStr == "1");
-        cityGraph.addVertex(code, parking);
-    }
-    file.close();
-    std::cout << "Locais carregados com sucesso!\n";
-}
-
-void loadDistances(const std::string &filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Erro ao abrir ficheiro: " << filename << std::endl;
-        return;
-    }
-
-    std::string line;
-    getline(file, line); // Ignorar header
-    while (getline(file, line)) {
-        std::stringstream ss(line);
-        std::string loc1, loc2, drivingStr, walkingStr;
-        getline(ss, loc1, ',');
-        getline(ss, loc2, ',');
-        getline(ss, drivingStr, ',');
-        getline(ss, walkingStr, ',');
-
-        if (loc1.empty() || loc2.empty()) continue;
-
-        double driveTime = (drivingStr == "X") ? -1 : stod(drivingStr);
-        double walkTime = (walkingStr == "X") ? -1 : stod(walkingStr);
-
-        cityGraph.addBidirectionalEdge(loc1, loc2, walkTime, driveTime);
-    }
-    file.close();
-    std::cout << "Distâncias carregadas com sucesso!\n";
-}
+StorageHandler storageHandler;
 
 void showMenu() {
     std::cout << "\n=== Route Planning Tool ===\n";
-    std::cout << "1. Carregar Locations.csv\n";
-    std::cout << "2. Carregar Distances.csv\n";
+    std::cout << "1. Load Locations.csv\n";
+    std::cout << "2. Load Distances.csv\n";
     std::cout << "3. Calcular melhor rota (driving)\n";
     std::cout << "4. Calcular rota alternativa (driving)\n";
     std::cout << "5. Calcular rota com restrições (driving)\n";
