@@ -8,6 +8,8 @@ class StorageHandler {
 public:
     void loadLocations(const std::string& locationsFile);
     void loadRoads(const std::string& roadFile);
+
+    void callDijkstra(const std::string& source, const std::string& dest);
 private:
     Graph<int> cityGraph;
 };

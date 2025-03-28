@@ -1,9 +1,14 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <algorithm>
+#include <limits>
+#include <queue>
+#include <stdexcept>
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <iostream>
 
 template <class T>
 class Edge;
@@ -122,7 +127,7 @@ public:
     int getNumVertex() const;
     std::vector<Vertex<T>*> getVertexSet() const;
 
-    void dijkstraDriving(const T& origin);
+    std::vector<T> dijkstraDriving(const T& origin, const T& destination);
 
 protected:
     std::unordered_map<int, Vertex<T>*> idToVertexMap; // replaced vertexSet with this to provide constant time lookup by id for internal graph operations 
@@ -539,10 +544,88 @@ Graph<T>::~Graph() {
     deleteMatrix(pathMatrix, idToVertexMap.size());
 }
 
+template <class T>
+struct vertexComp {
+    bool operator()(Vertex<T>* a, Vertex<T>* b) {
+        return a->getDist() > b->getDist(); // order for min-heap
+    }
+};
 
 template <class T>
-void Graph<T>::dijkstraDriving(const T& origin) {
-    return; //TODO
+std::vector<T> Graph<T>::dijkstraDriving(const T& origin, const T& destination) {
+    std::priority_queue<Vertex<T>*, std::vector<Vertex<T>*>, vertexComp<T>> pq; // min-heap
+
+    // initialization
+    for (auto& it : this->idToVertexMap) {
+        it.second->setDist(INF);
+        it.second->setPath(nullptr);
+        it.second->setVisited(false);
+    }
+    
+    // lookup source and dest vertices
+    auto it = idToVertexMap.find(origin);
+    if (it == idToVertexMap.end()) {
+        throw std::runtime_error("Dijkstra error: could not find vertex with id " + std::to_string(origin) + "\n");
+    }
+    Vertex<T>* originVert = it->second;
+
+    auto it2 = idToVertexMap.find(destination);
+    if (it2 == idToVertexMap.end()) {
+        throw std::runtime_error("Dijkstra error: could not find vertex with id " + std::to_string(destination) + "\n");
+    }
+    Vertex<T>* destVert = it2->second;
+
+    // pq initialization
+    originVert->setDist(0);
+    pq.push(originVert);
+    std::cout << "Starting Dijkstra from " << origin << " to " << destination << "\n";
+
+    while (!pq.empty()) {
+        Vertex<T>* current = pq.top();
+        pq.pop();
+
+        if (current->isVisited()) continue;
+        current->setVisited(true);
+
+        std::cout << "Processing node: " << current->getInfo() << " (dist=" << current->getDist() << ")\n";
+
+        if (current == destVert) {
+            std::cout << "Reached destination!\n";
+            break;
+        }
+
+        for (Edge<T>* edge : current->getAdj()) {
+            Vertex<T>* neighbor = edge->getDest();
+            double new_dist = current->getDist() + edge->getDriveTime();
+            if (new_dist < neighbor->getDist()) {
+                neighbor->setDist(new_dist);
+                neighbor->setPath(edge);
+                pq.push(neighbor);
+                std::cout << "  Updating neighbor " << neighbor->getInfo()
+                          << " with new dist=" << new_dist << "\n";
+            }
+        }
+    }
+
+    // need to reconstruct path
+    std::vector<T> path;
+    if (destVert->getPath() == nullptr) {
+        std::cout << "No path found from " << origin << " to " << destination << "!\n";
+        return {};
+    }
+
+
+    for (Vertex<T>* at = destVert; at != nullptr; at = at->getPath() ? at->getPath()->getOrigin() : nullptr) {
+        path.push_back(at->getInfo());
+    }
+
+    std::reverse(path.begin(), path.end());
+
+    std::cout << "Shortest path: ";
+    for (const auto& node : path) std::cout << node << " -> ";
+    std::cout << "END\n";
+    return path;
+
 }
 
 #endif

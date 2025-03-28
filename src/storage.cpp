@@ -1,9 +1,14 @@
 #include "storage.hpp"
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <iostream>
+
+bool isNumeric(const std::string& str) {
+    return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
+}
 
 void StorageHandler::loadLocations(const std::string& locationsFile) {
     std::ifstream file(locationsFile);
@@ -107,4 +112,29 @@ void StorageHandler::loadRoads(const std::string& roadFile) {
 
     file.close();
     std::cout << "Locations loaded successfully!\n";
+}
+
+void StorageHandler::callDijkstra(const std::string& src, const std::string& dest) {
+    int source, destination;
+    if (!isNumeric(src)) {
+        auto srcVert = cityGraph.findVertex(src);
+        if (srcVert == nullptr) {
+            throw std::runtime_error("Error: Vertex with code " + src + " not found!\n");
+        }
+        source = srcVert->getInfo();
+    } else {
+        source = std::stoi(src);
+    }
+
+    if (!isNumeric(dest)) {
+        auto destVert = cityGraph.findVertex(dest);
+        if (destVert == nullptr) {
+            throw std::runtime_error("Error: Vertex with code " + dest + " not found!\n");
+        }
+        destination = destVert->getInfo();
+    } else {
+        destination = std::stoi(dest);
+    }
+
+    cityGraph.dijkstraDriving(source, destination);
 }
