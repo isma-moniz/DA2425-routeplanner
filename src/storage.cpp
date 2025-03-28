@@ -82,8 +82,6 @@ void StorageHandler::loadRoads(const std::string& roadFile) {
         }
         
         try {
-            int l1 = std::stoi(loc1);
-            int l2 = std::stoi(loc2);
             double driving, walking;
 
             if (drivingStr == "X") {
@@ -95,7 +93,7 @@ void StorageHandler::loadRoads(const std::string& roadFile) {
                 walking = std::stod(walkingStr);
             }
 
-            if (!cityGraph.addBidirectionalEdge(l1, l2, walking, driving)) {
+            if (!cityGraph.addBidirectionalEdge(loc1, loc2, walking, driving)) {
                 throw std::runtime_error("Error adding road for ID " + loc1 + "<-> " + loc2 + " on line "  + std::to_string(linenumber));
             }
         } catch (const std::invalid_argument& e) {

@@ -114,8 +114,10 @@ public:
     bool removeVertex(const T& in);
     // add edge to the graph given contents of source and dest as well as weights
     bool addEdge(const T& source, const T& dest, double w, double d);
+    bool addEdge(const std::string& source, const std::string& dest, double w, double d);
     bool removeEdge(const T& source, const T& dest);
     bool addBidirectionalEdge(const T &source, const T& dest, double w, double d);
+    bool addBidirectionalEdge(const std::string& source, const std::string& dest, double w, double d);
 
     int getNumVertex() const;
     std::vector<Vertex<T>*> getVertexSet() const;
@@ -461,6 +463,17 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w, double d) {
     return true;
 }
 
+template <class T>
+bool Graph<T>::addEdge(const std::string &sourc, const std::string &dest, double w, double d) {
+    auto v1 = findVertex(sourc);
+    auto v2 = findVertex(dest);
+    if (v1 == nullptr || v2 == nullptr)
+        return false;
+    v1->addEdge(v2, w, d);
+    return true;
+}
+
+
 /*
  * Removes an edge from a graph (this).
  * The edge is identified by the source (sourc) and destination (dest) contents.
@@ -487,6 +500,20 @@ bool Graph<T>::addBidirectionalEdge(const T &sourc, const T &dest, double w, dou
     e2->setReverse(e1);
     return true;
 }
+
+template <class T>
+bool Graph<T>::addBidirectionalEdge(const std::string &sourc, const std::string &dest, double w, double d) {
+    auto v1 = findVertex(sourc);
+    auto v2 = findVertex(dest);
+    if (v1 == nullptr || v2 == nullptr)
+        return false;
+    auto e1 = v1->addEdge(v2, w, d);
+    auto e2 = v2->addEdge(v1, w, d);
+    e1->setReverse(e2);
+    e2->setReverse(e1);
+    return true;
+}
+
 
 inline void deleteMatrix(int **m, int n) {
     if (m != nullptr) {
