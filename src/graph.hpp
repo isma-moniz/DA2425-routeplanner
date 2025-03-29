@@ -83,12 +83,12 @@ public:
     Vertex<T>* getDest() const;
     double getDriveTime() const;
     double getWalkTime() const;
-    bool isSelected() const;
+    bool isAvailable() const;
     Vertex<T>* getOrigin() const;
     Edge<T>* getReverse() const;
     double getFlow() const;
 
-    void setSelected(bool selected);
+    void setAvailable(bool selected);
     void setReverse(Edge<T>* reverse);
     void setFlow(double flow);
 protected:
@@ -96,7 +96,7 @@ protected:
     double walkTime;
     double driveTime;
 
-    bool selected = false;
+    bool available = true; // used for marking already used routes
 
     Vertex<T>* origin;
     Edge<T>* reverse = nullptr;
@@ -127,7 +127,8 @@ public:
     int getNumVertex() const;
     std::vector<Vertex<T>*> getVertexSet() const;
 
-    std::vector<T> dijkstraDriving(const T& origin, const T& destination);
+    void fastestDrivingPathWithAlt(const T& origin, const T& destination);
+    std::vector<Edge<T>*> dijkstraDriving(const T& origin, const T& destination);
 
 protected:
     std::unordered_map<int, Vertex<T>*> idToVertexMap; // replaced vertexSet with this to provide constant time lookup by id for internal graph operations 
@@ -366,8 +367,8 @@ Edge<T> *Edge<T>::getReverse() const {
 }
 
 template <class T>
-bool Edge<T>::isSelected() const {
-    return this->selected;
+bool Edge<T>::isAvailable() const {
+    return this->available;
 }
 
 template <class T>
@@ -376,8 +377,8 @@ double Edge<T>::getFlow() const {
 }
 
 template <class T>
-void Edge<T>::setSelected(bool selected) {
-    this->selected = selected;
+void Edge<T>::setAvailable(bool available) {
+    this->available = available;
 }
 
 template <class T>
@@ -552,7 +553,45 @@ struct vertexComp {
 };
 
 template <class T>
-std::vector<T> Graph<T>::dijkstraDriving(const T& origin, const T& destination) {
+void Graph<T>::fastestDrivingPathWithAlt(const T& origin, const T& destination) {
+    std::vector<Edge<T>*> usedRoads = dijkstraDriving(origin, destination);
+
+    std::cout << "Source: " << origin << "\n";
+    std::cout << "Destination: " << destination << "\n";
+    
+    if (usedRoads.empty()) {
+        std::cout << "BestDrivingRoute: none\n";
+        std::cout << "AlternativeDrivingRoute: none\n";
+        return;
+    }
+
+    std::cout << "BestDrivingRoute: ";
+    for (auto edge : usedRoads) std::cout << edge->getOrigin()->getInfo() << ", ";
+    std::cout << destination << "( " << usedRoads.back()->getDest()->getDist() << " )\n";
+
+    for (auto edge : usedRoads) {
+        edge->setAvailable(false);
+    }
+
+    std::vector<Edge<T>*> altRoads = dijkstraDriving(origin, destination);
+    if (!altRoads.empty()) {
+        std::cout << "AlternativeDrivingRoute: ";
+        for (auto edge : altRoads) std::cout << edge->getOrigin()->getInfo() << ", ";
+        std::cout << destination << "( " << altRoads.back()->getDest()->getDist() << " )\n";
+    } else {
+        std::cout << "AlternativeDrivingRoute: none\n";
+    }
+    
+
+    for (auto edge : usedRoads) {
+        edge->setAvailable(true);
+    }
+    
+    return;
+}
+
+template <class T>
+std::vector<Edge<T>*> Graph<T>::dijkstraDriving(const T& origin, const T& destination) {
     std::priority_queue<Vertex<T>*, std::vector<Vertex<T>*>, vertexComp<T>> pq; // min-heap
 
     // initialization
@@ -578,7 +617,7 @@ std::vector<T> Graph<T>::dijkstraDriving(const T& origin, const T& destination) 
     // pq initialization
     originVert->setDist(0);
     pq.push(originVert);
-    std::cout << "Starting Dijkstra from " << origin << " to " << destination << "\n";
+    // std::cout << "Starting Dijkstra from " << origin << " to " << destination << "\n";
 
     while (!pq.empty()) {
         Vertex<T>* current = pq.top();
@@ -587,45 +626,42 @@ std::vector<T> Graph<T>::dijkstraDriving(const T& origin, const T& destination) 
         if (current->isVisited()) continue;
         current->setVisited(true);
 
-        std::cout << "Processing node: " << current->getInfo() << " (dist=" << current->getDist() << ")\n";
+        // std::cout << "Processing node: " << current->getInfo() << " (dist=" << current->getDist() << ")\n";
 
         if (current == destVert) {
-            std::cout << "Reached destination!\n";
+            // std::cout << "Reached destination!\n";
             break;
         }
 
         for (Edge<T>* edge : current->getAdj()) {
             Vertex<T>* neighbor = edge->getDest();
+            if (edge->getDriveTime() == INF || !edge->isAvailable()) continue; // ignore non-drivable roads
             double new_dist = current->getDist() + edge->getDriveTime();
             if (new_dist < neighbor->getDist()) {
                 neighbor->setDist(new_dist);
                 neighbor->setPath(edge);
                 pq.push(neighbor);
-                std::cout << "  Updating neighbor " << neighbor->getInfo()
-                          << " with new dist=" << new_dist << "\n";
+                // std::cout << "  Updating neighbor " << neighbor->getInfo()
+                //          << " with new dist=" << new_dist << "\n";
             }
         }
     }
 
     // need to reconstruct path
-    std::vector<T> path;
+    std::vector<Edge<T>*> path;
     if (destVert->getPath() == nullptr) {
-        std::cout << "No path found from " << origin << " to " << destination << "!\n";
+        // std::cout << "No path found from " << origin << " to " << destination << "!\n";
         return {};
     }
 
 
-    for (Vertex<T>* at = destVert; at != nullptr; at = at->getPath() ? at->getPath()->getOrigin() : nullptr) {
-        path.push_back(at->getInfo());
+    for (Edge<T>* e = destVert->getPath(); e != nullptr; e = e->getOrigin()->getPath()) {
+        path.push_back(e);
     }
 
     std::reverse(path.begin(), path.end());
 
-    std::cout << "Shortest path: ";
-    for (const auto& node : path) std::cout << node << " -> ";
-    std::cout << "END\n";
     return path;
-
 }
 
 #endif

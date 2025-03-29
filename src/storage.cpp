@@ -136,5 +136,5 @@ void StorageHandler::callDijkstra(const std::string& src, const std::string& des
         destination = std::stoi(dest);
     }
 
-    cityGraph.dijkstraDriving(source, destination);
+    cityGraph.fastestDrivingPathWithAlt(source, destination);
 }
