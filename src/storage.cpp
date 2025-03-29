@@ -177,7 +177,8 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
 
     if (!candidates.empty()) {
         auto best = *std::min_element(candidates.begin(), candidates.end(),
-                                      [](const auto& a, const auto& b) {
+                                      [](const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& a,
+                                         const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& b) {
                                           return std::get<0>(a) < std::get<0>(b);
                                       });
 
