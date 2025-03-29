@@ -133,6 +133,8 @@ public:
 
     void fastestDrivingPathWithAlt(const T& origin, const T& destination);
     std::vector<Edge<T>*> dijkstraDriving(const T& origin, const T& destination);
+    std::vector<Edge<T>*> dijkstraWalking(const T& origin, const T& destination);
+    std::vector<Vertex<T>*> getAllParkingVertices() const;
 
     void fastestRestrictedDrivingPath(const T& origin, const T& destination, std::vector<T> avoidNodes, 
         std::vector<std::pair<T,T>> avoidSegments, std::optional<T> stop);
@@ -680,6 +682,69 @@ std::vector<Edge<T>*> Graph<T>::dijkstraDriving(const T& origin, const T& destin
 
     return path;
 }
+template <class T>
+std::vector<Vertex<T>*> Graph<T>::getAllParkingVertices() const {
+    std::vector<Vertex<T>*> result;
+    for (const auto& pair : idToVertexMap) {
+        if (pair.second->hasParking()) result.push_back(pair.second);
+    }
+    return result;
+}
+
+template <class T>
+std::vector<Edge<T>*> Graph<T>::dijkstraWalking(const T& origin, const T& destination) {
+    std::priority_queue<Vertex<T>*, std::vector<Vertex<T>*>, vertexComp<T>> pq;
+
+    for (auto& it : this->idToVertexMap) {
+        it.second->setDist(INF);
+        it.second->setPath(nullptr);
+        it.second->setVisited(false);
+    }
+
+    auto it = idToVertexMap.find(origin);
+    if (it == idToVertexMap.end()) return {};
+
+    auto it2 = idToVertexMap.find(destination);
+    if (it2 == idToVertexMap.end()) return {};
+
+    Vertex<T>* originVert = it->second;
+    Vertex<T>* destVert = it2->second;
+
+    originVert->setDist(0);
+    pq.push(originVert);
+
+    while (!pq.empty()) {
+        Vertex<T>* current = pq.top();
+        pq.pop();
+
+        if (current->isVisited()) continue;
+        current->setVisited(true);
+
+        if (current == destVert) break;
+
+        for (Edge<T>* edge : current->getAdj()) {
+            Vertex<T>* neighbor = edge->getDest();
+            if (edge->getWalkTime() == INF) continue;
+            double new_dist = current->getDist() + edge->getWalkTime();
+            if (new_dist < neighbor->getDist()) {
+                neighbor->setDist(new_dist);
+                neighbor->setPath(edge);
+                pq.push(neighbor);
+            }
+        }
+    }
+
+    std::vector<Edge<T>*> path;
+    if (destVert->getPath() == nullptr) return {};
+
+    for (Edge<T>* e = destVert->getPath(); e != nullptr; e = e->getOrigin()->getPath()) {
+        path.push_back(e);
+    }
+
+    std::reverse(path.begin(), path.end());
+    return path;
+}
+
 
 template <class T>
 void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destination, std::vector<T> avoidNodes, std::vector<std::pair<T,T>> avoidSegments, std::optional<T> stop) {

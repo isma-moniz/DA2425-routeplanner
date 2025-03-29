@@ -53,6 +53,29 @@ void calcDrivingRouteRestricted() {
     storageHandler.callRestrictedDijkstra(src, dest, avoidNodes, avoidSegments, includeNode);
 }
 
+void calcEnvironmentalRoute() {
+    system("clear");
+    std::string src, dest;
+    int maxWalk;
+
+    std::cout << "Enter source id: ";
+    std::cin >> src;
+    std::cout << "Enter destination id: ";
+    std::cin >> dest;
+    std::cout << "Enter max walking time (in minutes): ";
+    std::cin >> maxWalk;
+
+    try {
+        int source = std::stoi(src);
+        int destination = std::stoi(dest);
+        storageHandler.calculateEnvironmentalRoute(source, destination, maxWalk);
+    } catch (...) {
+        std::cerr << "Invalid input. Please enter valid numeric IDs.\n";
+    }
+}
+
+
+
 int main() {
     int op;
     do {
@@ -75,7 +98,7 @@ int main() {
                 placeholderFunction("Calcular rota com restrições");
                 break;
             case 6:
-                placeholderFunction("Calcular rota ambiental");
+                calcEnvironmentalRoute();
                 break;
             case 0:
                 std::cout << "Thank you for using route planner." << std::endl;
