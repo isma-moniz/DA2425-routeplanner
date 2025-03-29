@@ -1,10 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
-#include <vector>
-#include <limits>
-#include <queue>
 #include "storage.hpp"
 
 StorageHandler storageHandler;
@@ -14,7 +9,7 @@ void showMenu() {
     std::cout << "1. Load Locations.csv\n";
     std::cout << "2. Load Distances.csv\n";
     std::cout << "3. Calculate best route (driving)\n";
-    std::cout << "5. Calculate route with restrictions (driving)\n";
+    std::cout << "4. Calculate route with restrictions (driving)\n";
     std::cout << "6. Calculate environmentally friendly route (driving + walking)\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose an option: ";
@@ -24,7 +19,7 @@ void placeholderFunction(const std::string &featureName) {
     std::cout << "Function '" << featureName << "' not implemented yet." << std::endl;
 }
 
-void calcBestRoute() {
+void calcBestDrivingRoute() {
     system("clear");
     std::string src;
     std::string dest;
@@ -36,6 +31,28 @@ void calcBestRoute() {
     storageHandler.callDijkstra(src, dest);
 }
 
+void calcDrivingRouteRestricted() {
+    system("clear");
+    std::string src, dest, avoidNodes, avoidSegments, includeNode;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Enter source id or code: ";
+    std::getline(std::cin, src);
+
+    std::cout << "Enter dest id or code: ";
+    std::getline(std::cin, dest);
+
+    std::cout << "Enter avoidNodes id separated by a comma ',': ";
+    std::getline(std::cin, avoidNodes);
+
+    std::cout << "Enter avoidSegments (id1,id2) separated by a comma ',': ";
+    std::getline(std::cin, avoidSegments);
+
+    std::cout << "Enter includeNode id: ";
+    std::getline(std::cin, includeNode);
+
+    storageHandler.callRestrictedDijkstra(src, dest, avoidNodes, avoidSegments, includeNode);
+}
+
 int main() {
     int op;
     do {
@@ -43,16 +60,16 @@ int main() {
         std::cin >> op;
         switch (op) {
             case 1:
-                storageHandler.loadLocations("../data/Locations.csv");
+                storageHandler.loadLocations("../data/smallLoc.csv");
                 break;
             case 2:
-                storageHandler.loadRoads("../data/Distances.csv");
+                storageHandler.loadRoads("../data/smallDist.csv");
                 break;
             case 3:
-                calcBestRoute();
+                calcBestDrivingRoute();
                 break;
             case 4:
-                placeholderFunction("Calcular rota alternativa");
+                calcDrivingRouteRestricted();
                 break;
             case 5:
                 placeholderFunction("Calcular rota com restrições");

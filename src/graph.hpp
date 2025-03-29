@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include <optional>
 
 template <class T>
 class Edge;
@@ -29,6 +30,7 @@ public:
     bool isVisited() const;
     bool isProcessing() const;
     bool hasParking() const;
+    bool isAvailable() const;
     unsigned int getIndegree() const;
     double getDist() const;
     Edge<T>* getPath() const;
@@ -36,6 +38,7 @@ public:
 
     void setInfo(T info);
     void setCode(const std::string& code);
+    void setAvailable(bool available);
     void setVisited(bool visited);
     void setProcessing(bool processing);
     void setParking(bool parking);
@@ -61,6 +64,7 @@ protected:
     bool visited = false; // used by DFS, BFS, Primm
     bool processing = false; // used to detect cycles
     bool parkingSpace = false;
+    bool available = true;
     
     int low = -1, num = -1; // used by SCC Tarjan
     unsigned int indegree; // used by topsort
@@ -129,6 +133,9 @@ public:
 
     void fastestDrivingPathWithAlt(const T& origin, const T& destination);
     std::vector<Edge<T>*> dijkstraDriving(const T& origin, const T& destination);
+
+    void fastestRestrictedDrivingPath(const T& origin, const T& destination, std::vector<T> avoidNodes, 
+        std::vector<std::pair<T,T>> avoidSegments, std::optional<T> stop);
 
 protected:
     std::unordered_map<int, Vertex<T>*> idToVertexMap; // replaced vertexSet with this to provide constant time lookup by id for internal graph operations 
@@ -223,6 +230,16 @@ const std::string& Vertex<T>::getCode() const {
 template <class T>
 void Vertex<T>::setCode(const std::string& code) {
     this->code = code;
+}
+
+template <class T>
+void Vertex<T>::setAvailable(bool available) {
+    this->available = available;
+}
+
+template <class T>
+bool Vertex<T>::isAvailable() const{
+    return this->available;
 }
 
 template <class T>
@@ -635,7 +652,7 @@ std::vector<Edge<T>*> Graph<T>::dijkstraDriving(const T& origin, const T& destin
 
         for (Edge<T>* edge : current->getAdj()) {
             Vertex<T>* neighbor = edge->getDest();
-            if (edge->getDriveTime() == INF || !edge->isAvailable()) continue; // ignore non-drivable roads
+            if (edge->getDriveTime() == INF || !edge->isAvailable() || !neighbor->isAvailable()) continue; // ignore
             double new_dist = current->getDist() + edge->getDriveTime();
             if (new_dist < neighbor->getDist()) {
                 neighbor->setDist(new_dist);
@@ -662,6 +679,121 @@ std::vector<Edge<T>*> Graph<T>::dijkstraDriving(const T& origin, const T& destin
     std::reverse(path.begin(), path.end());
 
     return path;
+}
+
+template <class T>
+void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destination, std::vector<T> avoidNodes, std::vector<std::pair<T,T>> avoidSegments, std::optional<T> stop) {
+    std::vector<Edge<T>*> path;
+
+    // exclude requested nodes
+    for (auto node : avoidNodes) {
+        Vertex<T>* vert = findVertex(node);
+        if (vert == nullptr) {
+            continue; // assume typo if not found
+        }
+        vert->setAvailable(false);
+    }
+
+    std::vector<Edge<T>*> switchedEdges; // we store edges here to switch them back to available without long lookups
+    // exclude requested segments
+    for (const auto& pair : avoidSegments) {
+        Vertex<T>* orig = findVertex(pair.first);
+        if (orig == nullptr || findVertex(pair.second) == nullptr) {
+            continue;
+        }
+
+        for (auto edge : orig->getAdj()) { // this has time complexity O(e) and could be made faster if we used an unordered_map for adj,
+            if (edge->getDest()->getInfo() == pair.second) { // but since the graph is not too big the performance gain would be negligible
+                edge->setAvailable(false);
+                switchedEdges.push_back(edge);
+            }
+        }
+    }
+    
+    if (!stop.has_value()) {
+        path = dijkstraDriving(origin, destination);
+        std::cout << "Source: " << origin << "\n";
+        std::cout << "Destination: " << destination << "\n";
+        std::cout << "RestrictedDrivingRoute: ";
+        for (auto edge : path) std::cout << edge->getOrigin()->getInfo() << ",";
+        std::cout << destination << "(" << path.back()->getDest()->getDist() << ")\n";
+
+        for (auto node : avoidNodes) {
+            Vertex<T>* vert = findVertex(node);
+            if (vert == nullptr) {
+                continue; // assume typo if not found
+            }
+            vert->setAvailable(true);
+        }
+
+        for (auto edge : switchedEdges) edge->setAvailable(true);
+        return;
+    }
+
+    /* if (avoidNodes.count(stop.value())) {
+        throw std::runtime_error("Error: Mandatory stop with cannot be in excluded nodes set!");
+    } */
+
+    // Step 1: Find shortest path from origin → stop
+    std::vector<Edge<T>*> firstHalf = dijkstraDriving(origin, stop.value());
+    if (firstHalf.empty()) {
+        std::cout << "Source: " << origin << "\n";
+        std::cout << "Destination: " << destination << "\n";
+        std::cout << "RestrictedDrivingRoute: none\n";
+
+        for (auto node : avoidNodes) {
+            Vertex<T>* vert = findVertex(node);
+            if (vert == nullptr) {
+                continue; // assume typo if not found
+            }
+            vert->setAvailable(true);
+        }
+
+        for (auto edge : switchedEdges) edge->setAvailable(true);
+        return;
+    }
+    double halfwayDist = firstHalf.back()->getDest()->getDist(); // we store the distance now, before it gets reset
+
+    // Step 2: Find shortest path from stop -> destination
+    std::vector<Edge<T>*> secondHalf = dijkstraDriving(stop.value(), destination);
+    if (secondHalf.empty()) {
+        std::cout << "Source: " << origin << "\n";
+        std::cout << "Destination: " << destination << "\n";
+        std::cout << "RestrictedDrivingRoute: none\n";
+
+        for (auto node : avoidNodes) {
+            Vertex<T>* vert = findVertex(node);
+            if (vert == nullptr) {
+                continue; // assume typo if not found
+            }
+            vert->setAvailable(true);
+        }
+
+        for (auto edge : switchedEdges) edge->setAvailable(true);
+        return;
+    }
+
+    double finalDist = secondHalf.back()->getDest()->getDist();
+
+    firstHalf.insert(firstHalf.end(), secondHalf.begin(), secondHalf.end());
+
+    std::cout << "Source: " << origin << "\n";
+    std::cout << "Destination: " << destination << "\n";
+    std::cout << "RestrictedDrivingRoute: ";
+    for (auto edge : firstHalf) std::cout << edge->getOrigin()->getInfo() << ",";
+    std::cout << destination << "(" << halfwayDist + finalDist << ")\n";
+    
+    for (auto node : avoidNodes) {
+        Vertex<T>* vert = findVertex(node);
+        if (vert == nullptr) {
+            continue; // assume typo if not found
+        }
+        vert->setAvailable(true);
+    }
+
+    for (auto edge : switchedEdges) edge->setAvailable(true);
+
+    return;
 }
 
 #endif

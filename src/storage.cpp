@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <regex>
 
 bool isNumeric(const std::string& str) {
     return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
@@ -137,4 +138,71 @@ void StorageHandler::callDijkstra(const std::string& src, const std::string& des
     }
 
     cityGraph.fastestDrivingPathWithAlt(source, destination);
+}
+
+
+
+void StorageHandler::callRestrictedDijkstra(const std::string& src, const std::string& dest, 
+    const std::string& avoidNodes, const std::string& avoidSegments, const std::string& includeNode) {
+
+        int source, destination;
+        std::vector<int> avoidNodesSet;
+        std::vector<std::pair<int,int>> avoidSegmentsSet;
+        std::optional<int> stop;
+
+        if (!isNumeric(src)) {
+            auto srcVert = cityGraph.findVertex(src);
+            if (srcVert == nullptr) {
+                throw std::runtime_error("Error: Vertex with code " + src + " not found!\n");
+            }
+            source = srcVert->getInfo();
+        } else {
+            source = std::stoi(src);
+        }
+
+        if (!isNumeric(dest)) {
+            auto destVert = cityGraph.findVertex(dest);
+            if (destVert == nullptr) {
+                throw std::runtime_error("Error: Vertex with code " + dest + " not found!\n");
+            }
+            destination = destVert->getInfo();
+        } else {
+            destination = std::stoi(dest);
+        }
+
+        // insert avoid nodes in nodeset
+        if (!avoidNodes.empty()) {
+            std::istringstream nodesStream(avoidNodes);
+            std::string node;
+            while (std::getline(nodesStream, node, ',')) {
+                avoidNodesSet.push_back(std::stoi(node));
+            }
+        }
+
+        // insert avoid segments in set
+        if (!avoidSegments.empty()) {
+            std::regex segment_regex(R"(\((\d+),(\d+)\))");
+            auto segments_begin = std::sregex_iterator(avoidSegments.begin(), avoidSegments.end(), segment_regex);
+            auto segments_end = std::sregex_iterator();
+
+            for (auto it = segments_begin; it != segments_end; ++it) {
+                int from = std::stoi((*it)[1].str());
+                int to = std::stoi((*it)[2].str());
+                avoidSegmentsSet.push_back({from, to});
+            }
+        }
+
+        if (!includeNode.empty()) {  
+            if (!isNumeric(includeNode)) {
+                auto stopVert = cityGraph.findVertex(includeNode);
+                if (stopVert == nullptr) {
+                    throw std::runtime_error("Error: Vertex with code " + includeNode + " not found!\n");
+                }
+                stop= stopVert->getInfo();
+            } else {
+                stop = std::stoi(includeNode);
+            }
+        }
+    std::cout << "Calling dijkstra!\n";
+    cityGraph.fastestRestrictedDrivingPath(source, destination, avoidNodesSet, avoidSegmentsSet, stop);
 }
