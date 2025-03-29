@@ -40,7 +40,9 @@ void StorageHandler::loadLocations(const std::string& locationsFile) {
         
         try {
             int id = std::stoi(idStr);
+            parkingStr.erase(std::remove_if(parkingStr.begin(), parkingStr.end(), ::isspace), parkingStr.end());
             bool parking = (parkingStr == "1");
+
 
             if (!cityGraph.addVertex(id, code, parking)) {
                 throw std::runtime_error("Error adding vertex for ID " + idStr + " on line "  + std::to_string(linenumber));
@@ -91,12 +93,16 @@ void StorageHandler::loadRoads(const std::string& roadFile) {
 
             if (drivingStr == "X") {
                 driving = std::numeric_limits<double>::max();
-            } else if (walkingStr == "X") {
-                walking = std::numeric_limits<double>::max();
             } else {
                 driving = std::stod(drivingStr);
+            }
+
+            if (walkingStr == "X") {
+                walking = std::numeric_limits<double>::max();
+            } else {
                 walking = std::stod(walkingStr);
             }
+
 
             if (!cityGraph.addBidirectionalEdge(loc1, loc2, walking, driving)) {
                 throw std::runtime_error("Error adding road for ID " + loc1 + "<-> " + loc2 + " on line "  + std::to_string(linenumber));
@@ -137,4 +143,80 @@ void StorageHandler::callDijkstra(const std::string& src, const std::string& des
     }
 
     cityGraph.fastestDrivingPathWithAlt(source, destination);
+}
+
+void StorageHandler::calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime) {
+    std::vector<Vertex<int>*> parkingVertices = cityGraph.getAllParkingVertices();
+    std::vector<std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>> candidates;
+
+    for (auto park : parkingVertices) {
+        int parkId = park->getInfo();
+        if (parkId == source || parkId == destination) continue;
+
+        auto drivePath = cityGraph.dijkstraDriving(source, parkId);
+        if (drivePath.empty()) continue;
+
+        auto walkPath = cityGraph.dijkstraWalking(parkId, destination);
+        if (walkPath.empty()) continue;
+
+        double walkTime = 0;
+        for (auto e : walkPath) walkTime += e->getWalkTime();
+        if (walkTime > maxWalkingTime) continue;
+
+        double driveTime = 0;
+        for (auto e : drivePath) driveTime += e->getDriveTime();
+
+        double totalTime = driveTime + walkTime;
+        candidates.push_back({totalTime, drivePath, walkPath, parkId});
+    }
+
+    if (candidates.empty()) {
+        std::cout << "Source:" << source << "\n";
+        std::cout << "Destination:" << destination << "\n";
+        std::cout << "DrivingRoute:none\n";
+        std::cout << "ParkingNode:none\n";
+        std::cout << "WalkingRoute:none\n";
+        std::cout << "TotalTime:\n";
+        std::cout << "Message: No valid path found with current constraints.\n";
+        return;
+    }
+
+    auto best = *std::min_element(candidates.begin(), candidates.end(),
+                                  [](const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& a,
+                                     const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& b) {
+
+                                      double totalA = std::get<0>(a);
+                                      double totalB = std::get<0>(b);
+                                      if (totalA != totalB) return totalA < totalB;
+
+                                      double walkA = 0, walkB = 0;
+                                      for (auto e : std::get<2>(a)) walkA += e->getWalkTime();
+                                      for (auto e : std::get<2>(b)) walkB += e->getWalkTime();
+
+                                      return walkA > walkB;
+                                  });
+
+
+    auto [totalTime, drivePath, walkPath, parkNode] = best;
+
+    std::cout << "Source:" << source << "\n";
+    std::cout << "Destination:" << destination << "\n";
+
+    std::cout << "DrivingRoute:";
+    for (auto e : drivePath) std::cout << e->getOrigin()->getInfo() << ",";
+    std::cout << drivePath.back()->getDest()->getInfo() << "(";
+    double driveTime = 0;
+    for (auto e : drivePath) driveTime += e->getDriveTime();
+    std::cout << static_cast<int>(driveTime) << ")\n";
+
+    std::cout << "ParkingNode:" << parkNode << "\n";
+
+    std::cout << "WalkingRoute:";
+    for (auto e : walkPath) std::cout << e->getOrigin()->getInfo() << ",";
+    std::cout << walkPath.back()->getDest()->getInfo() << "(";
+    double walkTime = 0;
+    for (auto e : walkPath) walkTime += e->getWalkTime();
+    std::cout << static_cast<int>(walkTime) << ")\n";
+
+    std::cout << "TotalTime:" << static_cast<int>(totalTime) << "\n";
 }

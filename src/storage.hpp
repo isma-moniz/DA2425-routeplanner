@@ -10,6 +10,8 @@ public:
     void loadRoads(const std::string& roadFile);
 
     void callDijkstra(const std::string& source, const std::string& dest);
+    void calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime);
+
 private:
     Graph<int> cityGraph;
 };
