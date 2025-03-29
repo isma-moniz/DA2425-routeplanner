@@ -10,6 +10,8 @@ public:
     void loadRoads(const std::string& roadFile);
 
     void callDijkstra(const std::string& source, const std::string& dest);
+    void callRestrictedDijkstra(const std::string& src, const std::string& dest, 
+        const std::string& avoidNodes, const std::string& avoidSegments, const std::string& includeNode);
 private:
     Graph<int> cityGraph;
 };
