@@ -1,0 +1,748 @@
+\hypertarget{classGraph}{}\doxysection{Graph$<$ T $>$ Class Template Reference}
+\label{classGraph}\index{Graph$<$ T $>$@{Graph$<$ T $>$}}
+
+
+\mbox{\hyperlink{classGraph}{Graph}} class representing a graph structure.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGraph_a43eab1460b5c8ceaa526b40e56a0fb0c}{$\sim$\+Graph}} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \mbox{\hyperlink{classGraph}{Graph}} class. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classGraph_a8b7b7465fbfd562e2a469f90a437ab75}{find\+Vertex}} (const T \&in) const
+\begin{DoxyCompactList}\small\item\em Finds a vertex in the graph by its ID. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classGraph_afd8fcbc064425f874884e6d24f235225}{find\+Vertex}} (const std\+::string \&code) const
+\begin{DoxyCompactList}\small\item\em Finds a vertex in the graph by its code. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a3c3d50b9218f06e3599e360fbd69c56b}{add\+Vertex}} (const T \&in, const std\+::string \&code, bool parking)
+\begin{DoxyCompactList}\small\item\em Adds a vertex with the given ID and code to the graph. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_af9c903104ad69a7782979fa9caedf163}{remove\+Vertex}} (const T \&in)
+\begin{DoxyCompactList}\small\item\em Removes a vertex with a given content from the graph, along with all its edges. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a8b5c26a7ba75113a2f5776f2de7d1350}{add\+Edge}} (const T \&source, const T \&dest, double w, double d)
+\begin{DoxyCompactList}\small\item\em Adds an edge between two vertices, with specified driving and walking times. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a7769cbf0d7786b40db8568bdc7517505}{add\+Edge}} (const std\+::string \&source, const std\+::string \&dest, double w, double d)
+\begin{DoxyCompactList}\small\item\em Adds a directed edge to the graph between two existing vertices. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a8949d071d45bf93e171e275462e1007a}{remove\+Edge}} (const T \&source, const T \&dest)
+\begin{DoxyCompactList}\small\item\em Removes a directed edge from the graph. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a34c1f7157ba0345e0cd018e39bb07c00}{add\+Bidirectional\+Edge}} (const T \&source, const T \&dest, double w, double d)
+\begin{DoxyCompactList}\small\item\em Adds a bidirectional edge between two vertices, with specified driving and walking times. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a63d4ec0d3110e11a25da89674e960558}{add\+Bidirectional\+Edge}} (const std\+::string \&source, const std\+::string \&dest, double w, double d)
+\begin{DoxyCompactList}\small\item\em Adds a bidirectional (undirected) edge between two vertices, identified by their string identifiers. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classGraph_a0853eac15cdf0f06d63f4b8a7820ec71}{get\+Num\+Vertex}} () const
+\begin{DoxyCompactList}\small\item\em Gets the number of vertices in the graph. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_a41624b03fcb6bd29e4df574a1ec58541}{get\+Vertex\+Set}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves all vertices in the graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGraph_afc31add72156f352131508c01ff2d27b}{fastest\+Driving\+Path\+With\+Alt}} (const T \&origin, const T \&destination)
+\begin{DoxyCompactList}\small\item\em Calculates the fastest driving path with alternative routes. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_af0a9cf04cf54c5e5b1624a763d068d34}{dijkstra\+Driving}} (const T \&origin, const T \&destination)
+\begin{DoxyCompactList}\small\item\em Calculates the shortest path for driving using Dijkstra\textquotesingle{}s algorithm. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_a06a47e200d83ea6ded6f0d28a8a90a11}{dijkstra\+Walking}} (const T \&origin, const T \&destination)
+\begin{DoxyCompactList}\small\item\em Calculates the shortest path for walking using Dijkstra\textquotesingle{}s algorithm. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_abc04f1167b560db2fda91642dbd14f0f}{get\+All\+Parking\+Vertices}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves all vertices in the graph that have parking. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGraph_a6bae6b1462cc5bc3f764a5bda6dac73d}{fastest\+Restricted\+Driving\+Path}} (const T \&origin, const T \&destination, std\+::vector$<$ T $>$ avoid\+Nodes, std\+::vector$<$ std\+::pair$<$ T, T $>$$>$ avoid\+Segments, std\+::optional$<$ T $>$ stop)
+\begin{DoxyCompactList}\small\item\em Calculates the fastest restricted driving path with conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unordered\+\_\+map$<$ int, \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_a8b3c1e035c9883d16ad135b0966f97c2}{id\+To\+Vertex\+Map}}
+\item 
+std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph_a4b270485bd852e944302d7420fa9f824}{code\+To\+Vertex\+Map}}
+\item 
+double $\ast$$\ast$ \mbox{\hyperlink{classGraph_a4517f4351bc7f0348369b25b7c0b44fe}{dist\+Matrix}} = nullptr
+\item 
+int $\ast$$\ast$ \mbox{\hyperlink{classGraph_afb9524726f8f3cda3115a0d03e3f6e09}{path\+Matrix}} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Graph$<$ T $>$}
+
+\mbox{\hyperlink{classGraph}{Graph}} class representing a graph structure. 
+
+This class manages a collection of vertices and edges, supporting various graph algorithms such as Dijkstra\textquotesingle{}s, and providing methods for adding/removing vertices and edges, as well as performing graph traversals and shortest path calculations. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classGraph_a43eab1460b5c8ceaa526b40e56a0fb0c}\label{classGraph_a43eab1460b5c8ceaa526b40e56a0fb0c}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!````~Graph@{$\sim$Graph}}
+\index{````~Graph@{$\sim$Graph}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$Graph()}{~Graph()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::$\sim$\mbox{\hyperlink{classGraph}{Graph}}}
+
+
+
+Destructor for the \mbox{\hyperlink{classGraph}{Graph}} class. 
+
+
+\begin{DoxyItemize}
+\item Frees memory allocated for the distance and path matrices.
+\item The number of rows in each matrix is equal to the number of vertices.
+\item Each row contains an array of pointers, leading to a total complexity of {\bfseries{O(\+V)}} for deallocation. 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classGraph_a63d4ec0d3110e11a25da89674e960558}\label{classGraph_a63d4ec0d3110e11a25da89674e960558}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addBidirectionalEdge@{addBidirectionalEdge}}
+\index{addBidirectionalEdge@{addBidirectionalEdge}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addBidirectionalEdge()}{addBidirectionalEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Bidirectional\+Edge (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{sourc,  }\item[{const std\+::string \&}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+
+
+Adds a bidirectional (undirected) edge between two vertices, identified by their string identifiers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The unique identifier (string) of the first vertex. \\
+\hline
+{\em dest} & The unique identifier (string) of the second vertex. \\
+\hline
+{\em w} & The weight (walking time) of the edge. \\
+\hline
+{\em d} & The driving time of the edge. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the edge was successfully added, {\ttfamily false} if either vertex does not exist.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Finding both vertices takes {\bfseries{O(1)}} on average.
+\item Adding an edge to both adjacency lists takes {\bfseries{O(1)}}.
+\item Setting the reverse edge pointers takes {\bfseries{O(1)}}.
+\item Overall, the expected time complexity is {\bfseries{O(1)}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a34c1f7157ba0345e0cd018e39bb07c00}\label{classGraph_a34c1f7157ba0345e0cd018e39bb07c00}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addBidirectionalEdge@{addBidirectionalEdge}}
+\index{addBidirectionalEdge@{addBidirectionalEdge}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addBidirectionalEdge()}{addBidirectionalEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Bidirectional\+Edge (\begin{DoxyParamCaption}\item[{const T \&}]{sourc,  }\item[{const T \&}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+
+
+Adds a bidirectional edge between two vertices, with specified driving and walking times. 
+
+Adds a bidirectional (undirected) edge between two vertices.
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & The source vertex ID. \\
+\hline
+{\em dest} & The destination vertex ID. \\
+\hline
+{\em w} & The driving time weight. \\
+\hline
+{\em d} & The walking time weight.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the bidirectional edge was successfully added, false otherwise.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time as it adds two edges (one for each direction) to the graph.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The unique identifier of the first vertex. \\
+\hline
+{\em dest} & The unique identifier of the second vertex. \\
+\hline
+{\em w} & The weight (walking time) of the edge. \\
+\hline
+{\em d} & The driving time of the edge. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the edge was successfully added, {\ttfamily false} if either vertex does not exist.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Finding both vertices takes {\bfseries{O(1)}} on average.
+\item Adding an edge to both adjacency lists takes {\bfseries{O(1)}}.
+\item Setting the reverse edge pointers takes {\bfseries{O(1)}}.
+\item Overall, the expected time complexity is {\bfseries{O(1)}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a7769cbf0d7786b40db8568bdc7517505}\label{classGraph_a7769cbf0d7786b40db8568bdc7517505}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addEdge@{addEdge}}
+\index{addEdge@{addEdge}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addEdge()}{addEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Edge (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{sourc,  }\item[{const std\+::string \&}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+
+
+Adds a directed edge to the graph between two existing vertices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The unique identifier of the source vertex. \\
+\hline
+{\em dest} & The unique identifier of the destination vertex. \\
+\hline
+{\em w} & The weight (walking time) of the edge. \\
+\hline
+{\em d} & The driving time of the edge. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the edge was successfully added, {\ttfamily false} if either vertex does not exist.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Finding both source and destination vertices takes {\bfseries{O(1)}} on average.
+\item Adding an edge to the adjacency list of the source vertex takes {\bfseries{O(1)}}.
+\item Overall, the expected time complexity is {\bfseries{O(1)}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a8b5c26a7ba75113a2f5776f2de7d1350}\label{classGraph_a8b5c26a7ba75113a2f5776f2de7d1350}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addEdge@{addEdge}}
+\index{addEdge@{addEdge}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addEdge()}{addEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Edge (\begin{DoxyParamCaption}\item[{const T \&}]{sourc,  }\item[{const T \&}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+
+
+Adds an edge between two vertices, with specified driving and walking times. 
+
+Adds an edge to the graph between two existing vertices.
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & The source vertex ID. \\
+\hline
+{\em dest} & The destination vertex ID. \\
+\hline
+{\em w} & The driving time weight. \\
+\hline
+{\em d} & The walking time weight.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the edge was successfully added, false otherwise.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time, as it involves inserting the edge into the adjacency list.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The identifier of the source vertex. \\
+\hline
+{\em dest} & The identifier of the destination vertex. \\
+\hline
+{\em w} & The weight (walking time) of the edge. \\
+\hline
+{\em d} & The driving time of the edge. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the edge was successfully added, {\ttfamily false} if either vertex does not exist.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Finding both source and destination vertices takes {\bfseries{O(1)}} on average.
+\item Adding an edge to the adjacency list of the source vertex takes {\bfseries{O(1)}}.
+\item Overall, the expected time complexity is {\bfseries{O(1)}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a3c3d50b9218f06e3599e360fbd69c56b}\label{classGraph_a3c3d50b9218f06e3599e360fbd69c56b}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!addVertex@{addVertex}}
+\index{addVertex@{addVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addVertex()}{addVertex()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::add\+Vertex (\begin{DoxyParamCaption}\item[{const T \&}]{in,  }\item[{const std\+::string \&}]{code,  }\item[{bool}]{parking }\end{DoxyParamCaption})}
+
+
+
+Adds a vertex with the given ID and code to the graph. 
+
+Adds a vertex with a given identifier, unique code, and parking information to the graph.
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The ID of the vertex. \\
+\hline
+{\em code} & The code associated with the vertex. \\
+\hline
+{\em parking} & Indicates whether the vertex has parking.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the vertex was successfully added, false otherwise.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time, as it only involves inserting into a hash map.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The unique identifier of the vertex. \\
+\hline
+{\em code} & The unique code of the vertex. \\
+\hline
+{\em parking} & Boolean indicating whether the vertex has parking. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the vertex was successfully added, {\ttfamily false} if a vertex with the given identifier already exists.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+-\/ Checking for existence in {\ttfamily id\+To\+Vertex\+Map} runs in {\bfseries{O(1)}} average time complexity.
+\begin{DoxyItemize}
+\item Insertion into both {\ttfamily id\+To\+Vertex\+Map} and {\ttfamily code\+To\+Vertex\+Map} also runs in {\bfseries{O(1)}} on average.
+\item Worst case complexity (due to hash collisions) is {\bfseries{O(\+V)}}.
+\item Overall, the expected time complexity is {\bfseries{O(1)}}. 
+\end{DoxyItemize}
+\end{DoxyNote}
+\mbox{\Hypertarget{classGraph_af0a9cf04cf54c5e5b1624a763d068d34}\label{classGraph_af0a9cf04cf54c5e5b1624a763d068d34}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!dijkstraDriving@{dijkstraDriving}}
+\index{dijkstraDriving@{dijkstraDriving}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{dijkstraDriving()}{dijkstraDriving()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::dijkstra\+Driving (\begin{DoxyParamCaption}\item[{const T \&}]{origin,  }\item[{const T \&}]{destination }\end{DoxyParamCaption})}
+
+
+
+Calculates the shortest path for driving using Dijkstra\textquotesingle{}s algorithm. 
+
+Computes the shortest driving path from {\ttfamily origin} to {\ttfamily destination} using Dijkstra’s Algorithm.
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting vertex. \\
+\hline
+{\em destination} & The destination vertex.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of edges representing the shortest driving path.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O((V + E) $\ast$ log(\+V)) where V is the number of vertices and E is the number of edges.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting vertex. \\
+\hline
+{\em destination} & The target vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$Edge$<$\+T$>$$\ast$$>$ The list of edges representing the shortest path.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Initializes all vertex distances to {\bfseries{infinity (INF)}}.
+\item Uses a {\bfseries{min-\/heap (priority queue)}} for efficient extraction of the next closest vertex.
+\item Updates the shortest paths dynamically as it explores neighbors.
+\item Returns the {\bfseries{sequence of edges}} forming the optimal path from {\ttfamily origin} to {\ttfamily destination}.
+\item If no path is found, returns an empty vector.
+\end{DoxyItemize}
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & if {\ttfamily origin} or {\ttfamily destination} do not exist.\\
+\hline
+\end{DoxyExceptions}
+@complexity
+\begin{DoxyItemize}
+\item {\bfseries{Priority Queue Operations\+:}} O(log V) per insertion/extraction.
+\item {\bfseries{Total Complexity\+:}} O((V + E) log V). 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a06a47e200d83ea6ded6f0d28a8a90a11}\label{classGraph_a06a47e200d83ea6ded6f0d28a8a90a11}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!dijkstraWalking@{dijkstraWalking}}
+\index{dijkstraWalking@{dijkstraWalking}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{dijkstraWalking()}{dijkstraWalking()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::dijkstra\+Walking (\begin{DoxyParamCaption}\item[{const T \&}]{origin,  }\item[{const T \&}]{destination }\end{DoxyParamCaption})}
+
+
+
+Calculates the shortest path for walking using Dijkstra\textquotesingle{}s algorithm. 
+
+Computes the shortest walking path between two vertices using Dijkstra\textquotesingle{}s algorithm.
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting vertex. \\
+\hline
+{\em destination} & The destination vertex.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of edges representing the shortest walking path.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O((V + E) $\ast$ log(\+V)) where V is the number of vertices and E is the number of edges.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting vertex. \\
+\hline
+{\em destination} & The target vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$Edge$<$\+T$>$$\ast$$>$ A vector representing the shortest path edges in order.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Uses a {\bfseries{priority queue (min-\/heap)}} to efficiently process vertices in increasing distance order.
+\item Initializes all vertex distances to {\bfseries{infinity (INF)}} and resets their paths.
+\item Extracts the vertex with the smallest distance, updating its neighbors accordingly.
+\item Stops early if the destination is reached.
+\item Returns a vector of edges forming the shortest walking path.
+\end{DoxyItemize}
+
+@complexity
+\begin{DoxyItemize}
+\item {\bfseries{Priority queue operations (O(log V))}} per vertex.
+\item {\bfseries{Each edge is processed once (O(\+E log V))}}.
+\item {\bfseries{Overall Complexity\+:}} {\bfseries{O((V + E) log V)}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_afc31add72156f352131508c01ff2d27b}\label{classGraph_afc31add72156f352131508c01ff2d27b}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!fastestDrivingPathWithAlt@{fastestDrivingPathWithAlt}}
+\index{fastestDrivingPathWithAlt@{fastestDrivingPathWithAlt}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{fastestDrivingPathWithAlt()}{fastestDrivingPathWithAlt()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::fastest\+Driving\+Path\+With\+Alt (\begin{DoxyParamCaption}\item[{const T \&}]{origin,  }\item[{const T \&}]{destination }\end{DoxyParamCaption})}
+
+
+
+Calculates the fastest driving path with alternative routes. 
+
+Finds the fastest driving path and an alternative path using Dijkstra’s algorithm.
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting vertex. \\
+\hline
+{\em destination} & The destination vertex.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This function may run in O((V + E) $\ast$ log(\+V)) depending on the algorithm used.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting point of the route. \\
+\hline
+{\em destination} & The endpoint of the route.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyItemize}
+\item Uses {\bfseries{Dijkstra’s algorithm}} to find the shortest driving path from {\ttfamily origin} to {\ttfamily destination}.
+\item Stores the best route in {\ttfamily used\+Roads}.
+\item If a valid path exists\+:
+\begin{DoxyItemize}
+\item Marks edges as unavailable.
+\item Runs Dijkstra again to find an {\bfseries{alternative route}} (if possible).
+\item Restores edges after computation.
+\end{DoxyItemize}
+\item Outputs results to both {\bfseries{console}} and {\bfseries{file}}.
+\end{DoxyItemize}
+
+@complexity
+\begin{DoxyItemize}
+\item {\bfseries{Dijkstra’s Algorithm Complexity\+:}} O((V + E) log V) for each run.
+\item {\bfseries{Setting \mbox{\hyperlink{classEdge}{Edge}} Availability\+:}} O(\+E) (each edge in the best path is updated).
+\item {\bfseries{Total Complexity\+:}} O((V + E) log V). 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a6bae6b1462cc5bc3f764a5bda6dac73d}\label{classGraph_a6bae6b1462cc5bc3f764a5bda6dac73d}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!fastestRestrictedDrivingPath@{fastestRestrictedDrivingPath}}
+\index{fastestRestrictedDrivingPath@{fastestRestrictedDrivingPath}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{fastestRestrictedDrivingPath()}{fastestRestrictedDrivingPath()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::fastest\+Restricted\+Driving\+Path (\begin{DoxyParamCaption}\item[{const T \&}]{origin,  }\item[{const T \&}]{destination,  }\item[{std\+::vector$<$ T $>$}]{avoid\+Nodes,  }\item[{std\+::vector$<$ std\+::pair$<$ T, T $>$$>$}]{avoid\+Segments,  }\item[{std\+::optional$<$ T $>$}]{stop }\end{DoxyParamCaption})}
+
+
+
+Calculates the fastest restricted driving path with conditions. 
+
+Finds the fastest restricted driving path from origin to destination, optionally passing through a stop point.
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The starting vertex. \\
+\hline
+{\em destination} & The destination vertex. \\
+\hline
+{\em avoid\+Nodes} & A list of nodes to avoid. \\
+\hline
+{\em avoid\+Segments} & A list of segments to avoid. \\
+\hline
+{\em stop} & An optional vertex to stop at.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This function may run in O((V + E) $\ast$ log(\+V)) depending on the algorithm used.
+\end{DoxyNote}
+This function computes the fastest restricted driving path from an origin to a destination vertex. It considers avoiding specific nodes and segments, which are excluded from the path. The function can also handle an optional stop node that the path should pass through. The function uses Dijkstra\textquotesingle{}s algorithm for finding the shortest paths between the origin, stop, and destination, and excludes certain edges during the process.
+
+
+\begin{DoxyParams}{Parameters}
+{\em origin} & The origin vertex. \\
+\hline
+{\em destination} & The destination vertex. \\
+\hline
+{\em avoid\+Nodes} & A list of vertices to be excluded from the path. \\
+\hline
+{\em avoid\+Segments} & A list of edges (represented as pairs of vertices) to be excluded from the path. \\
+\hline
+{\em stop} & An optional stop vertex that the path must pass through. If no stop is provided, the path is calculated directly from origin to destination.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void This function doesn\textquotesingle{}t return any value, but it outputs the result (path) to the standard output and a file.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The function modifies the availability status of vertices and edges based on the provided {\ttfamily avoid\+Nodes} and {\ttfamily avoid\+Segments}. It restores the availability status of the affected vertices and edges after computation.
+\end{DoxyNote}
+@complexity
+\begin{DoxyItemize}
+\item Excluding nodes and segments\+: O(\+N $\ast$ E), where N is the number of nodes (vertices) and E is the number of edges.
+\item Dijkstra’s algorithm\+: O((V + E) log V) for each call, where V is the number of vertices and E is the number of edges.
+\item The total complexity is therefore approximately O(N $\ast$ E + 3 $\ast$ (V + E) log V), where\+:
+\begin{DoxyItemize}
+\item N is the number of vertices in the avoid\+Nodes list.
+\item E is the number of edges in the avoid\+Segments list.
+\item V and E represent the total number of vertices and edges in the graph. 
+\end{DoxyItemize}
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_afd8fcbc064425f874884e6d24f235225}\label{classGraph_afd8fcbc064425f874884e6d24f235225}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!findVertex@{findVertex}}
+\index{findVertex@{findVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{findVertex()}{findVertex()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::find\+Vertex (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{code }\end{DoxyParamCaption}) const}
+
+
+
+Finds a vertex in the graph by its code. 
+
+Finds a vertex in the graph given its unique code.
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & The code of the vertex.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the vertex with the given code, or nullptr if not found.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time, as it uses a hash map for constant time lookups.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em code} & The unique code of the vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the vertex if found, otherwise {\ttfamily nullptr}.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The {\ttfamily find} operation on an unordered map runs in {\bfseries{O(1)}} average time complexity, but in the worst case (due to hash collisions), it can be {\bfseries{O(\+V)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classGraph_a8b7b7465fbfd562e2a469f90a437ab75}\label{classGraph_a8b7b7465fbfd562e2a469f90a437ab75}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!findVertex@{findVertex}}
+\index{findVertex@{findVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{findVertex()}{findVertex()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::find\+Vertex (\begin{DoxyParamCaption}\item[{const T \&}]{in }\end{DoxyParamCaption}) const}
+
+
+
+Finds a vertex in the graph by its ID. 
+
+Finds a vertex in the graph given its identifier.
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The ID of the vertex.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the vertex with the given ID, or nullptr if not found.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time, as it uses a hash map for constant time lookups.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The identifier of the vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the vertex if found, otherwise {\ttfamily nullptr}.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The {\ttfamily find} operation on an unordered map runs in {\bfseries{O(1)}} average time complexity, but in the worst case (highly unlikely due to hashing), it can be {\bfseries{O(\+V)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classGraph_abc04f1167b560db2fda91642dbd14f0f}\label{classGraph_abc04f1167b560db2fda91642dbd14f0f}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!getAllParkingVertices@{getAllParkingVertices}}
+\index{getAllParkingVertices@{getAllParkingVertices}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getAllParkingVertices()}{getAllParkingVertices()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::get\+All\+Parking\+Vertices}
+
+
+
+Retrieves all vertices in the graph that have parking. 
+
+Retrieves all vertices that have parking available.
+
+\begin{DoxyReturn}{Returns}
+A vector of vertices with parking.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(\+V) time.
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$Vertex$<$\+T$>$$\ast$$>$ A vector containing pointers to all vertices with parking.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Iterates through the {\ttfamily id\+To\+Vertex\+Map}, checking if each vertex has parking.
+\item If a vertex has parking ({\ttfamily has\+Parking() == true}), it is added to the result vector.
+\item Returns a list of all parking vertices.
+\end{DoxyItemize}
+
+@complexity
+\begin{DoxyItemize}
+\item {\bfseries{Iteration over all vertices\+:}} O(\+V)
+\item {\bfseries{Total Complexity\+:}} O(\+V) 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_a0853eac15cdf0f06d63f4b8a7820ec71}\label{classGraph_a0853eac15cdf0f06d63f4b8a7820ec71}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!getNumVertex@{getNumVertex}}
+\index{getNumVertex@{getNumVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getNumVertex()}{getNumVertex()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+int \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::get\+Num\+Vertex}
+
+
+
+Gets the number of vertices in the graph. 
+
+\begin{DoxyReturn}{Returns}
+The number of vertices.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time.
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+The total number of vertices in the graph.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Since {\ttfamily id\+To\+Vertex\+Map.\+size()} is a constant-\/time operation, the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classGraph_a41624b03fcb6bd29e4df574a1ec58541}\label{classGraph_a41624b03fcb6bd29e4df574a1ec58541}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!getVertexSet@{getVertexSet}}
+\index{getVertexSet@{getVertexSet}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getVertexSet()}{getVertexSet()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ $>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::get\+Vertex\+Set}
+
+
+
+Retrieves all vertices in the graph. 
+
+Retrieves a vector containing all the vertices in the graph.
+
+\begin{DoxyReturn}{Returns}
+A vector of pointers to all vertices.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This function runs in O(\+V) time, where V is the number of vertices in the graph.
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+A vector of pointers to all the vertices in the graph.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Iterating through all elements in {\ttfamily id\+To\+Vertex\+Map} and inserting them into a vector takes {\bfseries{O(\+V)}} time, where V is the number of vertices in the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classGraph_a8949d071d45bf93e171e275462e1007a}\label{classGraph_a8949d071d45bf93e171e275462e1007a}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!removeEdge@{removeEdge}}
+\index{removeEdge@{removeEdge}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{removeEdge()}{removeEdge()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::remove\+Edge (\begin{DoxyParamCaption}\item[{const T \&}]{sourc,  }\item[{const T \&}]{dest }\end{DoxyParamCaption})}
+
+
+
+Removes a directed edge from the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The unique identifier of the source vertex. \\
+\hline
+{\em dest} & The unique identifier of the destination vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the edge was successfully removed, {\ttfamily false} if either the source vertex does not exist or the edge does not exist.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item Finding the source vertex takes {\bfseries{O(1)}} on average.
+\item Removing the edge from the adjacency list of the source vertex takes {\bfseries{O(E\textquotesingle{})}}, where {\bfseries{E\textquotesingle{}}} is the number of edges originating from {\ttfamily sourc}.
+\item Overall, the worst-\/case time complexity is {\bfseries{O(E\textquotesingle{})}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{classGraph_af9c903104ad69a7782979fa9caedf163}\label{classGraph_af9c903104ad69a7782979fa9caedf163}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!removeVertex@{removeVertex}}
+\index{removeVertex@{removeVertex}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{removeVertex()}{removeVertex()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::remove\+Vertex (\begin{DoxyParamCaption}\item[{const T \&}]{in }\end{DoxyParamCaption})}
+
+
+
+Removes a vertex with a given content from the graph, along with all its edges. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The unique identifier of the vertex to be removed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the vertex was successfully removed, {\ttfamily false} if the vertex does not exist.
+\end{DoxyReturn}
+
+\begin{DoxyItemize}
+\item First, the function checks for the vertex in {\bfseries{O(1)}} average time (unordered\+\_\+map lookup).
+\item {\ttfamily remove\+Out\+Going\+Edges()} iterates over the adjacency list and removes all outgoing edges. This takes {\bfseries{O(E\textquotesingle{})}}, where {\bfseries{E\textquotesingle{}}} is the number of edges originating from the vertex.
+\item The loop over {\ttfamily get\+Incoming()} removes each incoming edge from the origin vertices. Since each removal operation is {\bfseries{O(E\textquotesingle{}\textquotesingle{})}}, where {\bfseries{E\textquotesingle{}\textquotesingle{}}} is the number of incoming edges, this loop runs in {\bfseries{O(E\textquotesingle{}\textquotesingle{})}}.
+\item Erasing the vertex from the maps is {\bfseries{O(1)}}.
+\item Overall, the complexity is {\bfseries{O(E\textquotesingle{}) + O(E\textquotesingle{}\textquotesingle{}) ≈ O(\+E)}} in the worst case. 
+\end{DoxyItemize}
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classGraph_a4b270485bd852e944302d7420fa9f824}\label{classGraph_a4b270485bd852e944302d7420fa9f824}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!codeToVertexMap@{codeToVertexMap}}
+\index{codeToVertexMap@{codeToVertexMap}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{codeToVertexMap}{codeToVertexMap}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::unordered\+\_\+map$<$std\+::string, \mbox{\hyperlink{classVertex}{Vertex}}$<$T$>$$\ast$$>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::code\+To\+Vertex\+Map\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classGraph_a4517f4351bc7f0348369b25b7c0b44fe}\label{classGraph_a4517f4351bc7f0348369b25b7c0b44fe}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!distMatrix@{distMatrix}}
+\index{distMatrix@{distMatrix}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{distMatrix}{distMatrix}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double$\ast$$\ast$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::dist\+Matrix = nullptr\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classGraph_a8b3c1e035c9883d16ad135b0966f97c2}\label{classGraph_a8b3c1e035c9883d16ad135b0966f97c2}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!idToVertexMap@{idToVertexMap}}
+\index{idToVertexMap@{idToVertexMap}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{idToVertexMap}{idToVertexMap}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::unordered\+\_\+map$<$int, \mbox{\hyperlink{classVertex}{Vertex}}$<$T$>$$\ast$$>$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::id\+To\+Vertex\+Map\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classGraph_afb9524726f8f3cda3115a0d03e3f6e09}\label{classGraph_afb9524726f8f3cda3115a0d03e3f6e09}} 
+\index{Graph$<$ T $>$@{Graph$<$ T $>$}!pathMatrix@{pathMatrix}}
+\index{pathMatrix@{pathMatrix}!Graph$<$ T $>$@{Graph$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pathMatrix}{pathMatrix}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+int$\ast$$\ast$ \mbox{\hyperlink{classGraph}{Graph}}$<$ T $>$\+::path\+Matrix = nullptr\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{graph_8hpp}{graph.\+hpp}}\end{DoxyCompactItemize}

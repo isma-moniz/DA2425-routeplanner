@@ -1,0 +1,43 @@
+\hypertarget{storage_8cpp}{}\doxysection{src/storage.cpp File Reference}
+\label{storage_8cpp}\index{src/storage.cpp@{src/storage.cpp}}
+{\ttfamily \#include \char`\"{}storage.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$regex$>$}\newline
+Include dependency graph for storage.\+cpp\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{storage_8cpp_ad48f9015cb68e6fe6ec48b0652cbaca5}{is\+Numeric}} (const std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em Checks if a string is a numeric representation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{storage_8cpp_ad48f9015cb68e6fe6ec48b0652cbaca5}\label{storage_8cpp_ad48f9015cb68e6fe6ec48b0652cbaca5}} 
+\index{storage.cpp@{storage.cpp}!isNumeric@{isNumeric}}
+\index{isNumeric@{isNumeric}!storage.cpp@{storage.cpp}}
+\doxysubsubsection{\texorpdfstring{isNumeric()}{isNumeric()}}
+{\footnotesize\ttfamily bool is\+Numeric (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})}
+
+
+
+Checks if a string is a numeric representation. 
+
+This helper function determines whether a given string contains only digits.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The string to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the string contains only digits, false otherwise.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this function is O(n), where n is the length of the string. The function iterates over each character in the string once to verify that they are all digits. 
+\end{DoxyNote}

@@ -1,0 +1,143 @@
+\hypertarget{main_8cpp}{}\doxysection{src/main.cpp File Reference}
+\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include \char`\"{}storage.\+hpp\char`\"{}}\newline
+Include dependency graph for main.\+cpp\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8cpp_aba5bd9067aa6f261123165a337c7957d}{show\+Menu}} ()
+\begin{DoxyCompactList}\small\item\em Displays the main menu of the route planning tool. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_ae6be0c694b613b2cb385070fc7395024}{placeholder\+Function}} (const std\+::string \&feature\+Name)
+\begin{DoxyCompactList}\small\item\em Placeholder function for unimplemented features. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a305dca0bb4d4dfa415c28586e3a16760}{calc\+Best\+Driving\+Route}} ()
+\begin{DoxyCompactList}\small\item\em Calculates the best driving route between two locations using Dijkstra\textquotesingle{}s algorithm. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a77e4923f3b024b41428c6637a924d18c}{calc\+Driving\+Route\+Restricted}} ()
+\begin{DoxyCompactList}\small\item\em Calculates the best driving route with restrictions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_afecaa58f79f97cb0e6213af6e5a9eeca}{calc\+Environmental\+Route}} ()
+\begin{DoxyCompactList}\small\item\em Calculates an environmentally friendly route that combines driving and walking. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_abbb7cdc59af479ab3cebbd2c38a315ab}{handle\+Batch\+Mode}} ()
+\begin{DoxyCompactList}\small\item\em Handles batch mode operations. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\begin{DoxyCompactList}\small\item\em Main entry point for the route planning tool. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classStorageHandler}{Storage\+Handler}} \mbox{\hyperlink{main_8cpp_ab3b2ea4fa4a25cb5d617d9a8187f29a0}{storage\+Handler}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a305dca0bb4d4dfa415c28586e3a16760}\label{main_8cpp_a305dca0bb4d4dfa415c28586e3a16760}} 
+\index{main.cpp@{main.cpp}!calcBestDrivingRoute@{calcBestDrivingRoute}}
+\index{calcBestDrivingRoute@{calcBestDrivingRoute}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{calcBestDrivingRoute()}{calcBestDrivingRoute()}}
+{\footnotesize\ttfamily void calc\+Best\+Driving\+Route (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Calculates the best driving route between two locations using Dijkstra\textquotesingle{}s algorithm. 
+
+This function asks the user for a source and destination location ID, then calls Dijkstra\textquotesingle{}s algorithm via the {\ttfamily storage\+Handler} to calculate the best driving route.
+
+Time complexity\+: O(\+E log V), where E is the number of edges and V is the number of vertices. This is due to the Dijkstra\textquotesingle{}s algorithm used in {\ttfamily storage\+Handler.\+call\+Dijkstra()}. \mbox{\Hypertarget{main_8cpp_a77e4923f3b024b41428c6637a924d18c}\label{main_8cpp_a77e4923f3b024b41428c6637a924d18c}} 
+\index{main.cpp@{main.cpp}!calcDrivingRouteRestricted@{calcDrivingRouteRestricted}}
+\index{calcDrivingRouteRestricted@{calcDrivingRouteRestricted}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{calcDrivingRouteRestricted()}{calcDrivingRouteRestricted()}}
+{\footnotesize\ttfamily void calc\+Driving\+Route\+Restricted (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Calculates the best driving route with restrictions. 
+
+This function allows the user to input source and destination IDs, as well as avoid nodes and segments, and then calls the restricted Dijkstra\textquotesingle{}s algorithm to calculate the route with the given restrictions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The source location ID. \\
+\hline
+{\em dest} & The destination location ID. \\
+\hline
+{\em avoid\+Nodes} & A string of node IDs to avoid, separated by commas. \\
+\hline
+{\em avoid\+Segments} & A string of segment IDs to avoid, separated by commas. \\
+\hline
+{\em include\+Node} & A string representing a node to include in the route.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+E log V), where E is the number of edges and V is the number of vertices. The complexity is similar to that of Dijkstra\textquotesingle{}s algorithm but with additional constraints. \mbox{\Hypertarget{main_8cpp_afecaa58f79f97cb0e6213af6e5a9eeca}\label{main_8cpp_afecaa58f79f97cb0e6213af6e5a9eeca}} 
+\index{main.cpp@{main.cpp}!calcEnvironmentalRoute@{calcEnvironmentalRoute}}
+\index{calcEnvironmentalRoute@{calcEnvironmentalRoute}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{calcEnvironmentalRoute()}{calcEnvironmentalRoute()}}
+{\footnotesize\ttfamily void calc\+Environmental\+Route (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Calculates an environmentally friendly route that combines driving and walking. 
+
+This function asks the user for a source, destination, and the maximum allowed walking time, and then calls the method to calculate an environmentally friendly route using the given parameters.
+
+Time complexity\+: O(\+E log V), where E is the number of edges and V is the number of vertices in the graph. The complexity is similar to Dijkstra\textquotesingle{}s algorithm for combined walking and driving. \mbox{\Hypertarget{main_8cpp_abbb7cdc59af479ab3cebbd2c38a315ab}\label{main_8cpp_abbb7cdc59af479ab3cebbd2c38a315ab}} 
+\index{main.cpp@{main.cpp}!handleBatchMode@{handleBatchMode}}
+\index{handleBatchMode@{handleBatchMode}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{handleBatchMode()}{handleBatchMode()}}
+{\footnotesize\ttfamily void handle\+Batch\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handles batch mode operations. 
+
+This function reads input from a file, parses it, and calls batch operations for route planning.
+
+Time complexity\+: O(\+N), where N is the number of operations in the batch. This depends on the number of input lines to parse and process. \mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main entry point for the route planning tool. 
+
+This function continuously displays the menu and processes user input for various operations such as loading files, calculating routes, and running batch operations.
+
+Time complexity\+: O(\+N), where N is the number of menu operations, depending on how many times the user interacts with the menu. \mbox{\Hypertarget{main_8cpp_ae6be0c694b613b2cb385070fc7395024}\label{main_8cpp_ae6be0c694b613b2cb385070fc7395024}} 
+\index{main.cpp@{main.cpp}!placeholderFunction@{placeholderFunction}}
+\index{placeholderFunction@{placeholderFunction}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{placeholderFunction()}{placeholderFunction()}}
+{\footnotesize\ttfamily void placeholder\+Function (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{feature\+Name }\end{DoxyParamCaption})}
+
+
+
+Placeholder function for unimplemented features. 
+
+This function displays a message indicating that the requested feature is not implemented yet.
+
+
+\begin{DoxyParams}{Parameters}
+{\em feature\+Name} & The name of the feature that is not implemented.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(1), as it only prints a message. \mbox{\Hypertarget{main_8cpp_aba5bd9067aa6f261123165a337c7957d}\label{main_8cpp_aba5bd9067aa6f261123165a337c7957d}} 
+\index{main.cpp@{main.cpp}!showMenu@{showMenu}}
+\index{showMenu@{showMenu}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{showMenu()}{showMenu()}}
+{\footnotesize\ttfamily void show\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Displays the main menu of the route planning tool. 
+
+This function prints a menu with options for loading files, calculating routes, and running batch operations.
+
+Time complexity\+: O(1), as this function only prints text and does not perform any significant computation. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8cpp_ab3b2ea4fa4a25cb5d617d9a8187f29a0}\label{main_8cpp_ab3b2ea4fa4a25cb5d617d9a8187f29a0}} 
+\index{main.cpp@{main.cpp}!storageHandler@{storageHandler}}
+\index{storageHandler@{storageHandler}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{storageHandler}{storageHandler}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classStorageHandler}{Storage\+Handler}} storage\+Handler}
+

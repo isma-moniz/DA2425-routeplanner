@@ -1,0 +1,30 @@
+\hypertarget{_2mnt_2d_2_xC3_x81rea_01de_01Trabalho_2DA_2Project_011_2DA2425-routeplanner_2src_2storage_8cpp-example}{}\doxysection{/mnt/d/Área de Trabalho/\+DA/\+Project 1/\+DA2425-\/routeplanner/src/storage.\+cpp}
+Parses a comma-\/separated string of integers and returns a vector of integers.\+This function takes a string that represents a list of integers separated by commas, and converts it into a vector of integers. Each integer in the string is extracted, converted to an integer using {\ttfamily std\+::stoi}, and added to the resulting vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The comma-\/separated string of integers.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of integers extracted from the input string.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If the input string contains invalid or non-\/numeric data (such as letters or empty strings), the function will throw a {\ttfamily std\+::invalid\+\_\+argument} exception due to {\ttfamily std\+::stoi}. It is assumed that the input string is properly formatted for integer parsing.
+\end{DoxyNote}
+@complexity
+\begin{DoxyItemize}
+\item Time Complexity\+: O(\+N), where N is the number of characters in the input string. The function processes each character in the string, and for each comma-\/separated value, it calls {\ttfamily std\+::stoi}, which runs in constant time for each valid integer.
+\begin{DoxyItemize}
+\item The overall complexity is dominated by the length of the input string as the string is split and parsed.
+\end{DoxyItemize}
+\item Space Complexity\+: O(\+M), where M is the number of integers in the string. The space complexity is proportional to the number of integers extracted and stored in the resulting vector.
+\end{DoxyItemize}
+
+// Example usage\+: std\+::vector$<$int$>$ result = parse\+Comma\+Separated\+Integers(\char`\"{}1,2,3,4,5\char`\"{}); // result will contain \{1, 2, 3, 4, 5\}
+
+
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+/Área de Trabalho/\+DA/\+Project \mbox{\hyperlink{storage_8cpp}{1/\+DA2425-\/routeplanner/src/storage.\+cpp}} 

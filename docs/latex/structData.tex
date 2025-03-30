@@ -1,0 +1,111 @@
+\hypertarget{structData}{}\doxysection{Data Struct Reference}
+\label{structData}\index{Data@{Data}}
+
+
+Structure to hold data for route calculation, including restrictions and other parameters.  
+
+
+
+
+{\ttfamily \#include $<$storage.\+hpp$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{structData_a5ce7537e9cbd9d87e42645da13bfb5a6}{mode}}
+\begin{DoxyCompactList}\small\item\em Mode of transportation, such as \char`\"{}driving\char`\"{} or \char`\"{}environmental\char`\"{}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structData_a96ef4e0eb3e8cb09fc7d69d007ac593c}{source}} = -\/1
+\begin{DoxyCompactList}\small\item\em Source node ID (initialized to -\/1 indicating no source). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structData_ad21c7ff90f0699656e594f98997677ba}{destination}} = -\/1
+\begin{DoxyCompactList}\small\item\em Destination node ID (initialized to -\/1 indicating no destination). \end{DoxyCompactList}\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{structData_a1509ad5bbd146c83e7182bd8da6a3593}{avoid\+Nodes}}
+\begin{DoxyCompactList}\small\item\em List of node IDs to avoid. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{structData_aadf2233522eb2b5a462ae2015c897730}{avoid\+Segments}}
+\begin{DoxyCompactList}\small\item\em List of segment pairs (id1, id2) to avoid. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structData_a37c6db08fe350eb27d5c44a2419434af}{include\+Node}} = -\/1
+\begin{DoxyCompactList}\small\item\em Node ID to include in the route (default -\/1 means no node is forced). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{structData_acb11f44bf525d18e0233ad81e2e10d02}{max\+Walk\+Time}} = -\/1
+\begin{DoxyCompactList}\small\item\em Maximum walking time in minutes (for environmental routes). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to hold data for route calculation, including restrictions and other parameters. 
+
+This structure stores data related to a route calculation, including the source and destination nodes, any nodes or segments to avoid, nodes to include, and max walking time for environmental routes. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structData_a1509ad5bbd146c83e7182bd8da6a3593}\label{structData_a1509ad5bbd146c83e7182bd8da6a3593}} 
+\index{Data@{Data}!avoidNodes@{avoidNodes}}
+\index{avoidNodes@{avoidNodes}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{avoidNodes}{avoidNodes}}
+{\footnotesize\ttfamily std\+::vector$<$int$>$ Data\+::avoid\+Nodes}
+
+
+
+List of node IDs to avoid. 
+
+\mbox{\Hypertarget{structData_aadf2233522eb2b5a462ae2015c897730}\label{structData_aadf2233522eb2b5a462ae2015c897730}} 
+\index{Data@{Data}!avoidSegments@{avoidSegments}}
+\index{avoidSegments@{avoidSegments}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{avoidSegments}{avoidSegments}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::pair$<$int, int$>$ $>$ Data\+::avoid\+Segments}
+
+
+
+List of segment pairs (id1, id2) to avoid. 
+
+\mbox{\Hypertarget{structData_ad21c7ff90f0699656e594f98997677ba}\label{structData_ad21c7ff90f0699656e594f98997677ba}} 
+\index{Data@{Data}!destination@{destination}}
+\index{destination@{destination}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{destination}{destination}}
+{\footnotesize\ttfamily int Data\+::destination = -\/1}
+
+
+
+Destination node ID (initialized to -\/1 indicating no destination). 
+
+\mbox{\Hypertarget{structData_a37c6db08fe350eb27d5c44a2419434af}\label{structData_a37c6db08fe350eb27d5c44a2419434af}} 
+\index{Data@{Data}!includeNode@{includeNode}}
+\index{includeNode@{includeNode}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{includeNode}{includeNode}}
+{\footnotesize\ttfamily int Data\+::include\+Node = -\/1}
+
+
+
+Node ID to include in the route (default -\/1 means no node is forced). 
+
+\mbox{\Hypertarget{structData_acb11f44bf525d18e0233ad81e2e10d02}\label{structData_acb11f44bf525d18e0233ad81e2e10d02}} 
+\index{Data@{Data}!maxWalkTime@{maxWalkTime}}
+\index{maxWalkTime@{maxWalkTime}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{maxWalkTime}{maxWalkTime}}
+{\footnotesize\ttfamily int Data\+::max\+Walk\+Time = -\/1}
+
+
+
+Maximum walking time in minutes (for environmental routes). 
+
+\mbox{\Hypertarget{structData_a5ce7537e9cbd9d87e42645da13bfb5a6}\label{structData_a5ce7537e9cbd9d87e42645da13bfb5a6}} 
+\index{Data@{Data}!mode@{mode}}
+\index{mode@{mode}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{mode}{mode}}
+{\footnotesize\ttfamily std\+::string Data\+::mode}
+
+
+
+Mode of transportation, such as \char`\"{}driving\char`\"{} or \char`\"{}environmental\char`\"{}. 
+
+\mbox{\Hypertarget{structData_a96ef4e0eb3e8cb09fc7d69d007ac593c}\label{structData_a96ef4e0eb3e8cb09fc7d69d007ac593c}} 
+\index{Data@{Data}!source@{source}}
+\index{source@{source}!Data@{Data}}
+\doxysubsubsection{\texorpdfstring{source}{source}}
+{\footnotesize\ttfamily int Data\+::source = -\/1}
+
+
+
+Source node ID (initialized to -\/1 indicating no source). 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{storage_8hpp}{storage.\+hpp}}\end{DoxyCompactItemize}

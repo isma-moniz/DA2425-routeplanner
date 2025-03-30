@@ -1,0 +1,44 @@
+\hypertarget{structvertexComp}{}\doxysection{vertex\+Comp$<$ T $>$ Struct Template Reference}
+\label{structvertexComp}\index{vertexComp$<$ T $>$@{vertexComp$<$ T $>$}}
+
+
+Comparator for ordering vertices in a priority queue based on distance.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structvertexComp_a19a439cd2c33d1b3d2cdfd1665fc7936}{operator()}} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$a, \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$b)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+struct vertex\+Comp$<$ T $>$}
+
+Comparator for ordering vertices in a priority queue based on distance. 
+
+
+\begin{DoxyItemize}
+\item Compares the {\ttfamily dist} values of two vertices.
+\item Designed for use in algorithms like Dijkstra’s, where a min-\/heap is required.
+\item The comparison operation itself is {\bfseries{O(1)}}. 
+\end{DoxyItemize}
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structvertexComp_a19a439cd2c33d1b3d2cdfd1665fc7936}\label{structvertexComp_a19a439cd2c33d1b3d2cdfd1665fc7936}} 
+\index{vertexComp$<$ T $>$@{vertexComp$<$ T $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!vertexComp$<$ T $>$@{vertexComp$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{structvertexComp}{vertex\+Comp}}$<$ T $>$\+::operator() (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$}]{a,  }\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{graph_8hpp}{graph.\+hpp}}\end{DoxyCompactItemize}

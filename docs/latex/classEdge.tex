@@ -1,0 +1,341 @@
+\hypertarget{classEdge}{}\doxysection{Edge$<$ T $>$ Class Template Reference}
+\label{classEdge}\index{Edge$<$ T $>$@{Edge$<$ T $>$}}
+
+
+\mbox{\hyperlink{classEdge}{Edge}} class representing an edge between two vertices.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classEdge_a793e7c2a7df3bc3c1bc775419c5d24c7}{Edge}} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$orig, \mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$\mbox{\hyperlink{classEdge_ae4d65678b91bd9d814af4720ad87cd0c}{dest}}, double w, double d)
+\begin{DoxyCompactList}\small\item\em Constructs an \mbox{\hyperlink{classEdge}{Edge}} with the given parameters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_a9a2de066dff8513dd788d553fc1d0c81}{get\+Dest}} () const
+\begin{DoxyCompactList}\small\item\em Gets the destination vertex of the edge. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classEdge_a780d03056ff7b2c51812516bde26de0d}{get\+Drive\+Time}} () const
+\begin{DoxyCompactList}\small\item\em Gets the driving time associated with the edge. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classEdge_adc142591dc775f4aff00a2f951a97232}{get\+Walk\+Time}} () const
+\begin{DoxyCompactList}\small\item\em Gets the walking time associated with the edge. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classEdge_aee6aca5d9b86bd12d70c5c9c90379673}{is\+Available}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the edge is available. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_a996949346c7c76c358cabee5453cc665}{get\+Origin}} () const
+\begin{DoxyCompactList}\small\item\em Gets the origin vertex of the edge. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_af0a900f3006e47b9f363df7429298eeb}{get\+Reverse}} () const
+\begin{DoxyCompactList}\small\item\em Gets the reverse edge associated with this edge. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classEdge_a75458cfc838ca5aee5c34cb9f03b5647}{get\+Flow}} () const
+\begin{DoxyCompactList}\small\item\em Gets the current flow value of the edge. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEdge_a77e5158e17fc825fb221afd2e94fe9dc}{set\+Available}} (bool selected)
+\begin{DoxyCompactList}\small\item\em Sets the availability status of the edge. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEdge_afe8f8429025756c63f38e8c6fde7382c}{set\+Reverse}} (\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$\mbox{\hyperlink{classEdge_a6c1e5191f85afbd20cf6198815c9b079}{reverse}})
+\begin{DoxyCompactList}\small\item\em Sets the reverse edge associated with this edge. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEdge_a1819116e2c156733a14bbd94cc27908e}{set\+Flow}} (double \mbox{\hyperlink{classEdge_a30808601fa37f509147eabf9cc5f9ed6}{flow}})
+\begin{DoxyCompactList}\small\item\em Sets the flow value of the edge. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_ae4d65678b91bd9d814af4720ad87cd0c}{dest}}
+\item 
+double \mbox{\hyperlink{classEdge_a9a1b0cbff62b146ff05a3f2960665b4a}{walk\+Time}}
+\item 
+double \mbox{\hyperlink{classEdge_ab505c1ee526bcaa7656f02ab615d3c94}{drive\+Time}}
+\item 
+bool \mbox{\hyperlink{classEdge_a6bb07ef3176d49184f2a4a543a2393d3}{available}} = true
+\item 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_a0a1fcab48a398e5f9a4f27273ea516e1}{origin}}
+\item 
+\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge_a6c1e5191f85afbd20cf6198815c9b079}{reverse}} = nullptr
+\item 
+double \mbox{\hyperlink{classEdge_a30808601fa37f509147eabf9cc5f9ed6}{flow}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Edge$<$ T $>$}
+
+\mbox{\hyperlink{classEdge}{Edge}} class representing an edge between two vertices. 
+
+This class stores information about an edge in the graph, including the origin and destination vertices, the weights for driving and walking times, the flow on the edge, and the reverse edge for bidirectional links. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classEdge_a793e7c2a7df3bc3c1bc775419c5d24c7}\label{classEdge_a793e7c2a7df3bc3c1bc775419c5d24c7}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!Edge@{Edge}}
+\index{Edge@{Edge}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::\mbox{\hyperlink{classEdge}{Edge}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$}]{orig,  }\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$}]{dest,  }\item[{double}]{w,  }\item[{double}]{d }\end{DoxyParamCaption})}
+
+
+
+Constructs an \mbox{\hyperlink{classEdge}{Edge}} with the given parameters. 
+
+Constructs an \mbox{\hyperlink{classEdge}{Edge}} object with the given origin, destination, walk time, and drive time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & The origin vertex. \\
+\hline
+{\em dest} & The destination vertex. \\
+\hline
+{\em w} & The driving time weight for the edge. \\
+\hline
+{\em d} & The walking time weight for the edge.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This function runs in O(1) time.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & Pointer to the origin vertex. \\
+\hline
+{\em dest} & Pointer to the destination vertex. \\
+\hline
+{\em w} & Walking time associated with the edge. \\
+\hline
+{\em d} & Driving time associated with the edge.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The constructor simply initializes the member variables, so its time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classEdge_a9a2de066dff8513dd788d553fc1d0c81}\label{classEdge_a9a2de066dff8513dd788d553fc1d0c81}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getDest@{getDest}}
+\index{getDest@{getDest}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getDest()}{getDest()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Dest}
+
+
+
+Gets the destination vertex of the edge. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to the destination vertex.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_a780d03056ff7b2c51812516bde26de0d}\label{classEdge_a780d03056ff7b2c51812516bde26de0d}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getDriveTime@{getDriveTime}}
+\index{getDriveTime@{getDriveTime}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getDriveTime()}{getDriveTime()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Drive\+Time}
+
+
+
+Gets the driving time associated with the edge. 
+
+\begin{DoxyReturn}{Returns}
+The drive time as a double.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_a75458cfc838ca5aee5c34cb9f03b5647}\label{classEdge_a75458cfc838ca5aee5c34cb9f03b5647}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getFlow@{getFlow}}
+\index{getFlow@{getFlow}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getFlow()}{getFlow()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Flow}
+
+
+
+Gets the current flow value of the edge. 
+
+\begin{DoxyReturn}{Returns}
+The flow value as a double.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_a996949346c7c76c358cabee5453cc665}\label{classEdge_a996949346c7c76c358cabee5453cc665}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getOrigin@{getOrigin}}
+\index{getOrigin@{getOrigin}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getOrigin()}{getOrigin()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Origin}
+
+
+
+Gets the origin vertex of the edge. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to the origin vertex.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_af0a900f3006e47b9f363df7429298eeb}\label{classEdge_af0a900f3006e47b9f363df7429298eeb}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getReverse@{getReverse}}
+\index{getReverse@{getReverse}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getReverse()}{getReverse()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Reverse}
+
+
+
+Gets the reverse edge associated with this edge. 
+
+\begin{DoxyReturn}{Returns}
+Pointer to the reverse edge if it exists, otherwise nullptr.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_adc142591dc775f4aff00a2f951a97232}\label{classEdge_adc142591dc775f4aff00a2f951a97232}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!getWalkTime@{getWalkTime}}
+\index{getWalkTime@{getWalkTime}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getWalkTime()}{getWalkTime()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::get\+Walk\+Time}
+
+
+
+Gets the walking time associated with the edge. 
+
+\begin{DoxyReturn}{Returns}
+The walk time as a double.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_aee6aca5d9b86bd12d70c5c9c90379673}\label{classEdge_aee6aca5d9b86bd12d70c5c9c90379673}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!isAvailable@{isAvailable}}
+\index{isAvailable@{isAvailable}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{isAvailable()}{isAvailable()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::is\+Available}
+
+
+
+Checks if the edge is available. 
+
+\begin{DoxyReturn}{Returns}
+True if the edge is available, false otherwise.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Accessing a boolean member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_a77e5158e17fc825fb221afd2e94fe9dc}\label{classEdge_a77e5158e17fc825fb221afd2e94fe9dc}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!setAvailable@{setAvailable}}
+\index{setAvailable@{setAvailable}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{setAvailable()}{setAvailable()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::set\+Available (\begin{DoxyParamCaption}\item[{bool}]{available }\end{DoxyParamCaption})}
+
+
+
+Sets the availability status of the edge. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em available} & Boolean value indicating whether the edge is available.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Modifying a boolean member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_a1819116e2c156733a14bbd94cc27908e}\label{classEdge_a1819116e2c156733a14bbd94cc27908e}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!setFlow@{setFlow}}
+\index{setFlow@{setFlow}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{setFlow()}{setFlow()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::set\+Flow (\begin{DoxyParamCaption}\item[{double}]{flow }\end{DoxyParamCaption})}
+
+
+
+Sets the flow value of the edge. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em flow} & The new flow value as a double.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Assigning a double to a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classEdge_afe8f8429025756c63f38e8c6fde7382c}\label{classEdge_afe8f8429025756c63f38e8c6fde7382c}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!setReverse@{setReverse}}
+\index{setReverse@{setReverse}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{setReverse()}{setReverse()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::set\+Reverse (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$ $\ast$}]{reverse }\end{DoxyParamCaption})}
+
+
+
+Sets the reverse edge associated with this edge. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em reverse} & Pointer to the reverse edge.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Assigning a pointer to a member variable is a constant-\/time operation, so the time complexity is {\bfseries{O(1)}}. 
+\end{DoxyNote}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classEdge_a6bb07ef3176d49184f2a4a543a2393d3}\label{classEdge_a6bb07ef3176d49184f2a4a543a2393d3}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!available@{available}}
+\index{available@{available}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{available}{available}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::available = true\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classEdge_ae4d65678b91bd9d814af4720ad87cd0c}\label{classEdge_ae4d65678b91bd9d814af4720ad87cd0c}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!dest@{dest}}
+\index{dest@{dest}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{dest}{dest}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$T$>$$\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::dest\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classEdge_ab505c1ee526bcaa7656f02ab615d3c94}\label{classEdge_ab505c1ee526bcaa7656f02ab615d3c94}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!driveTime@{driveTime}}
+\index{driveTime@{driveTime}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{driveTime}{driveTime}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::drive\+Time\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classEdge_a30808601fa37f509147eabf9cc5f9ed6}\label{classEdge_a30808601fa37f509147eabf9cc5f9ed6}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!flow@{flow}}
+\index{flow@{flow}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{flow}{flow}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::flow\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classEdge_a0a1fcab48a398e5f9a4f27273ea516e1}\label{classEdge_a0a1fcab48a398e5f9a4f27273ea516e1}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!origin@{origin}}
+\index{origin@{origin}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{origin}{origin}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classVertex}{Vertex}}$<$T$>$$\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::origin\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classEdge_a6c1e5191f85afbd20cf6198815c9b079}\label{classEdge_a6c1e5191f85afbd20cf6198815c9b079}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!reverse@{reverse}}
+\index{reverse@{reverse}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reverse}{reverse}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classEdge}{Edge}}$<$T$>$$\ast$ \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::reverse = nullptr\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classEdge_a9a1b0cbff62b146ff05a3f2960665b4a}\label{classEdge_a9a1b0cbff62b146ff05a3f2960665b4a}} 
+\index{Edge$<$ T $>$@{Edge$<$ T $>$}!walkTime@{walkTime}}
+\index{walkTime@{walkTime}!Edge$<$ T $>$@{Edge$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{walkTime}{walkTime}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+double \mbox{\hyperlink{classEdge}{Edge}}$<$ T $>$\+::walk\+Time\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{graph_8hpp}{graph.\+hpp}}\end{DoxyCompactItemize}

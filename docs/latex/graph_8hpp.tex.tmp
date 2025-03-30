@@ -1,0 +1,96 @@
+\hypertarget{graph_8hpp}{}\doxysection{src/graph.hpp File Reference}
+\label{graph_8hpp}\index{src/graph.hpp@{src/graph.hpp}}
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+Include dependency graph for graph.\+hpp\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classVertex}{Vertex$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classVertex}{Vertex}} class representing a single node in the graph. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classEdge}{Edge$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classEdge}{Edge}} class representing an edge between two vertices. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classGraph}{Graph$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classGraph}{Graph}} class representing a graph structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvertexComp}{vertex\+Comp$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Comparator for ordering vertices in a priority queue based on distance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{graph_8hpp_a12c2040f25d8e3a7b9e1c2024c618cb6}{INF}}~std\+::numeric\+\_\+limits$<$double$>$\+::max()
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{graph_8hpp_ad56527992afe31a371065e795da57d25}{delete\+Matrix}} (int $\ast$$\ast$m, int n)
+\begin{DoxyCompactList}\small\item\em Deallocates a dynamically allocated integer matrix. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{graph_8hpp_af077bc8682a1a1d97e30b08eb1131b19}{delete\+Matrix}} (double $\ast$$\ast$m, int n)
+\begin{DoxyCompactList}\small\item\em Deallocates a dynamically allocated double matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{graph_8hpp_a12c2040f25d8e3a7b9e1c2024c618cb6}\label{graph_8hpp_a12c2040f25d8e3a7b9e1c2024c618cb6}} 
+\index{graph.hpp@{graph.hpp}!INF@{INF}}
+\index{INF@{INF}!graph.hpp@{graph.hpp}}
+\doxysubsubsection{\texorpdfstring{INF}{INF}}
+{\footnotesize\ttfamily \#define INF~std\+::numeric\+\_\+limits$<$double$>$\+::max()}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{graph_8hpp_af077bc8682a1a1d97e30b08eb1131b19}\label{graph_8hpp_af077bc8682a1a1d97e30b08eb1131b19}} 
+\index{graph.hpp@{graph.hpp}!deleteMatrix@{deleteMatrix}}
+\index{deleteMatrix@{deleteMatrix}!graph.hpp@{graph.hpp}}
+\doxysubsubsection{\texorpdfstring{deleteMatrix()}{deleteMatrix()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void delete\+Matrix (\begin{DoxyParamCaption}\item[{double $\ast$$\ast$}]{m,  }\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deallocates a dynamically allocated double matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Pointer to the matrix. \\
+\hline
+{\em n} & Number of rows in the matrix.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyItemize}
+\item Iterates over {\ttfamily n} rows, deleting each row (if not nullptr).
+\item Finally, deletes the array of row pointers.
+\item The overall time complexity is {\bfseries{O(n)}}. 
+\end{DoxyItemize}\mbox{\Hypertarget{graph_8hpp_ad56527992afe31a371065e795da57d25}\label{graph_8hpp_ad56527992afe31a371065e795da57d25}} 
+\index{graph.hpp@{graph.hpp}!deleteMatrix@{deleteMatrix}}
+\index{deleteMatrix@{deleteMatrix}!graph.hpp@{graph.hpp}}
+\doxysubsubsection{\texorpdfstring{deleteMatrix()}{deleteMatrix()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void delete\+Matrix (\begin{DoxyParamCaption}\item[{int $\ast$$\ast$}]{m,  }\item[{int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deallocates a dynamically allocated integer matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Pointer to the matrix. \\
+\hline
+{\em n} & Number of rows in the matrix.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyItemize}
+\item Iterates over {\ttfamily n} rows, deleting each row (if not nullptr).
+\item Finally, deletes the array of row pointers.
+\item The overall time complexity is {\bfseries{O(n)}}. 
+\end{DoxyItemize}

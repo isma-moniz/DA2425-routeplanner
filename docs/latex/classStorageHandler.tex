@@ -1,0 +1,336 @@
+\hypertarget{classStorageHandler}{}\doxysection{Storage\+Handler Class Reference}
+\label{classStorageHandler}\index{StorageHandler@{StorageHandler}}
+
+
+Class for handling operations related to loading data, route calculations, and batch processing.  
+
+
+
+
+{\ttfamily \#include $<$storage.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classStorageHandler_aa7cca8dc00a3182190c1a4ae7b932c82}{load\+Locations}} (const std\+::string \&locations\+File)
+\begin{DoxyCompactList}\small\item\em Loads location data from a CSV file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classStorageHandler_a8132a443dbcbaa104db945fcf48c6759}{load\+Roads}} (const std\+::string \&road\+File)
+\begin{DoxyCompactList}\small\item\em Loads road data from a CSV file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classStorageHandler_ad2ca0808d00f2f7705c82c8c7f8c91f4}{call\+Dijkstra}} (const std\+::string \&source, const std\+::string \&dest)
+\begin{DoxyCompactList}\small\item\em Calls Dijkstra\textquotesingle{}s algorithm to find the shortest path between two locations. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classStorageHandler_a68801f5963e41a8790e92cf1e849886b}{call\+Restricted\+Dijkstra}} (const std\+::string \&src, const std\+::string \&dest, const std\+::string \&avoid\+Nodes, const std\+::string \&avoid\+Segments, const std\+::string \&include\+Node)
+\begin{DoxyCompactList}\small\item\em Calls Dijkstra\textquotesingle{}s algorithm to find the shortest path with restrictions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classStorageHandler_a94ae174156ecb8873785f02bf70899dd}{calculate\+Environmental\+Route}} (int source, int destination, int max\+Walking\+Time, std\+::vector$<$ int $>$ avoid\+Nodes, std\+::vector$<$ std\+::pair$<$ int, int $>$$>$ avoid\+Segments)
+\begin{DoxyCompactList}\small\item\em Calculates an environmentally friendly route that includes walking. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classStorageHandler_a7a9540b1b4c8d27708c37703f479319f}{parse\+Batch\+Input}} (\mbox{\hyperlink{structData}{Data}} $\ast$data)
+\begin{DoxyCompactList}\small\item\em Parses input data for batch processing from a file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classStorageHandler_a9224c6457c59c350000923a8fd016488}{call\+Batch\+Function}} (const \mbox{\hyperlink{structData}{Data}} \&data)
+\begin{DoxyCompactList}\small\item\em Executes a batch function based on parsed data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class for handling operations related to loading data, route calculations, and batch processing. 
+
+This class provides methods to load location and road data, calculate routes using Dijkstra\textquotesingle{}s algorithm, handle batch operations, and more. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classStorageHandler_a94ae174156ecb8873785f02bf70899dd}\label{classStorageHandler_a94ae174156ecb8873785f02bf70899dd}} 
+\index{StorageHandler@{StorageHandler}!calculateEnvironmentalRoute@{calculateEnvironmentalRoute}}
+\index{calculateEnvironmentalRoute@{calculateEnvironmentalRoute}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{calculateEnvironmentalRoute()}{calculateEnvironmentalRoute()}}
+{\footnotesize\ttfamily void Storage\+Handler\+::calculate\+Environmental\+Route (\begin{DoxyParamCaption}\item[{int}]{source,  }\item[{int}]{destination,  }\item[{int}]{max\+Walking\+Time,  }\item[{std\+::vector$<$ int $>$}]{avoid\+Nodes,  }\item[{std\+::vector$<$ std\+::pair$<$ int, int $>$$>$}]{avoid\+Segments }\end{DoxyParamCaption})}
+
+
+
+Calculates an environmentally friendly route that includes walking. 
+
+Calculates an environmental route from source to destination considering both driving and walking paths, with optional exclusions.
+
+This function calculates a route combining both driving and walking, with the constraint of a maximum walking time and any segments or nodes to avoid.
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & The source location ID. \\
+\hline
+{\em destination} & The destination location ID. \\
+\hline
+{\em max\+Walking\+Time} & Maximum allowed walking time in minutes. \\
+\hline
+{\em avoid\+Nodes} & A list of node IDs to avoid. \\
+\hline
+{\em avoid\+Segments} & A list of segment pairs (id1, id2) to avoid.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+E log V), where E is the number of edges and V is the number of vertices in the graph. Similar to the standard Dijkstra algorithm with additional considerations for walking paths.
+
+This function calculates the optimal route from a source to a destination while considering\+:
+\begin{DoxyItemize}
+\item Driving to a parking area, followed by walking to the destination.
+\item The ability to exclude certain nodes (locations) and segments (edges) from the graph during the calculation.
+\item The ability to filter routes based on a maximum walking time.
+\end{DoxyItemize}
+
+The algorithm first excludes the requested nodes and segments from the graph, then calculates potential routes by\+:
+\begin{DoxyItemize}
+\item Finding a driving route from the source to a parking location.
+\item Finding a walking route from that parking location to the destination.
+\end{DoxyItemize}
+
+The function stores the best routes that meet the conditions in a file, and outputs them in the console. If no valid route exists, an appropriate message is printed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & The source node ID (integer). \\
+\hline
+{\em destination} & The destination node ID (integer). \\
+\hline
+{\em max\+Walking\+Time} & The maximum allowed walking time (in minutes). \\
+\hline
+{\em avoid\+Nodes} & A list of node IDs to be avoided during route calculation. \\
+\hline
+{\em avoid\+Segments} & A list of edges (pairs of node IDs) to be avoided.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The function calculates all possible routes that satisfy the walking time constraint and returns the best one. If no valid route is found, the output will indicate that no route is possible.
+\end{DoxyNote}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If an invalid node or edge is encountered during processing.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The time complexity of this function can be broken down as follows\+:
+\begin{DoxyItemize}
+\item Excluding nodes and segments involves iterating through the provided lists ({\ttfamily O(n)} complexity, where {\ttfamily n} is the number of nodes or segments).
+\item For each parking node, two Dijkstra runs are performed\+:
+\begin{DoxyItemize}
+\item One for driving from the source to the parking node ({\ttfamily O((V + E) $\ast$ log(\+V))} for the adjacency list representation).
+\item One for walking from the parking node to the destination ({\ttfamily O((V + E) $\ast$ log(\+V))}).
+\end{DoxyItemize}
+\item Sorting and selecting the best routes involves iterating through the possible routes, which is {\ttfamily O(m $\ast$ log(m))}, where {\ttfamily m} is the number of candidates.
+\end{DoxyItemize}
+\end{DoxyNote}
+Overall, the time complexity of the function is dominated by the Dijkstra runs and sorting, making it approximately\+: O(m $\ast$ log(m) + 2 $\ast$ (V + E) $\ast$ log(\+V)). \mbox{\Hypertarget{classStorageHandler_a9224c6457c59c350000923a8fd016488}\label{classStorageHandler_a9224c6457c59c350000923a8fd016488}} 
+\index{StorageHandler@{StorageHandler}!callBatchFunction@{callBatchFunction}}
+\index{callBatchFunction@{callBatchFunction}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{callBatchFunction()}{callBatchFunction()}}
+{\footnotesize\ttfamily void Storage\+Handler\+::call\+Batch\+Function (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structData}{Data}} \&}]{data }\end{DoxyParamCaption})}
+
+
+
+Executes a batch function based on parsed data. 
+
+This function processes the batch data (from the {\ttfamily \mbox{\hyperlink{structData}{Data}}} structure) and executes the necessary route planning functions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & The batch data structure containing the parsed input.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+N), where N is the number of operations or routes to process in the batch. \mbox{\Hypertarget{classStorageHandler_ad2ca0808d00f2f7705c82c8c7f8c91f4}\label{classStorageHandler_ad2ca0808d00f2f7705c82c8c7f8c91f4}} 
+\index{StorageHandler@{StorageHandler}!callDijkstra@{callDijkstra}}
+\index{callDijkstra@{callDijkstra}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{callDijkstra()}{callDijkstra()}}
+{\footnotesize\ttfamily void Storage\+Handler\+::call\+Dijkstra (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{src,  }\item[{const std\+::string \&}]{dest }\end{DoxyParamCaption})}
+
+
+
+Calls Dijkstra\textquotesingle{}s algorithm to find the shortest path between two locations. 
+
+Finds the shortest driving path between two locations using Dijkstra\textquotesingle{}s algorithm.
+
+This function invokes Dijkstra\textquotesingle{}s algorithm to find the best route between the given source and destination.
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & The source location ID. \\
+\hline
+{\em dest} & The destination location ID.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+E log V), where E is the number of edges and V is the number of vertices in the graph.
+
+This function attempts to find the shortest driving path between two locations, specified by either their vertex IDs or location codes. It first checks if the provided source and destination are numeric (IDs) or location codes (strings), and converts them accordingly. Once the valid source and destination IDs are obtained, it invokes the Dijkstra algorithm for the {\ttfamily city\+Graph} to find the shortest path.
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The source location, either as an ID or a location code. \\
+\hline
+{\em dest} & The destination location, either as an ID or a location code.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If either the source or destination is invalid or not found in the graph.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The time complexity of this function depends on the implementation of Dijkstra\textquotesingle{}s algorithm\+:
+\begin{DoxyItemize}
+\item If the graph is represented as an adjacency matrix, the time complexity is O(\+V$^\wedge$2), where V is the number of vertices.
+\item If the graph is represented as an adjacency list and a priority queue (min-\/heap) is used, the time complexity is O((V + E) $\ast$ log(\+V)), where V is the number of vertices and E is the number of edges in the graph. 
+\end{DoxyItemize}
+\end{DoxyNote}
+\mbox{\Hypertarget{classStorageHandler_a68801f5963e41a8790e92cf1e849886b}\label{classStorageHandler_a68801f5963e41a8790e92cf1e849886b}} 
+\index{StorageHandler@{StorageHandler}!callRestrictedDijkstra@{callRestrictedDijkstra}}
+\index{callRestrictedDijkstra@{callRestrictedDijkstra}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{callRestrictedDijkstra()}{callRestrictedDijkstra()}}
+{\footnotesize\ttfamily void Storage\+Handler\+::call\+Restricted\+Dijkstra (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{src,  }\item[{const std\+::string \&}]{dest,  }\item[{const std\+::string \&}]{avoid\+Nodes,  }\item[{const std\+::string \&}]{avoid\+Segments,  }\item[{const std\+::string \&}]{include\+Node }\end{DoxyParamCaption})}
+
+
+
+Calls Dijkstra\textquotesingle{}s algorithm to find the shortest path with restrictions. 
+
+Finds the shortest driving path between two locations using Dijkstra\textquotesingle{}s algorithm with additional restrictions.
+
+This function invokes a restricted version of Dijkstra\textquotesingle{}s algorithm that takes into account the provided nodes and segments to avoid and any required node to include.
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The source location ID. \\
+\hline
+{\em dest} & The destination location ID. \\
+\hline
+{\em avoid\+Nodes} & A comma-\/separated string of node IDs to avoid. \\
+\hline
+{\em avoid\+Segments} & A comma-\/separated string of road segments to avoid. \\
+\hline
+{\em include\+Node} & A string representing a node to include in the route.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+E log V), where E is the number of edges and V is the number of vertices. The complexity is similar to Dijkstra\textquotesingle{}s algorithm with additional constraints.
+
+This function finds the shortest driving path between two locations using Dijkstra\textquotesingle{}s algorithm, with additional restrictions\+:
+\begin{DoxyItemize}
+\item It allows certain nodes to be avoided during the path calculation.
+\item It allows certain segments (edges) to be avoided.
+\item Optionally, it can require the path to pass through a specific node.
+\end{DoxyItemize}
+
+The function handles both location codes (strings) and IDs (numeric), and converts them as needed. The function parses the comma-\/separated lists of nodes and segments to be avoided, as well as the optional node that must be included in the path.
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The source location, either as an ID or a location code. \\
+\hline
+{\em dest} & The destination location, either as an ID or a location code. \\
+\hline
+{\em avoid\+Nodes} & A comma-\/separated string of nodes to avoid (IDs). \\
+\hline
+{\em avoid\+Segments} & A comma-\/separated string of segments (edges) to avoid, represented as pairs of node IDs. \\
+\hline
+{\em include\+Node} & An optional node (ID or code) that must be included in the path.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If any of the specified nodes or edges are not found in the graph.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The time complexity of this function depends on the implementation of the restricted Dijkstra algorithm\+:
+\begin{DoxyItemize}
+\item If the graph is represented as an adjacency matrix, the time complexity is O(\+V$^\wedge$2), where V is the number of vertices.
+\item If the graph is represented as an adjacency list and a priority queue (min-\/heap) is used, the time complexity is O((V + E) $\ast$ log(\+V)), where V is the number of vertices and E is the number of edges in the graph.
+\item The additional restrictions (avoiding nodes, segments, and including a specific node) may add complexity, but the core complexity remains O((V + E) $\ast$ log(\+V)) for an adjacency list representation. 
+\end{DoxyItemize}
+\end{DoxyNote}
+\mbox{\Hypertarget{classStorageHandler_aa7cca8dc00a3182190c1a4ae7b932c82}\label{classStorageHandler_aa7cca8dc00a3182190c1a4ae7b932c82}} 
+\index{StorageHandler@{StorageHandler}!loadLocations@{loadLocations}}
+\index{loadLocations@{loadLocations}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{loadLocations()}{loadLocations()}}
+{\footnotesize\ttfamily void Storage\+Handler\+::load\+Locations (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{locations\+File }\end{DoxyParamCaption})}
+
+
+
+Loads location data from a CSV file. 
+
+Loads locations from a CSV file.
+
+This function reads location data from the specified CSV file and loads it into the system.
+
+
+\begin{DoxyParams}{Parameters}
+{\em locations\+File} & Path to the locations CSV file.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+N), where N is the number of locations to load and parse from the file.
+
+This function loads location data from a CSV file and adds the locations as vertices to the {\ttfamily city\+Graph}. It parses each line of the file, extracts relevant fields (location name, ID, code, and parking status), and adds the parsed data as vertices in the graph.
+
+
+\begin{DoxyParams}{Parameters}
+{\em locations\+File} & The file path of the locations CSV.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If the file cannot be opened or an error occurs during processing.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The time complexity of this function is O(m $\ast$ n), where m is the number of lines in the file, and n is the average number of characters per line. Each line is parsed, and for each location, the algorithm attempts to add a vertex to the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classStorageHandler_a8132a443dbcbaa104db945fcf48c6759}\label{classStorageHandler_a8132a443dbcbaa104db945fcf48c6759}} 
+\index{StorageHandler@{StorageHandler}!loadRoads@{loadRoads}}
+\index{loadRoads@{loadRoads}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{loadRoads()}{loadRoads()}}
+{\footnotesize\ttfamily void Storage\+Handler\+::load\+Roads (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{road\+File }\end{DoxyParamCaption})}
+
+
+
+Loads road data from a CSV file. 
+
+Loads roads from a CSV file.
+
+This function reads road data (connections between locations) from the specified CSV file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em road\+File} & Path to the roads CSV file.\\
+\hline
+\end{DoxyParams}
+Time complexity\+: O(\+M), where M is the number of roads to load and parse from the file.
+
+This function loads road data from a file and adds bidirectional roads as edges between vertices in the {\ttfamily city\+Graph}. It parses the file and handles both driving and walking road information for each road segment.
+
+
+\begin{DoxyParams}{Parameters}
+{\em road\+File} & The file path of the roads CSV.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & If the file cannot be opened or an error occurs during processing.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The time complexity of this function is O(m $\ast$ n), where m is the number of lines in the file, and n is the average number of characters per line. For each line, the algorithm processes road data and adds bidirectional edges to the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classStorageHandler_a7a9540b1b4c8d27708c37703f479319f}\label{classStorageHandler_a7a9540b1b4c8d27708c37703f479319f}} 
+\index{StorageHandler@{StorageHandler}!parseBatchInput@{parseBatchInput}}
+\index{parseBatchInput@{parseBatchInput}!StorageHandler@{StorageHandler}}
+\doxysubsubsection{\texorpdfstring{parseBatchInput()}{parseBatchInput()}}
+{\footnotesize\ttfamily int Storage\+Handler\+::parse\+Batch\+Input (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structData}{Data}} $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Parses input data for batch processing from a file. 
+
+This function parses input from a file to populate the {\ttfamily \mbox{\hyperlink{structData}{Data}}} structure for batch processing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to a {\ttfamily \mbox{\hyperlink{structData}{Data}}} structure where parsed data will be stored.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 0 if successful, non-\/zero if an error occurred.
+\end{DoxyReturn}
+Time complexity\+: O(\+N), where N is the number of lines or data entries to parse. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{storage_8hpp}{storage.\+hpp}}\item 
+src/\mbox{\hyperlink{storage_8cpp}{storage.\+cpp}}\end{DoxyCompactItemize}
