@@ -341,6 +341,14 @@ int StorageHandler::parseBatchInput(Data* data) {
     std::ifstream inputFile("../input.txt");
     std::string line;
 
+    data->mode = "";
+    data->source = -1;
+    data->destination = -1;
+    data->avoidNodes.clear();
+    data->avoidSegments.clear();
+    data->includeNode = -1;
+    data->maxWalkTime = -1;
+
     if (!inputFile.is_open()) {
         throw std::runtime_error("File input.txt not found in project root.");
     }
@@ -352,6 +360,7 @@ int StorageHandler::parseBatchInput(Data* data) {
         if (std::getline(ss, key, ':')) {
             try {
                 std::getline(ss, value);
+                if (value.empty()) continue;
 
                 if (key == "Mode") {
                     data->mode = value;
@@ -379,4 +388,17 @@ int StorageHandler::parseBatchInput(Data* data) {
 
     inputFile.close();
     return 0;
+}
+
+void StorageHandler::callBatchFunction(const Data& data) {
+    if (data.mode == "driving") {
+        if (data.avoidNodes.empty() && data.avoidSegments.empty() && data.includeNode == -1) {
+            cityGraph.fastestDrivingPathWithAlt(data.source, data.destination);
+        } else {
+            cityGraph.fastestRestrictedDrivingPath(data.source, data.destination, data.avoidNodes,
+                 data.avoidSegments, data.includeNode == -1 ? std::nullopt : std::optional<int>(data.includeNode));
+        }
+    } else if (data.mode == "driving-walking") {
+        calculateEnvironmentalRoute(data.source, data.destination, data.maxWalkTime);
+    }
 }

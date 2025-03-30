@@ -1,0 +1,6 @@
+Mode:driving
+Source:8
+Destination:5
+AvoidNodes:2
+AvoidSegments:(4,7)
+IncludeNode:

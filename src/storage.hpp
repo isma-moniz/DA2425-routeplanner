@@ -6,12 +6,12 @@
 
 struct Data {
     std::string mode;
-    int source;
-    int destination;
+    int source = -1;
+    int destination = -1;
     std::vector<int> avoidNodes;
     std::vector<std::pair<int,int>> avoidSegments;
-    int includeNode;
-    int maxWalkTime;
+    int includeNode = -1;
+    int maxWalkTime = -1;
 };
 
 class StorageHandler {
