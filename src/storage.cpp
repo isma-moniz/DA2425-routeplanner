@@ -204,6 +204,7 @@ void StorageHandler::callRestrictedDijkstra(const std::string& src, const std::s
 void StorageHandler::calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime) {
     std::vector<Vertex<int>*> parkingVertices = cityGraph.getAllParkingVertices();
     std::vector<std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>> candidates;
+    std::vector<std::tuple<double, double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>> approxCandidates;
 
     for (auto park : parkingVertices) {
         int parkId = park->getInfo();
@@ -217,64 +218,98 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
 
         double walkTime = 0;
         for (auto e : walkPath) walkTime += e->getWalkTime();
-        if (walkTime > maxWalkingTime) continue;
 
         double driveTime = 0;
         for (auto e : drivePath) driveTime += e->getDriveTime();
 
         double totalTime = driveTime + walkTime;
-        candidates.push_back({totalTime, drivePath, walkPath, parkId});
+
+        if (walkTime <= maxWalkingTime) {
+            candidates.push_back({totalTime, drivePath, walkPath, parkId});
+        } else {
+            approxCandidates.push_back({totalTime, walkTime, drivePath, walkPath, parkId});
+        }
     }
 
-    if (candidates.empty()) {
+    if (!candidates.empty()) {
+        auto best = *std::min_element(candidates.begin(), candidates.end(),
+                                      [](const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& a,
+                                         const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& b) {
+                                          return std::get<0>(a) < std::get<0>(b);
+                                      });
+
+        auto [totalTime, drivePath, walkPath, parkNode] = best;
+
         std::cout << "Source:" << source << "\n";
         std::cout << "Destination:" << destination << "\n";
-        std::cout << "DrivingRoute:none\n";
-        std::cout << "ParkingNode:none\n";
-        std::cout << "WalkingRoute:none\n";
-        std::cout << "TotalTime:\n";
-        std::cout << "Message: No valid path found with current constraints.\n";
+
+        std::cout << "DrivingRoute:";
+        for (auto e : drivePath) std::cout << e->getOrigin()->getInfo() << ",";
+        std::cout << drivePath.back()->getDest()->getInfo() << "(";
+        double driveTime = 0;
+        for (auto e : drivePath) driveTime += e->getDriveTime();
+        std::cout << static_cast<int>(driveTime) << ")\n";
+
+        std::cout << "ParkingNode:" << parkNode << "\n";
+
+        std::cout << "WalkingRoute:";
+        for (auto e : walkPath) std::cout << e->getOrigin()->getInfo() << ",";
+        std::cout << walkPath.back()->getDest()->getInfo() << "(" << static_cast<int>(std::get<0>(best) - driveTime) << ")\n";
+
+        std::cout << "TotalTime:" << static_cast<int>(totalTime) << "\n";
         return;
     }
 
-    auto best = *std::min_element(candidates.begin(), candidates.end(),
-                                  [](const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& a,
-                                     const std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& b) {
+    if (!approxCandidates.empty()) {
+        std::sort(approxCandidates.begin(), approxCandidates.end(),
+                  [](const std::tuple<double, double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& a,
+                     const std::tuple<double, double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>& b) {
+                      if (std::get<0>(a) != std::get<0>(b)) return std::get<0>(a) < std::get<0>(b);
+                      return std::get<1>(a) < std::get<1>(b); // menor walkTime
+                  });
 
-                                      double totalA = std::get<0>(a);
-                                      double totalB = std::get<0>(b);
-                                      if (totalA != totalB) return totalA < totalB;
+        std::cout << "Source:" << source << "\n";
+        std::cout << "Destination:" << destination << "\n";
 
-                                      double walkA = 0, walkB = 0;
-                                      for (auto e : std::get<2>(a)) walkA += e->getWalkTime();
-                                      for (auto e : std::get<2>(b)) walkB += e->getWalkTime();
+        double bestTime = std::get<0>(approxCandidates[0]);
+        int i = 1;
+        for (auto& t : approxCandidates) {
+            double totalTime = std::get<0>(t);
+            if (totalTime > bestTime + 2) break; // ignora soluções muito piores
 
-                                      return walkA > walkB;
-                                  });
+            double walkTime = std::get<1>(t);
+            auto drivePath = std::get<2>(t);
+            auto walkPath = std::get<3>(t);
+            int parkNode = std::get<4>(t);
+
+            std::cout << "DrivingRoute" << i << ":";
+            for (auto e : drivePath) std::cout << e->getOrigin()->getInfo() << ",";
+            std::cout << drivePath.back()->getDest()->getInfo() << "(";
+            double driveTime = 0;
+            for (auto e : drivePath) driveTime += e->getDriveTime();
+            std::cout << static_cast<int>(driveTime) << ")\n";
+
+            std::cout << "ParkingNode" << i << ":" << parkNode << "\n";
+
+            std::cout << "WalkingRoute" << i << ":";
+            for (auto e : walkPath) std::cout << e->getOrigin()->getInfo() << ",";
+            std::cout << walkPath.back()->getDest()->getInfo() << "(" << static_cast<int>(walkTime) << ")\n";
+
+            std::cout << "TotalTime" << i << ":" << static_cast<int>(totalTime) << "\n";
+            i++;
+        }
 
 
-    auto [totalTime, drivePath, walkPath, parkNode] = best;
+        return;
+    }
 
     std::cout << "Source:" << source << "\n";
     std::cout << "Destination:" << destination << "\n";
-
-    std::cout << "DrivingRoute:";
-    for (auto e : drivePath) std::cout << e->getOrigin()->getInfo() << ",";
-    std::cout << drivePath.back()->getDest()->getInfo() << "(";
-    double driveTime = 0;
-    for (auto e : drivePath) driveTime += e->getDriveTime();
-    std::cout << static_cast<int>(driveTime) << ")\n";
-
-    std::cout << "ParkingNode:" << parkNode << "\n";
-
-    std::cout << "WalkingRoute:";
-    for (auto e : walkPath) std::cout << e->getOrigin()->getInfo() << ",";
-    std::cout << walkPath.back()->getDest()->getInfo() << "(";
-    double walkTime = 0;
-    for (auto e : walkPath) walkTime += e->getWalkTime();
-    std::cout << static_cast<int>(walkTime) << ")\n";
-
-    std::cout << "TotalTime:" << static_cast<int>(totalTime) << "\n";
+    std::cout << "DrivingRoute:none\n";
+    std::cout << "ParkingNode:none\n";
+    std::cout << "WalkingRoute:none\n";
+    std::cout << "TotalTime:\n";
+    std::cout << "Message: No valid path found with current constraints.\n";
 }
 
 std::vector<int> StorageHandler::parseCommaSeparatedIntegers(const std::string& str) {
