@@ -7,10 +7,36 @@
 #include <iostream>
 #include <regex>
 
+/**
+ * @brief Checks if a string is a numeric representation.
+ * 
+ * This helper function determines whether a given string contains only digits.
+ * 
+ * @param str The string to check.
+ * @return true if the string contains only digits, false otherwise.
+ * 
+ * @note The time complexity of this function is O(n), where n is the length of the string.
+ *       The function iterates over each character in the string once to verify that they are all digits.
+ */
 bool isNumeric(const std::string& str) {
     return !str.empty() && std::all_of(str.begin(), str.end(), ::isdigit);
 }
 
+
+/**
+ * @brief Loads locations from a CSV file.
+ * 
+ * This function loads location data from a CSV file and adds the locations as vertices to the `cityGraph`.
+ * It parses each line of the file, extracts relevant fields (location name, ID, code, and parking status), and adds the parsed data as vertices in the graph.
+ * 
+ * @param locationsFile The file path of the locations CSV.
+ * 
+ * @throws std::runtime_error If the file cannot be opened or an error occurs during processing.
+ * 
+ * @note The time complexity of this function is O(m * n), where m is the number of lines in the file,
+ *       and n is the average number of characters per line. Each line is parsed, and for each location, the algorithm
+ *       attempts to add a vertex to the graph.
+ */
 void StorageHandler::loadLocations(const std::string& locationsFile) {
     std::ifstream file(locationsFile);
     if (!file.is_open()) {
@@ -44,7 +70,6 @@ void StorageHandler::loadLocations(const std::string& locationsFile) {
             parkingStr.erase(std::remove_if(parkingStr.begin(), parkingStr.end(), ::isspace), parkingStr.end());
             bool parking = (parkingStr == "1");
 
-
             if (!cityGraph.addVertex(id, code, parking)) {
                 throw std::runtime_error("Error adding vertex for ID " + idStr + " on line "  + std::to_string(linenumber));
             }
@@ -61,6 +86,21 @@ void StorageHandler::loadLocations(const std::string& locationsFile) {
     std::cout << "Locations loaded successfully!\n";
 }
 
+
+/**
+ * @brief Loads roads from a CSV file.
+ * 
+ * This function loads road data from a file and adds bidirectional roads as edges between vertices in the `cityGraph`.
+ * It parses the file and handles both driving and walking road information for each road segment.
+ * 
+ * @param roadFile The file path of the roads CSV.
+ * 
+ * @throws std::runtime_error If the file cannot be opened or an error occurs during processing.
+ * 
+ * @note The time complexity of this function is O(m * n), where m is the number of lines in the file,
+ *       and n is the average number of characters per line. For each line, the algorithm processes road data
+ *       and adds bidirectional edges to the graph.
+ */
 void StorageHandler::loadRoads(const std::string& roadFile) {
     std::ifstream file(roadFile);
     if (!file.is_open()) {
@@ -104,7 +144,6 @@ void StorageHandler::loadRoads(const std::string& roadFile) {
                 walking = std::stod(walkingStr);
             }
 
-
             if (!cityGraph.addBidirectionalEdge(loc1, loc2, walking, driving)) {
                 throw std::runtime_error("Error adding road for ID " + loc1 + "<-> " + loc2 + " on line "  + std::to_string(linenumber));
             }
@@ -121,6 +160,24 @@ void StorageHandler::loadRoads(const std::string& roadFile) {
     std::cout << "Locations loaded successfully!\n";
 }
 
+
+/**
+ * @brief Finds the shortest driving path between two locations using Dijkstra's algorithm.
+ * 
+ * This function attempts to find the shortest driving path between two locations, specified by either their vertex IDs or location codes.
+ * It first checks if the provided source and destination are numeric (IDs) or location codes (strings), and converts them accordingly.
+ * Once the valid source and destination IDs are obtained, it invokes the Dijkstra algorithm for the `cityGraph` to find the shortest path.
+ * 
+ * @param src The source location, either as an ID or a location code.
+ * @param dest The destination location, either as an ID or a location code.
+ * 
+ * @throws std::runtime_error If either the source or destination is invalid or not found in the graph.
+ * 
+ * @note The time complexity of this function depends on the implementation of Dijkstra's algorithm:
+ *       - If the graph is represented as an adjacency matrix, the time complexity is O(V^2), where V is the number of vertices.
+ *       - If the graph is represented as an adjacency list and a priority queue (min-heap) is used, the time complexity is O((V + E) * log(V)),
+ *         where V is the number of vertices and E is the number of edges in the graph.
+ */
 void StorageHandler::callDijkstra(const std::string& src, const std::string& dest) {
     int source, destination;
     if (!isNumeric(src)) {
@@ -148,6 +205,32 @@ void StorageHandler::callDijkstra(const std::string& src, const std::string& des
 
 
 
+
+/**
+ * @brief Finds the shortest driving path between two locations using Dijkstra's algorithm with additional restrictions.
+ * 
+ * This function finds the shortest driving path between two locations using Dijkstra's algorithm, with additional restrictions:
+ * - It allows certain nodes to be avoided during the path calculation.
+ * - It allows certain segments (edges) to be avoided.
+ * - Optionally, it can require the path to pass through a specific node.
+ * 
+ * The function handles both location codes (strings) and IDs (numeric), and converts them as needed.
+ * The function parses the comma-separated lists of nodes and segments to be avoided, as well as the optional node that must be included in the path.
+ * 
+ * @param src The source location, either as an ID or a location code.
+ * @param dest The destination location, either as an ID or a location code.
+ * @param avoidNodes A comma-separated string of nodes to avoid (IDs).
+ * @param avoidSegments A comma-separated string of segments (edges) to avoid, represented as pairs of node IDs.
+ * @param includeNode An optional node (ID or code) that must be included in the path.
+ * 
+ * @throws std::runtime_error If any of the specified nodes or edges are not found in the graph.
+ * 
+ * @note The time complexity of this function depends on the implementation of the restricted Dijkstra algorithm:
+ *       - If the graph is represented as an adjacency matrix, the time complexity is O(V^2), where V is the number of vertices.
+ *       - If the graph is represented as an adjacency list and a priority queue (min-heap) is used, the time complexity is O((V + E) * log(V)),
+ *         where V is the number of vertices and E is the number of edges in the graph.
+ *       - The additional restrictions (avoiding nodes, segments, and including a specific node) may add complexity, but the core complexity remains O((V + E) * log(V)) for an adjacency list representation.
+ */
 void StorageHandler::callRestrictedDijkstra(const std::string& src, const std::string& dest, 
     const std::string& avoidNodes, const std::string& avoidSegments, const std::string& includeNode) {
 
@@ -197,10 +280,47 @@ void StorageHandler::callRestrictedDijkstra(const std::string& src, const std::s
                 stop = std::stoi(includeNode);
             }
         }
-    std::cout << "Calling dijkstra!\n";
-    cityGraph.fastestRestrictedDrivingPath(source, destination, avoidNodesSet, avoidSegmentsSet, stop);
+
+        std::cout << "Calling dijkstra!\n";
+        cityGraph.fastestRestrictedDrivingPath(source, destination, avoidNodesSet, avoidSegmentsSet, stop);
 }
 
+
+/**
+ * @brief Calculates an environmental route from source to destination considering both driving and walking paths, with optional exclusions.
+ * 
+ * This function calculates the optimal route from a source to a destination while considering:
+ * - Driving to a parking area, followed by walking to the destination.
+ * - The ability to exclude certain nodes (locations) and segments (edges) from the graph during the calculation.
+ * - The ability to filter routes based on a maximum walking time.
+ * 
+ * The algorithm first excludes the requested nodes and segments from the graph, then calculates potential routes by:
+ * - Finding a driving route from the source to a parking location.
+ * - Finding a walking route from that parking location to the destination.
+ * 
+ * The function stores the best routes that meet the conditions in a file, and outputs them in the console. If no valid route exists, an appropriate message is printed.
+ * 
+ * @param source The source node ID (integer).
+ * @param destination The destination node ID (integer).
+ * @param maxWalkingTime The maximum allowed walking time (in minutes).
+ * @param avoidNodes A list of node IDs to be avoided during route calculation.
+ * @param avoidSegments A list of edges (pairs of node IDs) to be avoided.
+ * 
+ * @note The function calculates all possible routes that satisfy the walking time constraint and returns the best one.
+ *       If no valid route is found, the output will indicate that no route is possible.
+ * 
+ * @throws std::runtime_error If an invalid node or edge is encountered during processing.
+ * 
+ * @note The time complexity of this function can be broken down as follows:
+ * - Excluding nodes and segments involves iterating through the provided lists (`O(n)` complexity, where `n` is the number of nodes or segments).
+ * - For each parking node, two Dijkstra runs are performed:
+ *   - One for driving from the source to the parking node (`O((V + E) * log(V))` for the adjacency list representation).
+ *   - One for walking from the parking node to the destination (`O((V + E) * log(V))`).
+ * - Sorting and selecting the best routes involves iterating through the possible routes, which is `O(m * log(m))`, where `m` is the number of candidates.
+ * 
+ * Overall, the time complexity of the function is dominated by the Dijkstra runs and sorting, making it approximately:
+ * O(m * log(m) + 2 * (V + E) * log(V)).
+ */
 void StorageHandler::calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime, std::vector<int> avoidNodes, std::vector<std::pair<int,int>> avoidSegments) {
     std::ofstream file("../output.txt");
 
@@ -399,6 +519,34 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
     return;
 }
 
+
+/**
+ * @brief Parses a comma-separated string of integers and returns a vector of integers.
+ * 
+ * This function takes a string that represents a list of integers separated by commas, and converts it into a vector of integers. 
+ * Each integer in the string is extracted, converted to an integer using `std::stoi`, and added to the resulting vector.
+ * 
+ * @param str The comma-separated string of integers.
+ * 
+ * @return A vector of integers extracted from the input string.
+ * 
+ * @note If the input string contains invalid or non-numeric data (such as letters or empty strings), the function will throw 
+ *       a `std::invalid_argument` exception due to `std::stoi`. It is assumed that the input string is properly formatted for 
+ *       integer parsing.
+ * 
+ * @complexity
+ * - Time Complexity: O(N), where N is the number of characters in the input string. The function processes each character in the string,
+ *   and for each comma-separated value, it calls `std::stoi`, which runs in constant time for each valid integer.
+ *   - The overall complexity is dominated by the length of the input string as the string is split and parsed.
+ * - Space Complexity: O(M), where M is the number of integers in the string. The space complexity is proportional to the number of integers 
+ *   extracted and stored in the resulting vector.
+ * 
+ * @example
+ * // Example usage:
+ * std::vector<int> result = parseCommaSeparatedIntegers("1,2,3,4,5");
+ * // result will contain {1, 2, 3, 4, 5}
+ */
+
 std::vector<int> StorageHandler::parseCommaSeparatedIntegers(const std::string& str) {
     std::vector<int> result;
     std::stringstream ss(str);
@@ -409,6 +557,32 @@ std::vector<int> StorageHandler::parseCommaSeparatedIntegers(const std::string& 
     }
     return result;
 }
+
+/**
+ * @brief Parses a string containing pairs of integers enclosed in parentheses and returns a vector of integer pairs.
+ * 
+ * This function processes a string containing multiple pairs of integers formatted as `(a,b)`, where each pair is enclosed in parentheses
+ * and separated by commas. The function uses regular expressions to extract these pairs and store them as `std::pair<int, int>` elements
+ * in a vector.
+ * 
+ * @param str The input string containing pairs of integers in the form "(a,b)".
+ * 
+ * @return A vector of pairs, each containing two integers extracted from the input string.
+ * 
+ * @note The input string should adhere to the format `(a,b)` where `a` and `b` are integers. The function uses a regular expression to
+ *       match pairs, and will throw an exception if the string is improperly formatted or if it contains invalid data.
+ * 
+ * @complexity
+ * - Time Complexity: O(N), where N is the length of the input string. The function iterates through the string to find matching pairs using regular expressions.
+ *   - The regular expression engine will scan the string linearly to find all matching pairs, and the complexity is proportional to the length of the string.
+ *   - Each pair extraction operation (`std::stoi`) is constant time, but the overall complexity is dominated by the string length.
+ * - Space Complexity: O(M), where M is the number of pairs found in the string. The space used depends on how many pairs of integers are parsed and stored in the vector.
+ * 
+ * @example
+ * // Example usage:
+ * std::vector<std::pair<int, int>> result = parsePairs("(1,2),(3,4),(5,6)");
+ * // result will contain {{1, 2}, {3, 4}, {5, 6}}
+ */
 
 std::vector<std::pair<int, int>> StorageHandler::parsePairs(const std::string& str) {
     std::vector<std::pair<int, int>> result;
@@ -424,6 +598,64 @@ std::vector<std::pair<int, int>> StorageHandler::parsePairs(const std::string& s
     return result;
 }
 
+
+/**
+ * @brief Parses the input file `input.txt` and extracts the batch input data into a `Data` structure.
+ * 
+ * This function reads the `input.txt` file, line by line, and extracts specific parameters based on the key-value format 
+ * (e.g., "Mode: <value>"). It populates the provided `Data` structure with values for mode, source, destination, avoid nodes,
+ * avoid segments, include node, and maximum walking time. If the file cannot be opened, or if the data format is invalid, 
+ * an error code `-1` is returned.
+ * 
+ * The following keys are expected in the input file:
+ * - `Mode`: Specifies the mode of operation.
+ * - `Source`: The source vertex ID.
+ * - `Destination`: The destination vertex ID.
+ * - `AvoidNodes`: A comma-separated list of nodes to avoid.
+ * - `AvoidSegments`: A list of pairs of nodes to avoid, formatted as "(node1,node2)".
+ * - `IncludeNode`: A specific node to include in the route.
+ * - `MaxWalkTime`: The maximum allowed walking time.
+ * 
+ * If any of these fields are missing or have invalid formats, the function returns `-1`. If the data is successfully 
+ * parsed, the function returns `0`.
+ * 
+ * @param data A pointer to the `Data` structure where the parsed data will be stored.
+ * 
+ * @return Returns `0` on success, or `-1` if the input file format is invalid or the file cannot be opened.
+ * 
+ * @note The function expects the input file `input.txt` to be present in the project root directory. Each key in the file 
+ *       should be followed by a colon (`:`) and then the corresponding value.
+ * 
+ * @complexity
+ * - Time Complexity: O(N), where N is the number of lines in the input file. The function processes each line sequentially, 
+ *   extracting key-value pairs. The complexity mainly depends on the number of lines in the file.
+ *   - The `std::getline` function reads each line once, which is O(N).
+ *   - Each line is parsed by splitting it into key and value, and this also operates in linear time relative to the line length.
+ *   - The operations performed on each key-value pair (e.g., `std::stoi` or `parseCommaSeparatedIntegers`) are constant time operations 
+ *     for small data sizes, though parsing large numbers of nodes or segments may add overhead.
+ * - Space Complexity: O(M), where M is the total amount of data parsed. This depends on the number of entries in the input file 
+ *   (e.g., the number of nodes in `AvoidNodes` or segments in `AvoidSegments`).
+ * 
+ * @example
+ * // Example input.txt file:
+ * Mode: Driving
+ * Source: 1
+ * Destination: 10
+ * AvoidNodes: 2,3,5
+ * AvoidSegments: (1,2),(3,4)
+ * IncludeNode: 6
+ * MaxWalkTime: 30
+ * 
+ * // Example usage:
+ * Data data;
+ * int result = parseBatchInput(&data);
+ * if (result == 0) {
+ *     // Data successfully parsed
+ *     std::cout << "Source: " << data.source << std::endl;
+ * } else {
+ *     // Error reading the input file
+ * }
+ */
 int StorageHandler::parseBatchInput(Data* data) {
     std::ifstream inputFile("../input.txt");
     std::string line;
@@ -477,6 +709,57 @@ int StorageHandler::parseBatchInput(Data* data) {
     return 0;
 }
 
+
+/**
+ * @brief Calls the appropriate function based on the mode of operation specified in the `data` object.
+ * 
+ * This function determines the mode of operation (either "driving" or "driving-walking") from the `data` object and calls
+ * the corresponding function to calculate the optimal route. It handles both normal and restricted driving paths, as well
+ * as environmental route calculations considering walking time constraints.
+ * 
+ * - If the mode is "driving" and no nodes or segments are specified to avoid, it calls `fastestDrivingPathWithAlt` to find
+ *   the fastest driving path.
+ * - If the mode is "driving" and there are nodes, segments, or an include node specified, it calls `fastestRestrictedDrivingPath`
+ *   to find the fastest path with restrictions based on the input.
+ * - If the mode is "driving-walking", it calls `calculateEnvironmentalRoute` to find a route that combines driving and walking
+ *   with walking time constraints.
+ * 
+ * @param data The `Data` structure containing the parameters to determine the type of path calculation.
+ * 
+ * @return void
+ * 
+ * @throws std::runtime_error If the mode in `data` is not recognized or if other parameters are invalid.
+ * 
+ * @complexity
+ * - The complexity of `fastestDrivingPathWithAlt` depends on the underlying graph algorithm (e.g., Dijkstra), which typically
+ *   has a time complexity of O((V + E) log V) where V is the number of vertices (nodes) and E is the number of edges.
+ * - The complexity of `fastestRestrictedDrivingPath` is similar but may involve additional checks or constraints, possibly
+ *   making it more costly depending on the number of avoid nodes/segments.
+ * - `calculateEnvironmentalRoute` involves multiple graph searches (Dijkstra for driving and walking), each with a complexity
+ *   of O((V + E) log V). The overall complexity will depend on the number of parking vertices and the number of paths considered.
+ *   In the worst case, if there are N parking vertices, the complexity could be O(N * (V + E) log V).
+ * 
+ * @example
+ * // Example usage for driving mode:
+ * Data data;
+ * data.mode = "driving";
+ * data.source = 1;
+ * data.destination = 10;
+ * data.avoidNodes = {2, 3};
+ * data.avoidSegments = {{1, 2}, {4, 5}};
+ * data.includeNode = 6;
+ * callBatchFunction(data);
+ * 
+ * // Example usage for driving-walking mode:
+ * Data data;
+ * data.mode = "driving-walking";
+ * data.source = 1;
+ * data.destination = 10;
+ * data.maxWalkTime = 30;
+ * data.avoidNodes = {2, 3};
+ * data.avoidSegments = {{1, 2}, {4, 5}};
+ * callBatchFunction(data);
+ */
 void StorageHandler::callBatchFunction(const Data& data) {
     if (data.mode == "driving") {
         if (data.avoidNodes.empty() && data.avoidSegments.empty() && data.includeNode == -1) {
