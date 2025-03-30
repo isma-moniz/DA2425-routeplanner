@@ -178,24 +178,12 @@ void StorageHandler::callRestrictedDijkstra(const std::string& src, const std::s
 
         // insert avoid nodes in nodeset
         if (!avoidNodes.empty()) {
-            std::istringstream nodesStream(avoidNodes);
-            std::string node;
-            while (std::getline(nodesStream, node, ',')) {
-                avoidNodesSet.push_back(std::stoi(node));
-            }
+            avoidNodesSet = parseCommaSeparatedIntegers(avoidNodes);
         }
 
         // insert avoid segments in set
         if (!avoidSegments.empty()) {
-            std::regex segment_regex(R"(\((\d+),(\d+)\))");
-            auto segments_begin = std::sregex_iterator(avoidSegments.begin(), avoidSegments.end(), segment_regex);
-            auto segments_end = std::sregex_iterator();
-
-            for (auto it = segments_begin; it != segments_end; ++it) {
-                int from = std::stoi((*it)[1].str());
-                int to = std::stoi((*it)[2].str());
-                avoidSegmentsSet.push_back({from, to});
-            }
+            avoidSegmentsSet = parsePairs(avoidSegments);
         }
 
         if (!includeNode.empty()) {  
@@ -287,4 +275,73 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
     std::cout << static_cast<int>(walkTime) << ")\n";
 
     std::cout << "TotalTime:" << static_cast<int>(totalTime) << "\n";
+}
+
+std::vector<int> StorageHandler::parseCommaSeparatedIntegers(const std::string& str) {
+    std::vector<int> result;
+    std::stringstream ss(str);
+    std::string id;
+
+    while (std::getline(ss, id, ',')) {
+        result.push_back(std::stoi(id));
+    }
+    return result;
+}
+
+std::vector<std::pair<int, int>> StorageHandler::parsePairs(const std::string& str) {
+    std::vector<std::pair<int, int>> result;
+    std::regex segment_regex(R"(\((\d+),(\d+)\))");
+    auto segments_begin = std::sregex_iterator(str.begin(), str.end(), segment_regex);
+    auto segments_end = std::sregex_iterator();
+    
+    for (auto it = segments_begin; it != segments_end; ++it) {
+        int from = std::stoi((*it)[1].str());
+        int to = std::stoi((*it)[2].str());
+        result.push_back({from, to});
+    }
+    return result;
+}
+
+int StorageHandler::parseBatchInput(Data* data) {
+    std::ifstream inputFile("../input.txt");
+    std::string line;
+
+    if (!inputFile.is_open()) {
+        throw std::runtime_error("File input.txt not found in project root.");
+    }
+
+    while (std::getline(inputFile, line)) {
+        std::stringstream ss(line);
+        std::string key, value;
+
+        if (std::getline(ss, key, ':')) {
+            try {
+                std::getline(ss, value);
+
+                if (key == "Mode") {
+                    data->mode = value;
+                } else if (key == "Source") {
+                    data->source = std::stoi(value);
+                } else if (key == "Destination") {
+                    data->destination = std::stoi(value);
+                } else if (key == "AvoidNodes") {
+                    data->avoidNodes = parseCommaSeparatedIntegers(value);
+                } else if (key == "AvoidSegments") {
+                    data->avoidSegments = parsePairs(value);
+                } else if (key == "IncludeNode") {
+                    data->includeNode = std::stoi(value);
+                } else if (key == "MaxWalkTime") {
+                    data->maxWalkTime = std::stoi(value);
+                } else {
+                    return -1; // ignore badly formatted input
+                }
+            } catch (std::invalid_argument) {
+                return -1; // ignore badly formatted input
+            }
+            
+        }
+    }
+
+    inputFile.close();
+    return 0;
 }

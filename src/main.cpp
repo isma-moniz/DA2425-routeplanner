@@ -10,7 +10,8 @@ void showMenu() {
     std::cout << "2. Load Distances.csv\n";
     std::cout << "3. Calculate best route (driving)\n";
     std::cout << "4. Calculate route with restrictions (driving)\n";
-    std::cout << "6. Calculate environmentally friendly route (driving + walking)\n";
+    std::cout << "5. Calculate environmentally friendly route (driving + walking)\n";
+    std::cout << "6. Use batch mode\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose an option: ";
 }
@@ -74,7 +75,15 @@ void calcEnvironmentalRoute() {
     }
 }
 
+void handleBatchMode() {
+    Data data;
+    if (storageHandler.parseBatchInput(&data) != 0) {
+        std::cout << "Bad input.txt format\n";
+        return;
+    }
+    storageHandler.callBatchFunction(data);
 
+}
 
 int main() {
     int op;
@@ -95,10 +104,10 @@ int main() {
                 calcDrivingRouteRestricted();
                 break;
             case 5:
-                placeholderFunction("Calcular rota com restrições");
+                calcEnvironmentalRoute();
                 break;
             case 6:
-                calcEnvironmentalRoute();
+                handleBatchMode();
                 break;
             case 0:
                 std::cout << "Thank you for using route planner." << std::endl;
