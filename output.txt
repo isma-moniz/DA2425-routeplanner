@@ -1,0 +1,6 @@
+Source:8
+Destination:5
+DrivingRoute1:8,7(14)
+ParkingNode1:7
+WalkingRoute1:7,6,5(22)
+TotalTime1:36

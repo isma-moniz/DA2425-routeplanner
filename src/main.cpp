@@ -58,6 +58,9 @@ void calcEnvironmentalRoute() {
     system("clear");
     std::string src, dest;
     int maxWalk;
+    std::vector<int> avoidNodesVec;
+    std::vector<std::pair<int,int>> avoidSegmentsVec;
+
 
     std::cout << "Enter source id: ";
     std::cin >> src;
@@ -69,7 +72,7 @@ void calcEnvironmentalRoute() {
     try {
         int source = std::stoi(src);
         int destination = std::stoi(dest);
-        storageHandler.calculateEnvironmentalRoute(source, destination, maxWalk);
+        storageHandler.calculateEnvironmentalRoute(source, destination, maxWalk, avoidNodesVec, avoidSegmentsVec);
     } catch (...) {
         std::cerr << "Invalid input. Please enter valid numeric IDs.\n";
     }

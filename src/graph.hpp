@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <optional>
+#include <fstream>
 
 template <class T>
 class Edge;
@@ -573,20 +574,28 @@ struct vertexComp {
 
 template <class T>
 void Graph<T>::fastestDrivingPathWithAlt(const T& origin, const T& destination) {
+    std::ofstream file("../output.txt");
+
     std::vector<Edge<T>*> usedRoads = dijkstraDriving(origin, destination);
 
     std::cout << "Source: " << origin << "\n";
     std::cout << "Destination: " << destination << "\n";
+
+    file << "Source: " << origin << "\n";
+    file << "Destination: " << destination << "\n";
     
     if (usedRoads.empty()) {
-        std::cout << "BestDrivingRoute: none\n";
-        std::cout << "AlternativeDrivingRoute: none\n";
+        std::cout << "BestDrivingRoute:none\n";
+        std::cout << "AlternativeDrivingRoute:none\n";
+        file.close();
         return;
     }
 
     std::cout << "BestDrivingRoute: ";
-    for (auto edge : usedRoads) std::cout << edge->getOrigin()->getInfo() << ", ";
-    std::cout << destination << "( " << usedRoads.back()->getDest()->getDist() << " )\n";
+    file << "BestDrivingRoute: ";
+    for (auto edge : usedRoads) {std::cout << edge->getOrigin()->getInfo() << ","; file << edge->getOrigin()->getInfo() << ","; }
+    std::cout << destination << "(" << usedRoads.back()->getDest()->getDist() << ")\n";
+    file << destination << "(" << usedRoads.back()->getDest()->getDist() << ")\n";
 
     for (auto edge : usedRoads) {
         edge->setAvailable(false);
@@ -594,18 +603,21 @@ void Graph<T>::fastestDrivingPathWithAlt(const T& origin, const T& destination) 
 
     std::vector<Edge<T>*> altRoads = dijkstraDriving(origin, destination);
     if (!altRoads.empty()) {
-        std::cout << "AlternativeDrivingRoute: ";
-        for (auto edge : altRoads) std::cout << edge->getOrigin()->getInfo() << ", ";
-        std::cout << destination << "( " << altRoads.back()->getDest()->getDist() << " )\n";
+        std::cout << "AlternativeDrivingRoute:";
+        file << "AlternativeDrivingRoute:";
+        for (auto edge : altRoads) {std::cout << edge->getOrigin()->getInfo() << ","; file << edge->getOrigin()->getInfo() << ",";}
+        std::cout << destination << "(" << altRoads.back()->getDest()->getDist() << ")\n";
+        file << destination << "(" << altRoads.back()->getDest()->getDist() << ")\n";
     } else {
-        std::cout << "AlternativeDrivingRoute: none\n";
+        std::cout << "AlternativeDrivingRoute:none\n";
+        file << "AlternativeDrivingRoute:none\n";
     }
     
 
     for (auto edge : usedRoads) {
         edge->setAvailable(true);
     }
-    
+    file.close();
     return;
 }
 
@@ -749,6 +761,7 @@ std::vector<Edge<T>*> Graph<T>::dijkstraWalking(const T& origin, const T& destin
 template <class T>
 void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destination, std::vector<T> avoidNodes, std::vector<std::pair<T,T>> avoidSegments, std::optional<T> stop) {
     std::vector<Edge<T>*> path;
+    std::ofstream file("../output.txt");
 
     // exclude requested nodes
     for (auto node : avoidNodes) {
@@ -777,11 +790,16 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
     
     if (!stop.has_value()) {
         path = dijkstraDriving(origin, destination);
-        std::cout << "Source: " << origin << "\n";
-        std::cout << "Destination: " << destination << "\n";
-        std::cout << "RestrictedDrivingRoute: ";
-        for (auto edge : path) std::cout << edge->getOrigin()->getInfo() << ",";
+        std::cout << "Source:" << origin << "\n";
+        std::cout << "Destination:" << destination << "\n";
+        std::cout << "RestrictedDrivingRoute:";
+
+        file << "Source:" << origin << "\n";
+        file << "Destination:" << destination << "\n";
+        file << "RestrictedDrivingRoute:";
+        for (auto edge : path) {std::cout << edge->getOrigin()->getInfo() << ","; file << edge->getOrigin()->getInfo() << ",";}
         std::cout << destination << "(" << path.back()->getDest()->getDist() << ")\n";
+        file << destination << "(" << path.back()->getDest()->getDist() << ")\n";
 
         for (auto node : avoidNodes) {
             Vertex<T>* vert = findVertex(node);
@@ -792,6 +810,7 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
         }
 
         for (auto edge : switchedEdges) edge->setAvailable(true);
+        file.close();
         return;
     }
 
@@ -802,9 +821,13 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
     // Step 1: Find shortest path from origin → stop
     std::vector<Edge<T>*> firstHalf = dijkstraDriving(origin, stop.value());
     if (firstHalf.empty()) {
-        std::cout << "Source: " << origin << "\n";
-        std::cout << "Destination: " << destination << "\n";
-        std::cout << "RestrictedDrivingRoute: none\n";
+        std::cout << "Source:" << origin << "\n";
+        std::cout << "Destination:" << destination << "\n";
+        std::cout << "RestrictedDrivingRoute:none\n";
+
+        file << "Source:" << origin << "\n";
+        file << "Destination:" << destination << "\n";
+        file << "RestrictedDrivingRoute:none\n";
 
         for (auto node : avoidNodes) {
             Vertex<T>* vert = findVertex(node);
@@ -815,6 +838,7 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
         }
 
         for (auto edge : switchedEdges) edge->setAvailable(true);
+        file.close();
         return;
     }
     double halfwayDist = firstHalf.back()->getDest()->getDist(); // we store the distance now, before it gets reset
@@ -822,9 +846,12 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
     // Step 2: Find shortest path from stop -> destination
     std::vector<Edge<T>*> secondHalf = dijkstraDriving(stop.value(), destination);
     if (secondHalf.empty()) {
-        std::cout << "Source: " << origin << "\n";
-        std::cout << "Destination: " << destination << "\n";
-        std::cout << "RestrictedDrivingRoute: none\n";
+        std::cout << "Source:" << origin << "\n";
+        std::cout << "Destination:" << destination << "\n";
+        std::cout << "RestrictedDrivingRoute:none\n";
+        file << "Source:" << origin << "\n";
+        file << "Destination:" << destination << "\n";
+        file << "RestrictedDrivingRoute:none\n";
 
         for (auto node : avoidNodes) {
             Vertex<T>* vert = findVertex(node);
@@ -835,6 +862,7 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
         }
 
         for (auto edge : switchedEdges) edge->setAvailable(true);
+        file.close();
         return;
     }
 
@@ -842,11 +870,16 @@ void Graph<T>::fastestRestrictedDrivingPath(const T& origin, const T& destinatio
 
     firstHalf.insert(firstHalf.end(), secondHalf.begin(), secondHalf.end());
 
-    std::cout << "Source: " << origin << "\n";
-    std::cout << "Destination: " << destination << "\n";
-    std::cout << "RestrictedDrivingRoute: ";
-    for (auto edge : firstHalf) std::cout << edge->getOrigin()->getInfo() << ",";
+    std::cout << "Source:" << origin << "\n";
+    std::cout << "Destination:" << destination << "\n";
+    std::cout << "RestrictedDrivingRoute:";
+    file << "Source:" << origin << "\n";
+    file << "Destination:" << destination << "\n";
+    file << "RestrictedDrivingRoute:";
+
+    for (auto edge : firstHalf) {std::cout << edge->getOrigin()->getInfo() << ","; file << edge->getOrigin()->getInfo() << ",";}
     std::cout << destination << "(" << halfwayDist + finalDist << ")\n";
+    file << destination << "(" << halfwayDist + finalDist << ")\n";
     
     for (auto node : avoidNodes) {
         Vertex<T>* vert = findVertex(node);

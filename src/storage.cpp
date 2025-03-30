@@ -201,7 +201,35 @@ void StorageHandler::callRestrictedDijkstra(const std::string& src, const std::s
     cityGraph.fastestRestrictedDrivingPath(source, destination, avoidNodesSet, avoidSegmentsSet, stop);
 }
 
-void StorageHandler::calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime) {
+void StorageHandler::calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime, std::vector<int> avoidNodes, std::vector<std::pair<int,int>> avoidSegments) {
+    std::ofstream file("../output.txt");
+
+    // exclude requested nodes
+    for (auto node : avoidNodes) {
+        Vertex<int>* vert = cityGraph.findVertex(node);
+        if (vert == nullptr) {
+            continue; // assume typo if not found
+        }
+        vert->setAvailable(false);
+    }
+
+    std::vector<Edge<int>*> switchedEdges; // we store edges here to switch them back to available without long lookups
+    // exclude requested segments
+    for (const auto& pair : avoidSegments) {
+        Vertex<int>* orig = cityGraph.findVertex(pair.first);
+        if (orig == nullptr || cityGraph.findVertex(pair.second) == nullptr) {
+            continue;
+        }
+
+        for (auto edge : orig->getAdj()) { // this has time complexity O(e) and could be made faster if we used an unordered_map for adj,
+            if (edge->getDest()->getInfo() == pair.second) { // but since the graph is not too big the performance gain would be negligible
+                edge->setAvailable(false);
+                switchedEdges.push_back(edge);
+            }
+        }
+    }
+
+
     std::vector<Vertex<int>*> parkingVertices = cityGraph.getAllParkingVertices();
     std::vector<std::tuple<double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>> candidates;
     std::vector<std::tuple<double, double, std::vector<Edge<int>*>, std::vector<Edge<int>*>, int>> approxCandidates;
@@ -241,22 +269,41 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
         auto [totalTime, drivePath, walkPath, parkNode] = best;
 
         std::cout << "Source:" << source << "\n";
+        file << "Source:" << source << "\n";
         std::cout << "Destination:" << destination << "\n";
+        file << "Destination:" << destination << "\n";
 
         std::cout << "DrivingRoute:";
-        for (auto e : drivePath) std::cout << e->getOrigin()->getInfo() << ",";
+        file << "DrivingRoute:";
+        for (auto e : drivePath) {std::cout << e->getOrigin()->getInfo() << ",";  file << e->getOrigin()->getInfo() << ",";}
         std::cout << drivePath.back()->getDest()->getInfo() << "(";
+        file << drivePath.back()->getDest()->getInfo() << "(";
         double driveTime = 0;
         for (auto e : drivePath) driveTime += e->getDriveTime();
         std::cout << static_cast<int>(driveTime) << ")\n";
+        file << static_cast<int>(driveTime) << ")\n";
 
         std::cout << "ParkingNode:" << parkNode << "\n";
+        file << "ParkingNode:" << parkNode << "\n";
 
         std::cout << "WalkingRoute:";
-        for (auto e : walkPath) std::cout << e->getOrigin()->getInfo() << ",";
+        file << "WalkingRoute:";
+        for (auto e : walkPath) { std::cout << e->getOrigin()->getInfo() << ","; file << e->getOrigin()->getInfo() << ",";}
         std::cout << walkPath.back()->getDest()->getInfo() << "(" << static_cast<int>(std::get<0>(best) - driveTime) << ")\n";
-
+        file << walkPath.back()->getDest()->getInfo() << "(" << static_cast<int>(std::get<0>(best) - driveTime) << ")\n";
         std::cout << "TotalTime:" << static_cast<int>(totalTime) << "\n";
+        file << "TotalTime:" << static_cast<int>(totalTime) << "\n";
+
+        for (auto node : avoidNodes) {
+            Vertex<int>* vert = cityGraph.findVertex(node);
+            if (vert == nullptr) {
+                continue; // assume typo if not found
+            }
+            vert->setAvailable(true);
+        }
+
+        for (auto edge : switchedEdges) edge->setAvailable(true);
+        file.close();
         return;
     }
 
@@ -270,6 +317,8 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
 
         std::cout << "Source:" << source << "\n";
         std::cout << "Destination:" << destination << "\n";
+        file << "Source:" << source << "\n";
+        file << "Destination:" << destination << "\n";
 
         double bestTime = std::get<0>(approxCandidates[0]);
         int i = 1;
@@ -283,23 +332,41 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
             int parkNode = std::get<4>(t);
 
             std::cout << "DrivingRoute" << i << ":";
-            for (auto e : drivePath) std::cout << e->getOrigin()->getInfo() << ",";
+            file << "DrivingRoute" << i << ":";
+
+            for (auto e : drivePath) {std::cout << e->getOrigin()->getInfo() << ","; file << e->getOrigin()->getInfo() << ",";}
             std::cout << drivePath.back()->getDest()->getInfo() << "(";
+            file << drivePath.back()->getDest()->getInfo() << "(";
             double driveTime = 0;
             for (auto e : drivePath) driveTime += e->getDriveTime();
             std::cout << static_cast<int>(driveTime) << ")\n";
+            file << static_cast<int>(driveTime) << ")\n";
 
             std::cout << "ParkingNode" << i << ":" << parkNode << "\n";
+            file << "ParkingNode" << i << ":" << parkNode << "\n";
 
             std::cout << "WalkingRoute" << i << ":";
-            for (auto e : walkPath) std::cout << e->getOrigin()->getInfo() << ",";
+            file << "WalkingRoute" << i << ":";
+            for (auto e : walkPath) {std::cout << e->getOrigin()->getInfo() << ","; file << e->getOrigin()->getInfo() << ",";}
             std::cout << walkPath.back()->getDest()->getInfo() << "(" << static_cast<int>(walkTime) << ")\n";
 
             std::cout << "TotalTime" << i << ":" << static_cast<int>(totalTime) << "\n";
+            file << walkPath.back()->getDest()->getInfo() << "(" << static_cast<int>(walkTime) << ")\n";
+
+            file << "TotalTime" << i << ":" << static_cast<int>(totalTime) << "\n";
             i++;
         }
 
+        for (auto node : avoidNodes) {
+            Vertex<int>* vert = cityGraph.findVertex(node);
+            if (vert == nullptr) {
+                continue; // assume typo if not found
+            }
+            vert->setAvailable(true);
+        }
 
+        for (auto edge : switchedEdges) edge->setAvailable(true);
+        file.close();
         return;
     }
 
@@ -309,7 +376,27 @@ void StorageHandler::calculateEnvironmentalRoute(int source, int destination, in
     std::cout << "ParkingNode:none\n";
     std::cout << "WalkingRoute:none\n";
     std::cout << "TotalTime:\n";
-    std::cout << "Message: No valid path found with current constraints.\n";
+    std::cout << "No possible route with max. walking time of " << maxWalkingTime << " minutes.\n";
+
+    file << "Source:" << source << "\n";
+    file << "Destination:" << destination << "\n";
+    file << "DrivingRoute:none\n";
+    file << "ParkingNode:none\n";
+    file << "WalkingRoute:none\n";
+    file << "TotalTime:\n";
+    file << "No possible route with max. walking time of " << maxWalkingTime << " minutes.\n";
+
+    for (auto node : avoidNodes) {
+        Vertex<int>* vert = cityGraph.findVertex(node);
+        if (vert == nullptr) {
+            continue; // assume typo if not found
+        }
+        vert->setAvailable(true);
+    }
+
+    for (auto edge : switchedEdges) edge->setAvailable(true);
+    file.close();
+    return;
 }
 
 std::vector<int> StorageHandler::parseCommaSeparatedIntegers(const std::string& str) {
@@ -399,6 +486,6 @@ void StorageHandler::callBatchFunction(const Data& data) {
                  data.avoidSegments, data.includeNode == -1 ? std::nullopt : std::optional<int>(data.includeNode));
         }
     } else if (data.mode == "driving-walking") {
-        calculateEnvironmentalRoute(data.source, data.destination, data.maxWalkTime);
+        calculateEnvironmentalRoute(data.source, data.destination, data.maxWalkTime, data.avoidNodes, data.avoidSegments);
     }
 }

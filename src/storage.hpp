@@ -22,7 +22,7 @@ public:
     void callDijkstra(const std::string& source, const std::string& dest);
     void callRestrictedDijkstra(const std::string& src, const std::string& dest, 
         const std::string& avoidNodes, const std::string& avoidSegments, const std::string& includeNode);
-    void calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime);
+    void calculateEnvironmentalRoute(int source, int destination, int maxWalkingTime, std::vector<int> avoidNodes, std::vector<std::pair<int,int>> avoidSegments);
     int parseBatchInput(Data* data);
     void callBatchFunction(const Data& data);
 
